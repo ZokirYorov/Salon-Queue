@@ -13,11 +13,11 @@
           <h3>Xodim / Admin</h3>
           <p>Navbatlarni boshqarish, yangi navbat qo'shish, kunlik jadval</p>
         </button>
-        <button class="role-card role-card--client" @click="role = 'client'">
-          <span class="role-icon">👤</span>
-          <h3>Mijoz</h3>
-          <p>Online navbat olish, band vaqtlarni ko'rish</p>
-        </button>
+<!--        <button class="role-card role-card&#45;&#45;client" @click="role = 'client'">-->
+<!--          <span class="role-icon">👤</span>-->
+<!--          <h3>Mijoz</h3>-->
+<!--          <p>Online navbat olish, band vaqtlarni ko'rish</p>-->
+<!--        </button>-->
       </div>
     </div>
 
