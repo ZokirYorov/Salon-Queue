@@ -5,7 +5,7 @@
     <div v-if="!role" class="role-screen">
       <div class="role-logo">
         <h1>SalonQueue</h1>
-        <p>Kimligingizni tanlang</p>
+<!--        <p>Kimligingizni tanlang</p>-->
       </div>
       <div class="role-cards">
         <button class="role-card role-card--staff" @click="role = 'staff'">
