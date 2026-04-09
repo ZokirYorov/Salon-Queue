@@ -4,7 +4,6 @@
     <!-- ── ROLE SELECTOR ── -->
     <div v-if="!role" class="role-screen">
       <div class="role-logo">
-        <span class="role-logo-icon">✂️</span>
         <h1>SalonQueue</h1>
         <p>Kimligingizni tanlang</p>
       </div>
