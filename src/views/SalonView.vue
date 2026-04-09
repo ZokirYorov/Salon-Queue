@@ -62,7 +62,7 @@
           <div class="page-header">
             <div>
               <h2 class="page-title">Kunlik jadval</h2>
-              <p class="page-sub">Barcha navbatlar — online va qo'lda qo'shilgan</p>
+              <p class="page-sub">Barcha navbatlar</p>
             </div>
             <div class="header-actions">
               <input type="date" v-model="scheduleDate" class="date-input" />
