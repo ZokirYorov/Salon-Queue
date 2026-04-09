@@ -27,10 +27,10 @@
       <!-- NAVBAR -->
       <nav class="navbar">
         <div class="nav-inner">
-          <div class="nav-logo" @click="resetView">
-            <span>✂️</span>
-            <span class="nav-title">SalonQueue</span>
-          </div>
+<!--          <div class="nav-logo" @click="resetView">-->
+<!--            <span>✂️</span>-->
+<!--            <span class="nav-title">SalonQueue</span>-->
+<!--          </div>-->
           <div class="nav-tabs">
             <button
                 v-if="role === 'staff'"
@@ -995,14 +995,4 @@ function updateStatus(id: number, status: Booking['status']) {
 .empty-msg { text-align: center; color: #94a3b8; font-size: 14px; padding: 32px; }
 
 /* ── Responsive ── */
-@media (max-width: 680px) {
-  .form-row { grid-template-columns: 1fr; }
-  .table-head, .table-row { grid-template-columns: 1fr 1fr 1fr; }
-  .td-dur, .td-source, .td-action { display: none; }
-  .role-cards { flex-direction: column; align-items: center; }
-  .page-header { flex-direction: column; }
-  .nav-tabs { display: none; }
-  .schedule-grid { flex-direction: column; }
-  .time-col { width: 100%; border-right: none; border-bottom: 1px solid #e2e8f0; }
-}
 </style>
