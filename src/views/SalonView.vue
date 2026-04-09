@@ -9,7 +9,7 @@
       </div>
       <div class="role-cards">
         <button class="role-card role-card--staff" @click="role = 'staff'">
-          <span class="role-icon">👔</span>
+<!--          <span class="role-icon">👔</span>-->
           <h3>Xodim / Admin</h3>
           <p>Navbatlarni boshqarish, yangi navbat qo'shish, kunlik jadval</p>
         </button>
