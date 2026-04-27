@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/staff/StaffLayout.vue'),
         meta: { requiresRole: 'staff' },
         children: [
-            { path: '/',        redirect: { name: 'schedule' } },
+            { path: '',        redirect: { name: 'schedule' } },
             { path: 'schedule',   name: 'schedule',    component: () => import('@/views/staff/ScheduleView.vue')   },
             { path: 'employees',  name: 'employees',   component: () => import('@/views/staff/EmployeesView.vue')   },
             { path: 'bookings',   name: 'bookings',    component: () => import('@/views/staff/BookingsView.vue')   },

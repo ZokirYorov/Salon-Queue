@@ -1,7 +1,6 @@
 <template>
   <div class="role-screen">
     <div class="role-logo">
-      <span class="logo-icon">✂️</span>
       <h1>SalonQueue</h1>
       <p>Kimligingizni tanlang</p>
     </div>
