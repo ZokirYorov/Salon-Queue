@@ -193,9 +193,15 @@ export const useSalonStore = defineStore('salon', () => {
 
   function formatDateShort(dateStr: string): string {
     if (!dateStr) return ''
-    return new Date(dateStr).toLocaleDateString('uz-UZ', {
-      day: '2-digit', month: 'short'
-    })
+    const data = new Date(dateStr);
+
+    if (isNaN(data.getTime())) return ''
+
+      const day = data.getDate().toString().padStart(2, '0');
+      const month = (data.getMonth() + 1).toString().padStart(2, '0');
+      const year = data.getFullYear()
+
+      return `${day}-${month}-${year}`
   }
 
   function serviceIcon(name: string): string {

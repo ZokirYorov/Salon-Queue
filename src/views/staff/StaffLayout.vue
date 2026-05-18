@@ -2,11 +2,8 @@
   <div class="layout">
     <nav class="navbar">
       <div class="nav-inner">
-<!--        <RouterLink to="/staff/schedule" class="nav-logo">-->
-<!--          <span>SalonQueue</span>-->
-<!--        </RouterLink>-->
         <div class="nav-tabs">
-          <RouterLink
+          <router-link
             v-for="tab in tabs"
             :key="tab.to"
             :to="tab.to"
@@ -14,7 +11,7 @@
             active-class="nav-tab--active"
           >
             {{ tab.label }}
-          </RouterLink>
+          </router-link>
         </div>
         <div class="nav-right">
           <span class="role-badge">👔 Xodim</span>
@@ -36,9 +33,10 @@ import { RouterLink, RouterView, useRouter } from 'vue-router'
 const router = useRouter()
 
 const tabs = [
-  { to: '/staff/schedule',  label: '📅 Jadval'    },
-  { to: '/staff/employees', label: '👥 Xodimlar'  },
-  { to: '/staff/bookings',  label: '📋 Navbatlar' },
+  { to: '/staff/schedule',  label: 'Jadval'    },
+  { to: '/staff/employees', label: 'Xodimlar'  },
+  { to: '/staff/bookings',  label: 'Navbatlar' },
+  { to: '/staff/service',  label: 'Xizmatlar' },
 ]
 
 function logout() {
@@ -58,11 +56,11 @@ function logout() {
 .nav-inner {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 10px;
   height: 60px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 4px;
 }
 
 .nav-logo {

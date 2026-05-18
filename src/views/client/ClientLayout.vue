@@ -2,9 +2,9 @@
   <div class="layout">
     <nav class="navbar">
       <div class="nav-inner">
-        <RouterLink to="/client/book" class="nav-logo">
-          ✂️ <span>SalonQueue</span>
-        </RouterLink>
+<!--        <RouterLink to="/client/book" class="nav-logo">-->
+<!--          ✂️ <span>SalonQueue</span>-->
+<!--        </RouterLink>-->
         <div class="nav-tabs">
           <RouterLink
             v-for="tab in tabs"
@@ -31,7 +31,7 @@ import { RouterLink, RouterView, useRouter } from 'vue-router'
 const router = useRouter()
 const tabs = [
   { to: '/client/book', label: '📅 Navbat olish'       },
-  { to: '/client/my',   label: '🕐 Mening navbatlarim' },
+  { to: '/client/my',   label: '🕐 Navbatlar' },
 ]
 function logout() {
   localStorage.removeItem('role')
@@ -41,10 +41,10 @@ function logout() {
 
 <style scoped>
 .layout { min-height: 100vh; display: flex; flex-direction: column; }
-.navbar { background: #0f172a; position: sticky; top: 0; z-index: 20; }
+.navbar { background: #0f172a; position: sticky; top: 0; z-index: 40; }
 .nav-inner {
   max-width: 900px; margin: 0 auto;
-  padding: 0 20px; height: 60px;
+  padding: 0 6px; height: 60px;
   display: flex; align-items: center; gap: 16px;
 }
 .nav-logo {
@@ -52,15 +52,15 @@ function logout() {
   font-size: 17px; font-weight: 800; color: #fff;
   text-decoration: none; flex-shrink: 0;
 }
-.nav-tabs { display: flex; gap: 4px; flex: 1; }
+.nav-tabs { display: flex; gap: 2px; flex: 1; }
 .nav-tab {
-  padding: 7px 14px; border-radius: 8px;
+  padding: 7px; border-radius: 8px;
   color: #94a3b8; font-size: 13px; font-weight: 500;
   text-decoration: none; white-space: nowrap; transition: all 0.15s;
 }
 .nav-tab:hover { background: rgba(255,255,255,0.08); color: #fff; }
 .nav-tab--active { background: rgba(255,255,255,0.15); color: #fff; }
-.nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.nav-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .role-badge {
   font-size: 12px; font-weight: 600;
   padding: 5px 12px; border-radius: 20px;

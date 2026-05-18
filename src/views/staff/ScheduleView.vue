@@ -33,13 +33,13 @@
         <span class="w-2 h-2 bg-red-500 rounded-full"></span> Bekor
       </div>
     </div>
-    <div class="overflow-x-auto overflow-y-auto max-h-[680px] rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div class="overflow-x-auto overflow-y-auto max-h-[665px] rounded-xl border border-gray-200 bg-white shadow-sm">
       <div class="min-w-max">
         <div
             class="grid bg-gray-50 border-b border-gray-200 sticky top-0 z-20"
             :style="{ gridTemplateColumns: gridCols }"
         >
-          <div class="px-3 py-3 text-xs font-bold text-gray-400 border-r">
+          <div class="z-60 grid sticky top-0 left-0 bg-gray-100 p-3 text-xs font-bold text-gray-400 border-r">
             Vaqt
           </div>
           <div
@@ -73,7 +73,14 @@
                 : ''
             ]"
         >
-          <div class="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 flex items-center">
+          <div
+              class="sticky left-0 px-3 z-10 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 flex items-center bg-white"
+              :class="[
+                isCurrentSlot(slot)
+                  ? 'bg-orange-50 z-10 relative before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-orange-400'
+                  : ''
+              ]"
+          >
             {{ slot }}
           </div>
           <div
@@ -85,12 +92,13 @@
                 v-for="b in store.getCellBookings(slot, scheduleDate, emp.id)"
                 :key="b.id"
                 @click="openDetail(b)"
-                class="flex items-start gap-2 p-2 rounded-md text-xs cursor-pointer transition hover:shadow-sm"
+                class="flex items-start gap-2 p-2 rounded-md text-xs font-semibold cursor-pointer transition hover:shadow-sm"
                 :class="[
-                  b.status === 'Bajarildi' && 'bg-indigo-50 text-indigo-700',
-                  b.status === 'Bekor' && 'bg-red-50 text-red-700 line-through',
-                  b.source === 'online' && b.status !== 'Bajarildi' && 'bg-green-50 text-green-700',
-                  b.source === 'staff' && b.status !== 'Bajarildi' && 'bg-blue-50 text-blue-700'
+                  b.status === 'Bajarildi' && 'bg-indigo-100 text-indigo-700',
+                  b.status === 'Kutilmoqda' && 'bg-blue-300 text-indigo-700',
+                  b.status === 'Bekor' && 'bg-red-200 text-red-700 line-through',
+                  b.source === 'online' && b.status !== 'Bajarildi' && 'bg-green-100 text-green-700',
+                  b.source === 'staff' && b.status !== 'Bajarildi' && 'bg-blue-100 text-blue-700'
                 ]"
             >
               <span class="shrink-0 mt-[2px]">
@@ -151,7 +159,7 @@
           <div class="flex justify-between items-center">
             <span class="text-gray-500">Holat</span>
             <select
-                :value="selectedBooking.status"
+                v-model="selectedBooking.status"
                 @change="changeStatus($event)"
                 class="text-xs border border-gray-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-indigo-400 outline-none"
             >
@@ -210,7 +218,7 @@
             <label class="text-gray-600 text-xs">Telefon</label>
             <input @change="clearError('phone')"
                    v-model="form.phone"
-                   placeholder="Telefon nomer"
+                   placeholder="+998 ..."
                    class="w-full border border-gray-200 rounded-lg px-3 py-2"/>
           </div>
         </div>
@@ -219,7 +227,7 @@
             <label class="text-gray-600 text-xs">Xizmat *</label>
             <select
                 v-model="form.service"
-                @change:modelValue="() => {
+                @change="() => {
                   onServiceChange()
                   clearError('service')
             }"
@@ -239,30 +247,64 @@
         <div v-if="form.service && form.date">
           <p class="text-xs text-gray-500 mb-2">Xodim tanlang</p>
 
-          <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
+          <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             <div
                 v-for="emp in availableEmployees"
                 :key="emp.id"
                 @click="pickEmployee(emp.id)"
-                class="border border-gray-200 rounded-lg p-2 cursor-pointer transition"
+                class="flex rounded-md px-2 py-1 items-center gap-2 border border-gray-200 cursor-pointer justify-between"
                 :class="[
-              form.employeeId === emp.id && 'border-indigo-500 bg-indigo-50',
-              store.isEmployeeFull(emp.id, form.date, form.service) && 'opacity-50 pointer-events-none'
-            ]"
+                  form.employeeId === emp.id && 'border-indigo-500 bg-indigo-50',
+                  store.isEmployeeFull(emp.id, form.date, form.service) && 'opacity-50 pointer-events-none'
+                ]"
             >
-              <p class="font-medium text-sm">{{ emp.name }}</p>
-              <p class="text-xs text-gray-400">{{ emp.role }}</p>
+              <div>
+                <p class="font-medium text-sm">{{ emp.name }}</p>
+                <p class="text-xs text-gray-400">{{ emp.role }}</p>
+              </div>
+              <div
+                  class="ep-free"
+                  :class="{ none: store.isEmployeeFull(emp.id, form.date, form.service) }"
+              >
+                <p v-if="store.isEmployeeFull(emp.id, form.date, form.service)">
+                  To'liq band
+                </p>
+                <div v-else-if="store.freeSlotCount(emp.id, form.date, form.service)">
+                  <p>
+                    {{store.freeSlotCount(emp.id, form.date, form.service)}} ta
+                  </p>
+                  bo'sh
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div v-if="form.employeeId">
-          <p class="text-xs text-gray-500 mb-2">Vaqt tanlang</p>
-
+          <div class="step-header">
+            <span>Vaqt tanlang — {{ selectedEmp?.name }}</span>
+          </div>
+          <div class="busy-bar">
+            <span class="busy-lbl">{{ store.formatDateShort(form.date) }} kuni:</span>
+            <div class="busy-dots">
+              <div
+                  v-for="t in store.timeSlots"
+                  :key="t"
+                  class="busy-dot"
+                  :class="store.isSlotBusy(t, form.date, form.service, form.employeeId, null) ? 'red' : 'green'"
+                  :title="t"
+              ></div>
+            </div>
+            <span class="busy-hint">
+            <span class="busy-dot green"></span> Bo'sh
+            <span class="busy-dot red"></span> Band
+          </span>
+          </div>
           <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
             <button
                 v-for="t in store.timeSlots"
                 :key="t"
                 @click="form.time = t"
+                type="button"
                 :disabled="store.isSlotBusy(t, form.date, form.service, form.employeeId, null)"
                 class="text-xs font-semibold cursor-pointer rounded-lg border border-gray-200"
                 :class="[
@@ -276,8 +318,6 @@
             </button>
           </div>
         </div>
-
-        <!-- ACTIONS -->
         <div class="flex justify-end gap-2 mt-4">
           <button @click="showAddModal = false"
                   class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200 rounded-lg">
@@ -288,7 +328,6 @@
             Saqlash
           </button>
         </div>
-
       </div>
     </div>
   </div>
@@ -296,7 +335,6 @@
 
 <script setup lang="ts">
 import {ref, computed} from 'vue'
-import { RouterLink } from 'vue-router'
 import { useSalonStore, type Booking } from '@/stores/salonStore'
 
 const store = useSalonStore()
@@ -344,7 +382,6 @@ function submit() {
     status: 'Kutilmoqda',
     source: 'staff',
     employeeId: form.value.employeeId,
-    note: form.value.note
   })
 
   resetForm()
@@ -365,6 +402,10 @@ function resetForm() {
 
   Object.keys(errors.value).forEach(k => errors.value[k] = '')
 }
+
+const selectedEmp = computed(() =>
+    store.getEmployee(form.value.employeeId)
+)
 
 const clearError = (key: string) => {
   delete errors.value[key]
@@ -433,4 +474,38 @@ function removeBooking() {
     transform: scale(1);
   }
 }
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 24px 0 14px;
+}
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #0284c7;
+  color: #fff;
+  font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.busy-bar {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.busy-lbl  { font-size: 12px; font-weight: 700; color: #475569; flex-shrink: 0; }
+.busy-dots { display: flex; gap: 3px; flex-wrap: wrap; flex: 1; }
+.busy-dot  { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.busy-dot.green { background: #22c55e; }
+.busy-dot.red   { background: #ef4444; }
+.busy-hint { font-size: 11px; color: #94a3b8; display: flex; align-items: center; gap: 4px; }
 </style>

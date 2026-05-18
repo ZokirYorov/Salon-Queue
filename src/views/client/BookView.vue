@@ -1,63 +1,62 @@
 <template>
-  <div>
+  <div class="gap-2 flex flex-col pb-4">
     <div class="page-header">
       <div>
-        <h2 class="page-title">Navbat olish</h2>
-        <p class="page-sub">Xizmat, usta va qulay vaqtni tanlang</p>
+        <h2 class="page-title font-bold">Navbat olish</h2>
+        <p class="page-sub text-gray-600">Xizmat, usta va qulay vaqtni tanlang</p>
       </div>
     </div>
 
-    <div class="form-card form-wrap">
-
-      <!-- 1-qadam: Shaxsiy ma'lumot -->
-      <div class="step-header">
+    <div class="form-card gap-4 flex flex-col form-wrap rounded border border-gray-200 p-6">
+      <div class="step-header w-full">
         <span class="step-num">1</span>
         <span>Sizning ma'lumotlaringiz</span>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>Ism Familiya *</label>
+      <div class="flex flex-col gap-3 bg-white">
+        <div class="flex flex-col gap-1 w-full">
+          <label class="">Ism Familiya *</label>
           <input
             v-model="form.clientName"
             placeholder="Masalan: Nodira Karimova"
             :class="{ error: errors.clientName }"
+            class="border border-gray-200 outline-gray-500 rounded px-1 w-full py-1"
           />
-          <span class="error-msg" v-if="errors.clientName">{{ errors.clientName }}</span>
+          <span class="text-red-500 text-sm" v-if="errors.clientName">{{ errors.clientName }}</span>
         </div>
-        <div class="form-group">
+        <div class="flex flex-col gap-1">
           <label>Telefon raqam *</label>
           <input
             v-model="form.phone"
             placeholder="+998 90 000 00 00"
             :class="{ error: errors.phone }"
+            class="border border-gray-200 outline-gray-500 rounded px-2 py-1"
           />
-          <span class="error-msg" v-if="errors.phone">{{ errors.phone }}</span>
+          <span class="text-red-500 text-sm" v-if="errors.phone">{{ errors.phone }}</span>
         </div>
       </div>
-
-      <!-- 2-qadam: Xizmat va sana -->
       <div class="step-header">
         <span class="step-num">2</span>
         <span>Xizmat va sana</span>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-1">
           <label>Xizmat turi *</label>
           <select
             v-model="form.service"
             @change="onServiceChange"
             :class="{ error: errors.service }"
+            class="border border-gray-200 outline-gray-500 rounded px-2 py-1"
           >
             <option value="">Tanlang...</option>
             <option v-for="s in store.services" :key="s.name" :value="s.name">
               {{ s.name }} — {{ store.formatPrice(s.price ?? 0) }}
             </option>
           </select>
-          <span class="error-msg" v-if="errors.service">{{ errors.service }}</span>
+          <span class="text-red-400" v-if="errors.service">{{ errors.service }}</span>
         </div>
-        <div class="form-group">
+        <div class="flex flex-col gap-1">
           <label>Sana *</label>
           <input
             type="date"
@@ -65,68 +64,66 @@
             :min="store.today"
             @change="form.employeeId = 0; form.time = ''"
             :class="{ error: errors.date }"
+            class="border border-gray-200 outline-gray-500 rounded px-2 py-1"
           />
           <span class="error-msg" v-if="errors.date">{{ errors.date }}</span>
         </div>
       </div>
-
-      <!-- Xizmat haqida ma'lumot -->
       <div v-if="selectedSvc" class="svc-info">
         <span>⏱ {{ selectedSvc.duration }} daqiqa</span>
         <span>💰 {{ store.formatPrice(selectedSvc.price ?? 0) }}</span>
       </div>
-
-      <!-- 3-qadam: Usta tanlash -->
       <template v-if="form.service && form.date">
         <div class="step-header">
           <span class="step-num">3</span>
           <span>Usta tanlang</span>
         </div>
-
-        <div class="form-group">
-          <p class="hint">Har bir ustaning bo'sh vaqtlari ko'rsatilmoqda</p>
-          <div class="emp-picker">
+        <div class="flex flex-col gap-2">
+          <p class="font-bold text-gray-600">Har bir ustaning bo'sh vaqtlari ko'rsatilmoqda</p>
+          <div class="flex gap-2">
             <div
-              v-for="emp in store.employeesForService(form.service)"
-              :key="emp.id"
-              class="emp-pick-card"
-              :class="{
-                selected: form.employeeId === emp.id,
-                full: store.isEmployeeFull(emp.id, form.date, form.service)
-              }"
-              @click="pickEmployee(emp.id)"
+                v-for="emp in availableEmployees"
+                :key="emp.id"
+                @click="pickEmployee(emp.id)"
+                class="flex rounded-md p-1 items-center gap-2 border border-gray-200 cursor-pointer"
+                :class="[
+                  form.employeeId === emp.id && 'border-indigo-500 bg-indigo-50',
+                  store.isEmployeeFull(emp.id, form.date, form.service) && 'opacity-50 pointer-events-none'
+                ]"
             >
-              <div class="ep-avatar" :style="{ background: emp.color }">
+              <div class="px-3 rounded-full py-1 text-white" :style="{ background: emp.color }">
                 {{ emp.name.charAt(0) }}
               </div>
-              <div class="ep-info">
+              <div class="flex flex-col">
                 <span class="ep-name">{{ emp.name }}</span>
-                <span class="ep-role">{{ emp.role }}</span>
+                <span class="text-gray-600 text-sm">{{ emp.role }}</span>
               </div>
               <div class="ep-right">
-                <span
+                <div
                   class="ep-free"
                   :class="{ none: store.isEmployeeFull(emp.id, form.date, form.service) }"
                 >
-                  {{ store.isEmployeeFull(emp.id, form.date, form.service)
-                      ? "To'liq band"
-                      : store.freeSlotCount(emp.id, form.date, form.service) + " ta bo'sh" }}
-                </span>
+                  <p v-if="store.isEmployeeFull(emp.id, form.date, form.service)">
+                    To'liq band
+                  </p>
+                  <div v-else-if="store.freeSlotCount(emp.id, form.date, form.service)">
+                    <p>
+                      {{store.freeSlotCount(emp.id, form.date, form.service)}} ta
+                    </p>
+                    bo'sh
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <span class="error-msg" v-if="errors.employeeId">{{ errors.employeeId }}</span>
         </div>
       </template>
-
-      <!-- 4-qadam: Vaqt tanlash -->
       <template v-if="form.employeeId">
         <div class="step-header">
           <span class="step-num">4</span>
           <span>Vaqt tanlang — {{ selectedEmp?.name }}</span>
         </div>
-
-        <!-- Band/bo'sh vizual ko'rsatgich -->
         <div class="busy-bar">
           <span class="busy-lbl">{{ store.formatDateShort(form.date) }} kuni:</span>
           <div class="busy-dots">
@@ -139,32 +136,32 @@
             ></div>
           </div>
           <span class="busy-hint">
-            <span class="busy-dot green"></span> Bo'sh &nbsp;
+            <span class="busy-dot green"></span> Bo'sh
             <span class="busy-dot red"></span> Band
           </span>
         </div>
-
-        <div class="form-group">
-          <div class="slots-grid">
+        <div class="">
+          <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2">
             <button
-              v-for="t in store.timeSlots"
-              :key="t"
-              type="button"
-              class="slot-btn"
-              :class="{
-                selected: form.time === t,
-                busy: store.isSlotBusy(t, form.date, form.service, form.employeeId, null),
-                free: !store.isSlotBusy(t, form.date, form.service, form.employeeId, null),
-              }"
-              :disabled="store.isSlotBusy(t, form.date, form.service, form.employeeId, null)"
-              @click="form.time = t"
-            >{{ t }}</button>
+                v-for="t in store.timeSlots"
+                :key="t"
+                @click="form.time = t"
+                type="button"
+                :disabled="store.isSlotBusy(t, form.date, form.service, form.employeeId, null)"
+                class="text-xs font-semibold cursor-pointer rounded-lg border border-gray-200"
+                :class="[
+                  form.time === t ? 'bg-indigo-500 text-white hover:bg-indigo-500 hover:text-white' : '',
+                  store.isSlotBusy(t, form.date, form.service, form.employeeId, null)
+                    ? 'bg-gray-200 text-gray-400 cursor-none'
+                    : 'hover:bg-indigo-50 p-3 text-gray-600 border hover:border-indigo-500 hover:text-indigo-500'
+                ]"
+            >
+              {{ t }}
+            </button>
           </div>
           <span class="error-msg" v-if="errors.time">{{ errors.time }}</span>
         </div>
       </template>
-
-      <!-- Navbat xulosasi -->
       <div v-if="form.time" class="booking-summary">
         <h4 class="summary-title">Navbat tafsilotlari</h4>
         <div class="summary-row">
@@ -188,13 +185,11 @@
           <strong>{{ store.formatPrice(selectedSvc?.price ?? 0) }}</strong>
         </div>
       </div>
-
       <div class="form-footer">
-        <button class="btn-primary wide" @click="submit">
+        <button class="bg-blue-500 cursor-pointer text-white rounded px-2 py-1 wide" @click="submit">
           Navbat olish →
         </button>
       </div>
-
     </div>
   </div>
 </template>
@@ -207,7 +202,6 @@ import { useSalonStore } from '@/stores/salonStore'
 const store  = useSalonStore()
 const router = useRouter()
 
-// ── Forma ──
 const form = reactive({
   clientName: '',
   phone:      '',
@@ -227,7 +221,6 @@ const errors = reactive({
   time:       '',
 })
 
-// ── Computed ──
 const selectedSvc = computed(() =>
   store.services.find(s => s.name === form.service)
 )
@@ -236,12 +229,15 @@ const selectedEmp = computed(() =>
   store.getEmployee(form.employeeId)
 )
 
-// ── Voqealar ──
 function onServiceChange() {
   form.duration    = selectedSvc.value?.duration ?? 0
   form.employeeId  = 0
   form.time        = ''
 }
+
+const availableEmployees = computed(() =>
+    store.employeesForService(form.service)
+)
 
 function pickEmployee(id: number) {
   if (store.isEmployeeFull(id, form.date, form.service)) return
@@ -272,7 +268,7 @@ function submit() {
     source:     'online',
     employeeId: form.employeeId,
   })
-  // Telefon raqamni localStorage ga saqlash (MyBookings da qidirish uchun)
+
   localStorage.setItem('lastPhone', form.phone.trim())
   router.push('/client/my')
 }
@@ -281,7 +277,6 @@ function submit() {
 <style scoped>
 .form-wrap { max-width: 680px; }
 
-/* ── Qadam sarlavhasi ── */
 .step-header {
   display: flex;
   align-items: center;
@@ -300,8 +295,6 @@ function submit() {
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-
-/* ── Xizmat info ── */
 .svc-info {
   display: flex;
   gap: 16px;
@@ -314,8 +307,6 @@ function submit() {
   color: #0369a1;
   margin-bottom: 8px;
 }
-
-/* ── Band ko'rsatgich ── */
 .busy-bar {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -334,7 +325,6 @@ function submit() {
 .busy-dot.red   { background: #ef4444; }
 .busy-hint { font-size: 11px; color: #94a3b8; display: flex; align-items: center; gap: 4px; }
 
-/* ── Xulosa ── */
 .booking-summary {
   background: #f0f9ff;
   border: 1px solid #bae6fd;
