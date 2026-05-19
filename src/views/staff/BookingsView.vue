@@ -189,7 +189,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useSalonStore, type Booking } from '@/stores/salonStore'
+import { useSalonStore } from '@/stores/salonStore'
+import { Booking } from "@/typeModules/useModules";
 
 const store = useSalonStore()
 const filterEmpId  = ref<number | ''>('')
@@ -197,9 +198,9 @@ const filterSource = ref('')
 const filterStatus = ref('')
 const filterDate   = ref('')
 
-const hasFilters = computed(
-  () => !!filterEmpId.value || !!filterSource.value || !!filterStatus.value || !!filterDate.value
-)
+// const hasFilters = computed(
+//   () => !!filterEmpId.value || !!filterSource.value || !!filterStatus.value || !!filterDate.value
+// )
 
 function clearFilters() {
   filterEmpId.value  = ''

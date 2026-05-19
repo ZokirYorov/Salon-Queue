@@ -14,7 +14,11 @@
           </router-link>
         </div>
         <div class="nav-right">
-          <span class="role-badge">👔 Xodim</span>
+          <router-link
+              to="/profile"
+          >
+            <span class="role-badge">👔 Xodim</span>
+          </router-link>
           <button class="btn-exit" @click="logout">Chiqish</button>
         </div>
       </div>

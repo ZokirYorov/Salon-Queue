@@ -32,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
             { path: 'my',       name: 'my-bookings', component: () => import('@/views/client/MyBookingsView.vue')   },
         ],
     },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: () => import('@/views/ProfileView.vue'),
+    },
 
     { path: '/:pathMatch(.*)*', redirect: '/' },
 ]

@@ -15,7 +15,11 @@
           >{{ tab.label }}</RouterLink>
         </div>
         <div class="nav-right">
-          <span class="role-badge">👤 Mijoz</span>
+          <router-link
+              to="/profile"
+          >
+            <span class="bg-blue-500 text-white rounded-xl px-2 py-1">👤 Mijoz</span>
+          </router-link>
           <button class="btn-exit" @click="logout">Chiqish</button>
         </div>
       </div>

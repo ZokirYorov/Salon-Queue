@@ -1,37 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import {Booking, Employee, Service} from "@/typeModules/useModules";
 
-export interface Service {
-  name: string
-  duration: number
-  price?: number
-}
 
-export interface Employee {
-  id: number
-  name: string
-  role: string
-  phone: string
-  color: string
-  services: string[]
-}
-
-export interface Booking {
-  id: number
-  clientName: string
-  phone: string
-  service: string
-  duration: number
-  date: string
-  time: string
-  status: 'Kutilmoqda' | 'Bajarildi' | 'Bekor'
-  source: 'online' | 'staff'
-  employeeId: number
-  note?: string
-}
 
 export const useSalonStore = defineStore('salon', () => {
 
+    const state = ref({
+        services: [] as Service[],
+        bookings: [] as Booking[],
+        employees: [] as Employee[],
+
+    })
   const services = ref<Service[]>([
     { name: 'Soch olish',     duration: 30, price: 50_000  },
     { name: 'Manikyur',       duration: 60, price: 80_000  },
@@ -227,19 +207,17 @@ export const useSalonStore = defineStore('salon', () => {
   }
 
   return {
-    services, employees, bookings, today, timeSlots,
+      state,
+      services, employees, bookings, today, timeSlots,
+      todayBookings,
+      toMins, addMinutes,
+      isSlotBusy, getCellBookings, getCellBookingsForDate,
+      freeSlotCount, busyCount, isEmployeeFull,
+      getEmployee, employeesForService,
+      addEmployee, deleteEmployee,
 
-    todayBookings,
-
-    toMins, addMinutes,
-    isSlotBusy, getCellBookings, getCellBookingsForDate,
-    freeSlotCount, busyCount, isEmployeeFull,
-    getEmployee, employeesForService,
-
-    addBooking, updateBookingStatus, deleteBooking,
-    addEmployee, deleteEmployee,
-
-    formatPrice, formatDate, formatDateShort,
-    serviceIcon, chipClass, statusClass,
+      addBooking, updateBookingStatus, deleteBooking,
+      formatPrice, formatDate, formatDateShort,
+      serviceIcon, chipClass, statusClass,
   }
 })

@@ -187,6 +187,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useSalonStore } from '@/stores/salonStore'
+import { Employee } from "@/typeModules/useModules";
 
 const store = useSalonStore()
 
@@ -246,8 +247,9 @@ function remove(id: number) {
   }
 }
 
-const editUserItem = (user: any) => {
+const editUserItem = (user: Employee) => {
   alert("Xodim ma'lumotlarini yangilash!")
+  console.log('Users',user)
 }
 
 function totalCount(empId: number): number {

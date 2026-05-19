@@ -20,18 +20,60 @@
       </div>
     </div>
     <div class="flex gap-2 flex-wrap text-sm">
-      <div class="flex items-center gap-1 px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg">
-        <span class="w-2 h-2 bg-green-500 rounded-full"></span> Online
-      </div>
-      <div class="flex items-center gap-1 px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg">
-        <span class="w-2 h-2 bg-blue-500 rounded-full"></span> Qo'lda
-      </div>
-      <div class="flex items-center gap-1 px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg">
-        <span class="w-2 h-2 bg-indigo-500 rounded-full"></span> Bajarildi
-      </div>
-      <div class="flex items-center gap-1 px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg">
-        <span class="w-2 h-2 bg-red-500 rounded-full"></span> Bekor
-      </div>
+      <button
+          type="button"
+          @click="activeFilter = 'all'"
+          class="flex items-center cursor-pointer gap-1 px-2 py-1 border rounded-lg transition-all duration-200"
+          :class="activeFilter === 'all'
+          ? 'bg-gray-500 text-white border-gray-200'
+          : 'bg-gray-50 border-gray-200'"
+      >
+        Hammasi
+      </button>
+      <button
+          @click="activeFilter = 'online'"
+          class="flex items-center cursor-pointer gap-1 px-2 py-1 border rounded-lg transition-all duration-200"
+          :class="activeFilter === 'online'
+      ? 'bg-green-100 text-gray-600 border-green-500'
+      : 'bg-gray-50 border-gray-200'"
+      >
+        <span class="w-2 h-2 bg-green-500 rounded-full"
+        ></span>
+        Online
+      </button>
+
+      <button
+          @click="activeFilter = 'staff'"
+          class="flex items-center cursor-pointer gap-1 px-2 py-1 border rounded-lg transition-all duration-200"
+          :class="activeFilter === 'staff'
+          ? 'bg-blue-100 text-gray-600 border-blue-500'
+          : 'bg-gray-50 border-gray-200'"
+      >
+        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+        Qo'lda
+      </button>
+      <button
+          @click="activeFilter = 'Bajarildi'"
+          class="flex items-center cursor-pointer gap-1 px-2 py-1 border rounded-lg transition-all duration-200"
+          :class="activeFilter === 'Bajarildi'
+      ? 'bg-indigo-100 text-gray-600 border-indigo-500'
+      : 'bg-gray-50 border-gray-200'"
+      >
+        <span class="w-2 h-2 bg-indigo-500 rounded-full"></span>
+        Bajarildi
+      </button>
+
+      <button
+          @click="activeFilter = 'Bekor'"
+          class="flex items-center cursor-pointer gap-1 px-2 py-1 border rounded-lg transition-all duration-200"
+          :class="activeFilter === 'Bekor'
+      ? 'bg-red-100 text-gray-600 border-red-500'
+      : 'bg-gray-50 border-gray-200'"
+      >
+        <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+        Bekor
+      </button>
+      <span class="border-b border-gray-300 text-gray-600 p-1">Jami: {{filteredTotal}}</span>
     </div>
     <div class="overflow-x-auto overflow-y-auto max-h-[665px] rounded-xl border border-gray-200 bg-white shadow-sm">
       <div class="min-w-max">
@@ -89,7 +131,7 @@
               class="flex flex-col gap-1 px-2 py-1 border-r border-gray-200 min-h-[48px]"
           >
             <div
-                v-for="b in store.getCellBookings(slot, scheduleDate, emp.id)"
+                v-for="b in filteredBookings(slot, emp.id)"
                 :key="b.id"
                 @click="openDetail(b)"
                 class="flex items-start gap-2 p-2 rounded-md text-xs font-semibold cursor-pointer transition hover:shadow-sm"
@@ -108,7 +150,7 @@
                 <span class="font-semibold truncate">{{ b.clientName }}</span>
                 <span class="opacity-70 truncate">{{ b.service }}</span>
               </div>
-              <span class="text-[10px] opacity-60 shrink-0">
+              <span class="text-[12px] opacity-60 shrink-0">
                → {{ store.addMinutes(b.time, b.duration) }}
               </span>
             </div>
@@ -335,7 +377,8 @@
 
 <script setup lang="ts">
 import {ref, computed} from 'vue'
-import { useSalonStore, type Booking } from '@/stores/salonStore'
+import { useSalonStore } from '@/stores/salonStore'
+import {Booking} from "@/typeModules/useModules";
 
 const store = useSalonStore()
 
@@ -343,6 +386,50 @@ const scheduleDate = ref(store.today)
 
 const selectedBooking = ref<Booking | null>(null)
 const showAddModal = ref(false)
+
+const activeFilter = ref<'all' | 'online' | 'staff' | 'Bajarildi' | 'Bekor'>('all')
+
+const filteredBookings = (slot: string, empId: number) => {
+  const bookings = store.getCellBookings(slot, scheduleDate.value, empId)
+
+  if (activeFilter.value === 'all') {
+    return bookings
+  }
+
+  return bookings.filter(b => {
+    if (activeFilter.value === 'online') {
+      return b.source === 'online'
+    }
+
+    if (activeFilter.value === 'staff') {
+      return b.source === 'staff'
+    }
+
+    return b.status === activeFilter.value
+  })
+}
+
+const filteredTotal = computed(() => {
+  const bookings = store.bookings.filter(
+      b => b.date === scheduleDate.value
+  )
+
+  if (activeFilter.value === 'all') {
+    return bookings.length
+  }
+
+  return bookings.filter(b => {
+    if (activeFilter.value === 'online') {
+      return b.source === 'online'
+    }
+
+    if (activeFilter.value === 'staff') {
+      return b.source === 'staff'
+    }
+
+    return b.status === activeFilter.value
+  }).length
+})
 
 const form = ref({
   clientName: '',
