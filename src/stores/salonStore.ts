@@ -14,27 +14,24 @@ export const useSalonStore = defineStore('salon', () => {
     })
   const services = ref<Service[]>([
     { name: 'Soch olish',     duration: 30, price: 50_000  },
-    { name: 'Manikyur',       duration: 60, price: 80_000  },
-    { name: 'Qosh olish',     duration: 20, price: 30_000  },
     { name: "Soch bo'yash",   duration: 90, price: 150_000 },
-    { name: 'Yuz parvarishi', duration: 60, price: 100_000 },
     { name: 'Soqol olish',    duration: 20, price: 25_000  },
   ])
 
   const employees = ref<Employee[]>([
     { id: 1, name: 'Jasur',   role: 'Sartarosh',   phone: '+998901111111', color: '#6366f1', services: ['Soch olish', 'Soqol olish'] },
-    { id: 2, name: 'Nodira',  role: 'Manikyurchi', phone: '+998902222222', color: '#ec4899', services: ['Manikyur', 'Qosh olish'] },
+    { id: 2, name: 'Nodir',  role: 'Sartarosh', phone: '+998902222222', color: '#ec4899', services: ['Soch olish'] },
     { id: 3, name: 'Sherzod', role: 'Sartarosh',   phone: '+998903333333', color: '#0ea5e9', services: ['Soch olish', "Soch bo'yash", 'Soqol olish'] },
-    { id: 4, name: 'Laylo',   role: 'Kosmetolog',  phone: '+998904444444', color: '#10b981', services: ['Yuz parvarishi', 'Qosh olish', "Soch bo'yash"] },
+    { id: 4, name: 'Maruf',   role: 'Sartarosh',  phone: '+998904444444', color: '#10b981', services: ["Soch bo'yash", 'Soch olish'] },
   ])
 
   const today = new Date().toISOString().split('T')[0]
 
   const bookings = ref<Booking[]>([
     { id: 1, clientName: 'Aziz Karimov',    phone: '+998901234567', service: 'Soch olish',     duration: 30, date: today, time: '09:00', status: 'Kutilmoqda', source: 'online', employeeId: 1 },
-    { id: 2, clientName: 'Malika Rahimova', phone: '+998932345678', service: 'Manikyur',       duration: 60, date: today, time: '09:00', status: 'Kutilmoqda', source: 'staff',  employeeId: 2 },
+    { id: 2, clientName: 'Mansur Rahimov', phone: '+998932345678', service: 'Soch olish',       duration: 60, date: today, time: '09:00', status: 'Kutilmoqda', source: 'staff',  employeeId: 2 },
     { id: 3, clientName: 'Jamshid Toshev',  phone: '+998933456789', service: 'Soqol olish',    duration: 20, date: today, time: '10:00', status: 'Bajarildi',  source: 'online', employeeId: 3 },
-    { id: 4, clientName: 'Sarvinoz',        phone: '+998935678901', service: 'Qosh olish',     duration: 20, date: today, time: '10:30', status: 'Kutilmoqda', source: 'online', employeeId: 4 },
+    { id: 4, clientName: 'Sarvar',        phone: '+998935678901', service: 'Soch buyash',     duration: 20, date: today, time: '10:30', status: 'Kutilmoqda', source: 'online', employeeId: 4 },
     { id: 5, clientName: 'Bobur',           phone: '+998936789012', service: "Soch bo'yash",   duration: 90, date: today, time: '11:00', status: 'Kutilmoqda', source: 'staff',  employeeId: 3 },
   ])
 

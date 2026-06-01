@@ -4,10 +4,10 @@
   >
     <div class="text-gray-200 px-1 gap-2 items-center justify-between max-w-[1400px] m-auto flex h-full w-full">
       <div class="flex items-center gap-1">
-<!--        <span class="border border-gray-500 px-1 py-2 rounded">-->
-<!--          <i class="fa-solid fa-scissors"></i>-->
-<!--          Salon-->
-<!--        </span>-->
+        <span class="border border-gray-500 px-1 py-2 rounded">
+          <i class="fa-solid fa-scissors"></i>
+          Salon
+        </span>
         <div class="grid gap-1 grid-cols-3 items-center md:gap-2 lg:gap-2">
           <router-link
               v-for="item in items"

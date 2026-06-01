@@ -3,9 +3,28 @@ import type { RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/',
-        name: 'role-select',
-        component: () => import('@/views/RoleSelectView.vue'),
+      path: '/',
+      name: 'Home',
+      component: () => import('@/Layouts/layout.vue'),
+        children: [
+            {
+                path: '/',
+                name: 'Dashboard',
+                component: () => import('@/views/Dashboard.vue'),
+            },
+            {
+                path: "/create-salon",
+                name: "CreateSalon",
+                component: () => import('@/views/CreateSalon.vue'),
+                meta: { requiresAuth: true }
+            },
+            {
+                path: "/admin/manage",
+                name: "AdminManagement",
+                component: () => import('@/views/admin/AdminManagementView.vue'),
+                meta: { requiresRole: 'staff' }
+            },
+        ]
     },
 
     {
@@ -37,6 +56,21 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Profile',
         component: () => import('@/views/ProfileView.vue'),
     },
+    {
+      path: "/role",
+      name: "Role",
+      component: () => import('@/views/RoleSelectView.vue')
+    },
+    {
+        path: "/login",
+        name: "Login",
+        component: () => import('@/views/Login.vue')
+    },
+    {
+        path: "/register",
+        name: "Register",
+        component: () => import('@/views/Register.vue')
+    },
 
     { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
@@ -46,14 +80,35 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-    const role = localStorage.getItem('role') as 'staff' | 'client' | null
+    const role = localStorage.getItem('role') as 'staff' | 'client' | null;
+    const selectedSalonId = localStorage.getItem('selectedSalonId');
+    const isAuthenticated = !!role; // Foydalanuvchi tizimga kirganmi?
 
-    if (to.meta.requiresRole && to.meta.requiresRole !== role) {
-        return { name: 'role-select' }
+    // Agar marshrut autentifikatsiyani talab qilsa va foydalanuvchi tizimga kirmagan bo'lsa
+    if (to.meta.requiresAuth && !isAuthenticated) {
+        alert('Bu sahifaga kirish uchun avval tizimga kirishingiz kerak!');
+        return { name: 'Login' }; // Login sahifasiga yo'naltiramiz
     }
 
-    if (to.name === 'role-select' && role) {
-        return { path: `/${role}` }
+    // Agar marshrut rol talab qilsa va foydalanuvchida bu rol bo'lmasa, Dashboardga qaytaramiz
+    // if (to.meta.requiresRole && to.meta.requiresRole !== role) {
+    //     alert('Bu sahifaga kirish uchun sizda tegishli ruxsat yo\'q!');
+    //     return { name: 'Dashboard' };
+    // }
+
+    // Agar foydalanuvchi Dashboardga kirsa va allaqachon roli bo'lsa, uni o'z sahifasiga yo'naltiramiz
+    if (to.name === 'Dashboard' && isAuthenticated && selectedSalonId) {
+        if (role === 'staff') {
+            return { path: `/staff/schedule?salonId=${selectedSalonId}` };
+        } else if (role === 'client') {
+            return { path: `/client/book?salonId=${selectedSalonId}` };
+        }
+    }
+
+    // Agar foydalanuvchi staff/client sahifalariga kirmoqchi bo'lsa, lekin salon tanlanmagan bo'lsa, Dashboardga qaytaramiz
+    if ((to.path.startsWith('/staff') || to.path.startsWith('/client')) && !selectedSalonId && isAuthenticated) {
+        alert('Iltimos, avval salonni tanlang!');
+        return { name: 'Dashboard' };
     }
 })
 

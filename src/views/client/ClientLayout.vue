@@ -1,30 +1,30 @@
 <template>
-  <div class="layout">
-    <nav class="navbar">
-      <div class="nav-inner">
-<!--        <RouterLink to="/client/book" class="nav-logo">-->
+  <div class="min-h-screen flex flex-col">
+    <nav class="bg-slate-900 sticky top-0 z-40">
+      <div class="max-w-4xl mx-auto px-1.5 h-[60px] flex items-center gap-4">
+<!--        <RouterLink to="/client/book" class="flex items-center gap-2 text-[17px] font-extrabold text-white no-underline flex-shrink-0">-->
 <!--          ✂️ <span>SalonQueue</span>-->
 <!--        </RouterLink>-->
-        <div class="nav-tabs">
+        <div class="flex gap-0.5 flex-1">
           <RouterLink
             v-for="tab in tabs"
             :key="tab.to"
             :to="tab.to"
-            class="nav-tab"
-            active-class="nav-tab--active"
+            class="p-[7px] rounded-lg text-slate-400 text-[13px] font-medium no-underline whitespace-nowrap transition-all duration-150 hover:bg-white/10 hover:text-white"
+            active-class="bg-white/15 text-white"
           >{{ tab.label }}</RouterLink>
         </div>
-        <div class="nav-right">
+        <div class="flex items-center gap-1 flex-shrink-0">
           <router-link
               to="/profile"
           >
             <span class="bg-blue-500 text-white rounded-xl px-2 py-1">👤 Mijoz</span>
           </router-link>
-          <button class="btn-exit" @click="logout">Chiqish</button>
+          <button class="text-xs py-1.5 px-3 rounded-lg border border-white/20 bg-transparent text-slate-400 cursor-pointer font-sans hover:text-white hover:border-white/40" @click="logout">Chiqish</button>
         </div>
       </div>
     </nav>
-    <main class="main-content">
+    <main class="flex-1 max-w-4xl w-full mx-auto py-6 px-5">
       <RouterView />
     </main>
   </div>
@@ -44,39 +44,4 @@ function logout() {
 </script>
 
 <style scoped>
-.layout { min-height: 100vh; display: flex; flex-direction: column; }
-.navbar { background: #0f172a; position: sticky; top: 0; z-index: 40; }
-.nav-inner {
-  max-width: 900px; margin: 0 auto;
-  padding: 0 6px; height: 60px;
-  display: flex; align-items: center; gap: 16px;
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 17px; font-weight: 800; color: #fff;
-  text-decoration: none; flex-shrink: 0;
-}
-.nav-tabs { display: flex; gap: 2px; flex: 1; }
-.nav-tab {
-  padding: 7px; border-radius: 8px;
-  color: #94a3b8; font-size: 13px; font-weight: 500;
-  text-decoration: none; white-space: nowrap; transition: all 0.15s;
-}
-.nav-tab:hover { background: rgba(255,255,255,0.08); color: #fff; }
-.nav-tab--active { background: rgba(255,255,255,0.15); color: #fff; }
-.nav-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-.role-badge {
-  font-size: 12px; font-weight: 600;
-  padding: 5px 12px; border-radius: 20px;
-  background: #0284c7; color: #fff;
-}
-.btn-exit {
-  font-size: 12px; padding: 6px 12px; border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: transparent; color: #94a3b8; cursor: pointer; font-family: inherit;
-}
-.btn-exit:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
-.main-content {
-  flex: 1; max-width: 900px; width: 100%; margin: 0 auto; padding: 24px 20px;
-}
 </style>
