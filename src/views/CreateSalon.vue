@@ -10,37 +10,49 @@
         </p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="handleCreateSalon">
-        <div class="rounded-md shadow-sm -space-y-px">
-          <div>
-            <label for="salon-name" class="sr-only">Salon nomi</label>
-            <input id="salon-name" name="salon-name" type="text" required
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Salon nomi" v-model="salon.name">
-          </div>
-          <div>
-            <label for="salon-address" class="sr-only">Manzil</label>
-            <input id="salon-address" name="salon-address" type="text" required
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Manzil" v-model="salon.address">
-          </div>
-          <div>
-            <label for="salon-image" class="sr-only">Rasm URL</label>
-            <input id="salon-image" name="salon-image" type="url"
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Rasm URL (masalan: /src/assets/images/new_salon.jpg)" v-model="salon.imageUrl">
-          </div>
-          <div>
-            <label for="salon-rating" class="sr-only">Reyting</label>
-            <input id="salon-rating" name="salon-rating" type="number" step="0.1" min="0" max="5"
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Reyting (masalan: 4.5)" v-model="salon.rating">
-          </div>
-          <div>
-            <label for="salon-reviews" class="sr-only">Sharhlar soni</label>
-            <input id="salon-reviews" name="salon-reviews" type="number" min="0"
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Sharhlar soni (masalan: 50)" v-model="salon.reviews">
-          </div>
+        <div class="flex flex-col gap-2 ">
+<!--          <div>-->
+<!--            <label for="salon-name" class="sr-only">Salon nomi</label>-->
+<!--            <input id="salon-name" name="salon-name" type="text" required-->
+<!--                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"-->
+<!--                   placeholder="Salon nomi" v-model="salon.name">-->
+<!--          </div>-->
+          <AppInput
+              v-model="salon.name"
+              label="Salon nomi"
+              placeholder="Nomini kiriting"
+          />
+<!--          <div>-->
+<!--            <label for="salon-address" class="sr-only">Manzil</label>-->
+<!--            <input id="salon-address" name="salon-address" type="text" required-->
+<!--                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"-->
+<!--                   placeholder="Manzil" v-model="salon.address">-->
+<!--          </div>-->
+          <AppInput
+              v-model="salon.address"
+              label="Manzil"
+              placeholder="Manzilni kiriting"
+          />
+<!--          <div>-->
+<!--            <label for="salon-image" class="sr-only">Rasm URL</label>-->
+<!--            <input id="salon-image" name="salon-image" type="file"-->
+<!--                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"-->
+<!--                   placeholder="Rasm URL (masalan: https://example.com/image.jpg)">-->
+<!--          </div>-->
+          <AppInput
+              v-model="salon.imageUrl"
+              label="Rasm yuklash"
+              type="file"
+
+          />
+          <AppInput
+              v-model="salon.rating"
+              label="Reyting"
+          />
+          <AppInput
+              v-model="salon.reviews"
+              label="Sharhlar soni"
+          />
         </div>
 
         <div>
@@ -62,6 +74,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import AppInput from "@/components/ui/AppInput.vue";
 
 const router = useRouter();
 

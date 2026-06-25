@@ -27,7 +27,6 @@
                    placeholder="Parol" v-model="password">
           </div>
         </div>
-
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <input id="remember-me" name="remember-me" type="checkbox"
@@ -36,26 +35,22 @@
               Meni eslab qol
             </label>
           </div>
-
           <div class="text-sm">
             <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
               Parolni unutdingizmi?
             </a>
           </div>
         </div>
-
         <div>
           <button type="submit"
                   class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <!-- Heroicon-s-lock -->
               <svg class="h-6 w-6 text-indigo-300 group-hover:text-indigo-200 transition-colors duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
               </svg>
             </span>
             Kirish
           </button>
-          <!-- Xodim sifatida kirish uchun checkbox -->
           <div class="mt-4 flex items-center justify-between">
             <label class="flex items-center cursor-pointer select-none text-sm text-slate-600">
               <input type="checkbox" v-model="isEmployee" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-2" />
@@ -88,7 +83,7 @@ const handleLogin = () => {
 
   if (!selectedSalonId) {
     alert('Iltimos, avval Dashboard sahifasida salonni tanlang!');
-    router.push('/'); // Salon tanlanmagan bo'lsa, Dashboardga qaytarish
+    router.push('/home'); // Salon tanlanmagan bo'lsa, Dashboardga qaytarish
     return;
   }
 

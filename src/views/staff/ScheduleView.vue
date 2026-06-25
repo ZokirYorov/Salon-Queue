@@ -6,10 +6,10 @@
         <p class="text-sm text-gray-500">Har bir xodimning band vaqtlari</p>
       </div>
       <div class="flex gap-2">
-        <input
-            type="date"
+        <AppDatePicker
             v-model="scheduleDate"
-            class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-indigo-400 outline-none"
+            placeholder="Sanani tanlang"
+            class="max-w-50"
         />
         <button
             @click="showAddModal = true"
@@ -104,14 +104,18 @@
             </span>
           </div>
         </div>
+        <p v-if="dayBookings.length === 0" class="text-center p-10 text-gray-400 mt-4">
+          {{ store.formatDate(scheduleDate) }} kuni navbat yo'q
+        </p>
         <div
+            v-else
             v-for="slot in store.timeSlots"
             :key="slot"
             class="grid border-b border-gray-100 hover:bg-gray-50"
             :style="{ gridTemplateColumns: gridCols }"
             :class="[
               isCurrentSlot(slot)
-                ? 'bg-orange-50 relative before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-orange-400'
+                ? 'current-time-row bg-orange-50 relative border-t border-b border-orange-100 before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-orange-400'
                 : ''
             ]"
         >
@@ -134,7 +138,7 @@
                 v-for="b in filteredBookings(slot, emp.id)"
                 :key="b.id"
                 @click="openDetail(b)"
-                class="flex items-start gap-2 p-2 rounded-md text-xs font-semibold cursor-pointer transition hover:shadow-sm"
+                class="flex items-start gap-2 z-1 p-2 rounded-lg text-xs font-semibold cursor-pointer transition hover:shadow-sm"
                 :class="[
                   b.status === 'Bajarildi' && 'bg-indigo-100 text-indigo-700',
                   b.status === 'Kutilmoqda' && 'bg-blue-300 text-indigo-700',
@@ -158,9 +162,6 @@
         </div>
       </div>
     </div>
-    <p v-if="dayBookings.length === 0" class="text-center text-gray-400 mt-4">
-      {{ store.formatDate(scheduleDate) }} kuni navbat yo'q
-    </p>
     <div
         v-if="selectedBooking"
         class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50"
@@ -248,21 +249,18 @@
       </div>
       <div class="flex flex-col gap-4 text-sm">
         <div class="grid grid-cols-1 gap-3">
-          <div>
-            <label class="text-gray-600 text-xs">Mijoz ismi *</label>
-            <input @change="clearError('clientName')"
-                   v-model="form.clientName"
-                   placeholder="Mijoz ismi"
-                   class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none"
-            />
-          </div>
-          <div>
-            <label class="text-gray-600 text-xs">Telefon</label>
-            <input @change="clearError('phone')"
-                   v-model="form.phone"
-                   placeholder="+998 ..."
-                   class="w-full border border-gray-200 rounded-lg px-3 py-2"/>
-          </div>
+          <AppInput
+              v-model="form.clientName"
+              label="Mijoz ismi *"
+              placeholder="Mijoz ismi"
+              :externalError="errors.clientName"
+          />
+          <AppInput
+              v-model="form.phone"
+              label="Telefon *"
+              placeholder="+998 ..."
+              :externalError="errors.phone"
+          />
         </div>
         <div class="grid grid-cols-1 gap-3">
           <div>
@@ -281,9 +279,12 @@
             </select>
           </div>
           <div>
-            <label class="text-gray-600 text-xs">Sana *</label>
-            <input @change="clearError('date')" type="date" v-model="form.date" :min="store.today"
-                   class="w-full border border-gray-200 rounded-lg px-3 py-2"/>
+            <AppDatePicker
+                v-model="form.date"
+                :isError="errors.date"
+                label="Sana *"
+                :minDate="store.today"
+            />
           </div>
         </div>
         <div v-if="form.service && form.date">
@@ -379,6 +380,8 @@
 import {ref, computed} from 'vue'
 import { useSalonStore } from '@/stores/salonStore'
 import {Booking} from "@/typeModules/useModules";
+import AppDatePicker from "@/components/AppDatePicker.vue";
+import AppInput from "@/components/ui/AppInput.vue";
 
 const store = useSalonStore()
 
@@ -559,6 +562,30 @@ function removeBooking() {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+.current-time-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30%;
+  width: 20%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(301,196,80,.25),
+      transparent
+  );
+  animation: scanLine 2.5s linear infinite;
+}
+
+@keyframes scanLine {
+  from {
+    left: 0;
+  }
+  to {
+    left: 80%;
   }
 }
 .step-header {

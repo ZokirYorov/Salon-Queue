@@ -6,9 +6,10 @@ const routes: Array<RouteRecordRaw> = [
       path: '/',
       name: 'Home',
       component: () => import('@/Layouts/layout.vue'),
+        redirect: '/home',
         children: [
             {
-                path: '/',
+                path: '/home',
                 name: 'Dashboard',
                 component: () => import('@/views/Dashboard.vue'),
             },
@@ -16,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
                 path: "/create-salon",
                 name: "CreateSalon",
                 component: () => import('@/views/CreateSalon.vue'),
-                meta: { requiresAuth: true }
+                // meta: { requiresAuth: true }
             },
             {
                 path: "/admin/manage",
@@ -93,6 +94,12 @@ router.beforeEach((to) => {
     // Agar marshrut rol talab qilsa va foydalanuvchida bu rol bo'lmasa, Dashboardga qaytaramiz
     // if (to.meta.requiresRole && to.meta.requiresRole !== role) {
     //     alert('Bu sahifaga kirish uchun sizda tegishli ruxsat yo\'q!');
+    //     if(role === 'staff') {
+    //         return { name: 'schedule' };
+    //     }
+    //     if(role === 'client') {
+    //         return { name: 'book' };
+    //     }
     //     return { name: 'Dashboard' };
     // }
 

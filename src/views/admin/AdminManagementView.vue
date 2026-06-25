@@ -24,6 +24,9 @@
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Admin roli
               </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                Amallar
+              </th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-slate-200">
@@ -44,6 +47,11 @@
                 <span :class="['px-2 inline-flex text-xs leading-5 font-semibold rounded-full', item.admin?.role === 'staff' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800']">
                   {{ item.admin ? item.admin.role : 'Noma\'lum' }}
                 </span>
+              </td>
+              <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
+                <button @click="deleteSalon(item.salon.id)" class="text-red-600 cursor-pointer bg-red-200 rounded-md px-2 py-1 hover:bg-red-100 hover:text-red-900 ml-4">
+                  O'chirish
+                </button>
               </td>
             </tr>
           </tbody>
@@ -67,7 +75,7 @@ interface Salon {
   rating: number;
   reviews: number;
   currentQueue: number;
-  adminId?: number; // Salonni yaratgan admin ID'si
+  adminId?: number;
 }
 
 interface User {
@@ -78,10 +86,6 @@ interface User {
 }
 
 const salonsWithAdmins = ref<{ salon: Salon; admin: User | undefined }[]>([]);
-
-onMounted(() => {
-  loadSalonsAndAdmins();
-});
 
 const loadSalonsAndAdmins = () => {
   const storedSalonsString = localStorage.getItem('salons');
@@ -95,6 +99,23 @@ const loadSalonsAndAdmins = () => {
     return { salon, admin };
   });
 };
+
+const deleteSalon = (salonId: number) => {
+  if (confirm("Haqiqatan ham bu salonni o'chirmoqchimisiz?")) {
+    const storedSalonsString = localStorage.getItem('salons');
+    let salons: Salon[] = storedSalonsString ? JSON.parse(storedSalonsString) : [];
+
+    salons = salons.filter(salon => salon.id !== salonId);
+    localStorage.setItem('salons', JSON.stringify(salons));
+
+    loadSalonsAndAdmins(); // Ro'yxatni yangilash
+    alert('Salon muvaffaqiyatli o\'chirildi!');
+  }
+};
+
+onMounted(() => {
+  loadSalonsAndAdmins();
+});
 </script>
 
 <style scoped>

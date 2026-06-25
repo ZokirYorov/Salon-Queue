@@ -1,30 +1,46 @@
 <template>
   <div class="flex flex-col gap-6">
     <div class="flex items-center border-b border-gray-200 py-2 justify-between">
-      <div>
-        <h2 class="font-semibold text-lg">Barcha navbatlar</h2>
+      <div class="flex flex-col w-full">
+        <h2 class="font-bold w-full text-xl">Barcha navbatlar</h2>
         <p class="text-sm text-gray-600">Jami: {{ filtered.length }} ta navbat</p>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 items-center gap-2 py-2">
-        <select v-model="filterEmpId" class="border border-gray-200 rounded-md p-2 py-1 cursor-pointer">
-          <option value="">Xodimlar</option>
-          <option v-for="e in store.employees" :key="e.id" :value="e.id">
-            {{ e.name }}
-          </option>
-        </select>
-        <select v-model="filterSource" class="border border-gray-200 rounded-md p-1 cursor-pointer">
-          <option value="">Barcha tur</option>
-          <option value="online">🌐 Online</option>
-          <option value="staff">👔 Qo'lda</option>
-        </select>
-        <select v-model="filterStatus" class="border border-gray-200 rounded-md p-1 cursor-pointer">
-          <option value="">Holat</option>
-          <option value="Kutilmoqda">Kutilmoqda</option>
-          <option value="Bajarildi">Bajarildi</option>
-          <option value="Bekor">Bekor</option>
-        </select>
-        <input type="date" v-model="filterDate" class="border border-gray-200 rounded-md p-1 cursor-pointer" title="Sana bo'yicha filtr" />
-        <button class="bg-gray-500 cursor-pointer text-white rounded px-2 py-1" @click="clearFilters">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 items-end gap-2 py-2">
+        <div class="flex flex-col gap-1">
+          <label for="userId">Xodimlar</label>
+          <select v-model="filterEmpId" class="border border-gray-200 rounded-md p-2 py-1.5 cursor-pointer">
+            <option value="">Xodimlar</option>
+            <option v-for="e in store.employees" :key="e.id" :value="e.id">
+              {{ e.name }}
+            </option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="typeId">Barcha tur</label>
+          <select v-model="filterSource" class="border border-gray-200 rounded-md p-1.5 cursor-pointer">
+            <option value="">Barcha tur</option>
+            <option value="online">🌐 Online</option>
+            <option value="staff">👔 Qo'lda</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="statusId">Holat</label>
+          <select v-model="filterStatus" id="statusId" class="border border-gray-200 rounded-md p-1.5 cursor-pointer">
+            <option value="">Holat</option>
+            <option value="Kutilmoqda">Kutilmoqda</option>
+            <option value="Bajarildi">Bajarildi</option>
+            <option value="Bekor">Bekor</option>
+          </select>
+        </div>
+        <AppDatePicker
+            v-model="filterDate"
+            label="Sana"
+            placeholder="Sana"
+        />
+        <button class=" hover:bg-gray-200 cursor-pointer text-blue-500 border border-gray-300 rounded px-2 py-1.5 font-semibold"
+                @click="clearFilters"
+        >
+          <i class="fa-solid fa-filter-circle-xmark"></i>
           Tozalash
         </button>
       </div>
@@ -191,6 +207,7 @@
 import { ref, computed } from 'vue'
 import { useSalonStore } from '@/stores/salonStore'
 import { Booking } from "@/typeModules/useModules";
+import AppDatePicker from "@/components/AppDatePicker.vue";
 
 const store = useSalonStore()
 const filterEmpId  = ref<number | ''>('')

@@ -108,34 +108,25 @@
         </div>
         <div class="flex flex-col gap-4 text-sm">
           <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="text-gray-500 text-xs">Ism Familiya *</label>
-              <input v-model="form.name"
-                     placeholder="Ismni kiriting"
-                     class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400"
-                     :class="errors.name && 'border-red-400'"
-              />
-              <p v-if="errors.name" class="text-red-500 text-xs">{{ errors.name }}</p>
-            </div>
-            <div>
-              <label class="text-gray-500 text-xs">Lavozim *</label>
-              <input v-model="form.role"
-                     placeholder="Lavozimni kiriting"
-                     class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400"
-                     :class="errors.role && 'border-red-400'"
-              />
-              <p v-if="errors.role" class="text-red-500 text-xs">{{ errors.role }}</p>
-            </div>
-          </div>
-          <div>
-            <label class="text-gray-500 text-xs">Telefon *</label>
-            <input v-model="form.phone"
-                   placeholder="+998 ..."
-                   class="w-full border border-gray-200 rounded-lg px-3 py-2"
-                   :class="errors.phone && 'border-red-400'"
+            <AppInput
+                v-model="form.name"
+                label="Ism Familiya *"
+                placeholder="Ismni kiriting"
+                :externalError="errors.name"
             />
-            <p v-if="errors.phone" class="text-red-500 text-xs">{{errors.phone}}</p>
+            <AppInput
+                v-model="form.role"
+                label="Lavozim *"
+                placeholder="Lavozimni kiriting"
+                :externalError="errors.role"
+            />
           </div>
+          <AppInput
+              v-model="form.phone"
+              label="Telefon *"
+              placeholder="+998 ..."
+              :externalError="errors.phone"
+          />
           <div>
             <label class="text-gray-500 text-xs">Rang</label>
             <div class="flex gap-2 mt-2 flex-wrap">
@@ -188,6 +179,8 @@
 import { ref, reactive } from 'vue'
 import { useSalonStore } from '@/stores/salonStore'
 import { Employee } from "@/typeModules/useModules";
+import AppDatePicker from "@/components/AppDatePicker.vue";
+import AppInput from "@/components/ui/AppInput.vue";
 
 const store = useSalonStore()
 

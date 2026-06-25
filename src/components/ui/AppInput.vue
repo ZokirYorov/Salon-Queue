@@ -1,16 +1,20 @@
 <template>
   <div class="flex flex-col gap-1 relative" :class="type === 'date' ? 'cursor-pointer' : ''">
-    <label :for="id" class="text-gray-700 font-medium">{{ label }}</label>
-    <div :class="[
-        'w-full flex items-center gap-1 border flex-1 outline-none rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-400',
-        isInputFocused ? 'border-blue-500' : 'border-gray-300',
-        showError ? 'border-red-500 focus-within:ring-red-200' : ''
-      ]">
+    <label :for="id" class="text-gray-600 text-xs font-medium">{{ label }}</label>
+    <div
+        :class="[
+          'w-full flex items-center gap-1 flex-1 outline-none rounded-lg px-3 py-2 bg-pb-surface transition-shadow transition-colors shadow-sm shadow-slate-900/[0.04]',
+          showError
+            ? 'border border-pb-error bg-pb-error-soft focus-within:ring-2 focus-within:ring-red-200/70 focus-within:border-pb-error'
+            : 'border border-gray-200 focus-within:border-pb-accent focus-within:ring-2 focus-within:ring-indigo-400',
+            externalError ? 'border border-red-500 bg-pb-error-soft focus-within:ring-2 focus-within:ring-red-200/70 focus-within:border-pb-error' : ''
+        ]"
+    >
       <textarea
           v-if="isTextarea"
           :id="id"
           v-model="model"
-          class="w-full outline-none"
+          class="w-full outline-none bg-transparent text-pb-text placeholder:text-slate-400"
           :placeholder="placeholder"
           @focus="isInputFocused = true"
           @blur="isInputFocused = false"
@@ -20,13 +24,14 @@
           :id="id"
           v-model="model"
           :type="type"
+          :name="name"
+          :autocomplete="autocomplete"
           :min="min"
           :step="step"
           :max="max"
-          class="w-full outline-none"
+          class="w-full outline-none bg-transparent text-pb-text placeholder:text-slate-400"
           :placeholder="placeholder"
-          @focus="isInputFocused = true"
-          @blur="isInputFocused = false"
+          :maxlength="maxlength"
       />
       <i v-if="hasIcon">
         <img
@@ -39,20 +44,23 @@
         />
       </i>
     </div>
-    <span v-if="showError" class="text-red-600 text-xs absolute -bottom-5 left-0">
-  {{ errorMessage }}
+    <span v-if="showErrorComputed" class="text-red-600 text-sm -bottom-5 absolute left-0">
+      {{ props.externalError || errorMessage }}
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, defineExpose, watch } from 'vue';
+import {computed, ref, watch} from "vue";
 // import {useI18n} from "vue-i18n";
 
 const model = defineModel<string | null | number>();
 // const { t } = useI18n();
 interface IProps {
   id?: string;
+  name?: string;
+  /** Brauzer parol/passkey noto'g'ri rejimga tushmasin — login: username, current-password */
+  autocomplete?: string;
   label: string;
   type?: string;
   hasIcon?: boolean;
@@ -64,7 +72,9 @@ interface IProps {
   min?: string;
   step?: string;
   max?: string;
+  maxlength?: number | string;
   errorText?: string;
+  externalError?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -82,7 +92,7 @@ const validate = () => {
   model.value = trimmedValue;
 
   if (props.required && !trimmedValue) {
-    // errorMessage.value = props.errorText || t('components.inputErrorText');
+    errorMessage.value = props.errorText || "Maydonni to'ldiring";
     showError.value = true;
     return false;
   }
@@ -91,6 +101,10 @@ const validate = () => {
   showError.value = false;
   return true;
 };
+
+const showErrorComputed = computed(() => {
+  return showError.value || !!props.externalError;
+});
 
 const iconClick = () => emit('iconClick');
 

@@ -163,9 +163,12 @@ export const useSalonStore = defineStore('salon', () => {
 
   function formatDate(dateStr: string): string {
     if (!dateStr) return ''
-    return new Date(dateStr).toLocaleDateString('uz-UZ', {
-      day: '2-digit', month: 'long', year: 'numeric'
-    })
+      const date = new Date(dateStr)
+      const day = date.getDate().toString()
+      const month = (date.getMonth() + 1).toString()
+      const year = date.getFullYear().toString()
+
+      return `${day}.${month}.${year}`
   }
 
   function formatDateShort(dateStr: string): string {

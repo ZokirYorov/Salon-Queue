@@ -62,39 +62,24 @@
           <button @click="closeModal" class="text-gray-400 hover:text-red-500">✕</button>
         </div>
         <div class="flex flex-col gap-4 text-sm">
-          <div>
-            <label class="text-xs text-gray-500">Xizmat nomi *</label>
-            <input
-                v-model="form.name"
-                @input="errors.name = ''"
-                class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400"
-                :class="errors.name && 'border-red-400'"
-                placeholder="Masalan: Soch olish"
-            />
-            <p v-if="errors.name" class="text-red-500 text-xs">{{ errors.name }}</p>
-          </div>
-          <div>
-            <label class="text-xs text-gray-500">Narxi *</label>
-            <input
-                type="number"
-                v-model="form.price"
-                @input="errors.price = ''"
-                class="w-full border border-gray-200 rounded-lg px-3 py-2"
-                placeholder="50000"
-            />
-          </div>
-          <div>
-            <label class="text-xs text-gray-500">Davomiyligi (min) *</label>
-            <input
-                type="number"
-                v-model="form.duration"
-                @input="errors.duration = ''"
-                class="w-full border border-gray-200 rounded-lg px-3 py-2"
-                :class="errors.duration && 'border-red-400'"
-                placeholder="30"
-            />
-            <p v-if="errors.duration" class="text-red-500 text-xs">{{ errors.duration }}</p>
-          </div>
+          <AppInput
+              v-model="form.name"
+              label="Xizmat nom *"
+              placeholder="Masalan: Soch olish"
+              :externalError="errors.name"
+          />
+          <AppInput
+              v-model="form.price"
+              label="Narxi *"
+              placeholder="50 000"
+              :externalError="errors.price"
+          />
+          <AppInput
+              v-model="form.duration"
+              label="Davomiyligi (min) *"
+              placeholder="30"
+              :externalError="errors.duration"
+          />
           <div class="flex justify-end gap-2 mt-2">
             <button @click="closeModal" class="px-4 py-2 bg-gray-100 rounded-lg">
               Bekor
@@ -114,6 +99,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import AppInput from "@/components/ui/AppInput.vue";
 
 interface Service {
   id: number

@@ -44,20 +44,12 @@
           <button type="submit"
                   class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <!-- Heroicon-s-user-add -->
               <svg class="h-6 w-6 text-indigo-300 group-hover:text-indigo-200 transition-colors duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
               </svg>
             </span>
             Ro'yxatdan o'tish
           </button>
-          <!-- Xodim sifatida ro'yxatdan o'tish uchun checkbox -->
-          <div class="mt-4 flex items-center justify-between">
-            <label class="flex items-center cursor-pointer select-none text-sm text-slate-600">
-              <input type="checkbox" v-model="isEmployee" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-2" />
-              Xodim (Master / Admin) sifatida ro'yxatdan o'tish
-            </label>
-          </div>
         </div>
       </form>
     </div>
@@ -68,37 +60,56 @@
 import { ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  password?: string; // Parolni saqlash tavsiya etilmaydi, lekin simulyatsiya uchun
+  role: 'client' | 'staff';
+}
+
 const router = useRouter();
 const username = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
-const isEmployee = ref(false); // Xodim sifatida ro'yxatdan o'tish uchun yangi ref
 
 const handleRegister = () => {
   if (password.value !== confirmPassword.value) {
     alert('Parollar mos kelmadi!');
     return;
   }
-  console.log('Ro\'yxatdan o\'tish urinish:', username.value, email.value, password.value, 'Xodim:', isEmployee.value);
+  console.log('Ro\'yxatdan o\'tish urinish:', username.value, email.value, password.value);
 
-  // Rolni isEmployee checkbox holatiga qarab belgilash
-  const roleToSet = isEmployee.value ? 'staff' : 'client';
-  localStorage.setItem('role', roleToSet);
+  const userRole = 'client'; // Default rol
+  const userId = Date.now(); // Oddiy ID yaratish usuli
 
-  const selectedSalonId = localStorage.getItem('selectedSalonId');
+  const existingUsersString = localStorage.getItem('users');
+  let users: User[] = existingUsersString ? JSON.parse(existingUsersString) : [];
 
-  if (!selectedSalonId) {
-    alert('Iltimos, avval Dashboard sahifasida salonni tanlang!');
-    router.push('/'); // Salon tanlanmagan bo'lsa, Dashboardga qaytarish
+  // Email allaqachon ro'yxatdan o'tganligini tekshirish
+  if (users.some(user => user.email === email.value)) {
+    alert('Bu email allaqachon ro\'yxatdan o\'tgan!');
     return;
   }
 
-  // Rolga qarab yo'naltirish
-  if (roleToSet === 'staff') {
-    router.push(`/staff/schedule?salonId=${selectedSalonId}`);
-  } else { // client
-    router.push(`/client/book?salonId=${selectedSalonId}`);
+  const newUser: User = { id: userId, username: username.value, email: email.value, password: password.value, role: userRole };
+  users.push(newUser);
+  localStorage.setItem('users', JSON.stringify(users));
+
+  localStorage.setItem('role', userRole);
+  localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+  const selectedSalonId = localStorage.getItem('selectedSalonId');
+
+  if (selectedSalonId) {
+    if (userRole === 'staff') {
+      router.push(`/staff/schedule?salonId=${selectedSalonId}`);
+    } else {
+      router.push(`/client/book?salonId=${selectedSalonId}`);
+    }
+  } else {
+    router.push('/');
   }
 };
 </script>

@@ -13,63 +13,54 @@
         <span>Sizning ma'lumotlaringiz</span>
       </div>
 
-      <div class="flex flex-col gap-3 bg-white">
-        <div class="flex flex-col gap-1 w-full">
-          <label class="">Ism Familiya *</label>
-          <input
+      <div class="flex gap-3 w-full">
+        <AppInput
             v-model="form.clientName"
-            placeholder="Masalan: Nodira Karimova"
-            :class="{ error: errors.clientName }"
-            class="border border-gray-200 outline-gray-500 rounded px-1 w-full py-1"
-          />
-          <span class="text-red-500 text-sm" v-if="errors.clientName">{{ errors.clientName }}</span>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label>Telefon raqam *</label>
-          <input
+            label="Ism Familiya *"
+            class="w-full"
+            placeholder="Masalan: Nodir Kamolov"
+            :externalError="errors.clientName"
+        />
+        <AppInput
             v-model="form.phone"
+            label="Telefon raqam *"
+            class="w-full"
             placeholder="+998 90 000 00 00"
-            :class="{ error: errors.phone }"
-            class="border border-gray-200 outline-gray-500 rounded px-2 py-1"
-          />
-          <span class="text-red-500 text-sm" v-if="errors.phone">{{ errors.phone }}</span>
-        </div>
+            :externalError="errors.phone"
+        />
       </div>
       <div class="step-header">
         <span class="step-num">2</span>
         <span>Xizmat va sana</span>
       </div>
 
-      <div class="flex flex-col gap-2">
-        <div class="flex flex-col gap-1">
-          <label>Xizmat turi *</label>
-          <select
+      <div class="flex items-center gap-4">
+        <AppSelect
             v-model="form.service"
+            :options="optionServices"
+            text-field="text"
+            value-field="name"
+            label="Xizmat turi"
+            required
+            class="w-full"
+            disabledValue="Tanlang..."
             @change="onServiceChange"
-            :class="{ error: errors.service }"
-            class="border border-gray-200 outline-gray-500 rounded px-2 py-1"
-          >
-            <option value="">Tanlang...</option>
-            <option v-for="s in store.services" :key="s.name" :value="s.name">
-              {{ s.name }} — {{ store.formatPrice(s.price ?? 0) }}
-            </option>
-          </select>
-          <span class="text-red-400" v-if="errors.service">{{ errors.service }}</span>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label>Sana *</label>
-          <input
-            type="date"
+            :errorText="errors.service"
+        />
+        <AppDatePicker
             v-model="form.date"
-            :min="store.today"
-            @change="form.employeeId = 0; form.time = ''"
-            :class="{ error: errors.date }"
-            class="border border-gray-200 outline-gray-500 rounded px-2 py-1"
-          />
-          <span class="error-msg" v-if="errors.date">{{ errors.date }}</span>
-        </div>
+            label="Sana *"
+            :minDate="store.today"
+            :isError="errors.date"
+            placeholder="Sanani tanlang"
+            @change=" () => {
+              form.employeeId = 0
+              form.time = ''
+             }"
+            class="w-full"
+        />
       </div>
-      <div v-if="selectedSvc" class="svc-info">
+      <div v-if="selectedSvc" class="svc-info mt-2">
         <span>⏱ {{ selectedSvc.duration }} daqiqa</span>
         <span>💰 {{ store.formatPrice(selectedSvc.price ?? 0) }}</span>
       </div>
@@ -185,7 +176,7 @@
           <strong>{{ store.formatPrice(selectedSvc?.price ?? 0) }}</strong>
         </div>
       </div>
-      <div class="form-footer">
+      <div class="form-footer mt-2">
         <button class="bg-blue-500 cursor-pointer text-white rounded px-2 py-1 wide" @click="submit">
           Navbat olish →
         </button>
@@ -195,9 +186,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from 'vue'
+import {reactive, computed, watch} from 'vue'
 import { useRouter } from 'vue-router'
 import { useSalonStore } from '@/stores/salonStore'
+import AppDatePicker from "@/components/AppDatePicker.vue";
+import AppSelect from "@/components/ui/AppSelect.vue";
+import AppInput from "@/components/ui/AppInput.vue";
 
 const store  = useSalonStore()
 const router = useRouter()
@@ -220,6 +214,32 @@ const errors = reactive({
   employeeId: '',
   time:       '',
 })
+
+const optionServices = computed(() => {
+  return store.services.map((s: any) => ({
+    value: s.name,
+    text: `${s.name} - ${s.price} so'm`,
+  }))
+})
+
+watch(
+    () => form,
+    () => {
+      if (form.clientName.trim()) {
+        errors.clientName = ''
+      }
+      if (form.phone.trim()) {
+        errors.phone = ''
+      }
+      if (form.service) {
+        errors.service = ''
+      }
+      if (form.date) {
+        errors.date = ''
+      }
+    },
+    { deep: true }
+)
 
 const selectedSvc = computed(() =>
   store.services.find(s => s.name === form.service)

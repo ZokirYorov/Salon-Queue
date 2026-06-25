@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
       <div class="py-2">
         <h2 class="page-title">Mening navbatlarim</h2>
-        <p class="text-sm text-gray-600">Telefon raqamingiz bilan qidiring</p>
+        <p class="text-sm text-gray-500">Telefon raqamingiz bilan qidiring</p>
       </div>
       <RouterLink to="/client/book" class="bg-blue-500 text-white px-2 py-1 rounded">+ Yangi navbat</RouterLink>
     </div>
