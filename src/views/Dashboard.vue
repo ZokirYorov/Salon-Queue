@@ -184,7 +184,7 @@
           </div>
         </section>
         <section>
-          <div v-if="filteredSalons.length > 0" class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div v-if="filteredSalons.length > 0" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             <div
                 v-for="salon in filteredSalons"
                 :key="salon.id"
@@ -240,7 +240,10 @@
                   </div>
                 </div>
                 <div class="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="text-slate-400 font-medium">{{ salon.reviews }} ta sharh</span>
+                  <span class="text-slate-400 font-medium"
+                  >
+                    {{ salon.reviews }} ta sharh
+                  </span>
                   <button @click.stop="selectSalon(salon)" class="text-sm cursor-pointer font-bold text-indigo-600 bg-indigo-50 group-hover:bg-indigo-600 group-hover:text-white px-3 py-1.5 rounded-lg transition-colors duration-200">
                     Navbat olish
                   </button>
@@ -329,7 +332,8 @@ const categories = [
   { name: 'Barchasi', slug: 'all' },
   { name: 'Barber Shop', slug: 'barber' },
   { name: 'Ayollar saloni', slug: 'beauty-female' },
-  { name: 'Manikyur / Kosmetologiya', slug: 'nails-spa' }
+  { name: 'Manikyur / Kosmetologiya', slug: 'nails-spa' },
+  { name: 'Logistika', slug: 'Tranzit' },
 ];
 
 const allSalons = ref<Salon[]>([]);

@@ -86,7 +86,7 @@
                 {{ emp.name.charAt(0) }}
               </div>
               <div class="flex flex-col">
-                <span class="ep-name">{{ emp.name }}</span>
+                <span class="ep-name font-semibold">{{ emp.name }}</span>
                 <span class="text-gray-600 text-sm">{{ emp.role }}</span>
               </div>
               <div class="ep-right">
@@ -98,10 +98,10 @@
                     To'liq band
                   </p>
                   <div v-else-if="store.freeSlotCount(emp.id, form.date, form.service)">
-                    <p>
+                    <p class="text-gray-600">
                       {{store.freeSlotCount(emp.id, form.date, form.service)}} ta
                     </p>
-                    bo'sh
+                    <span class="text-gray-600">bo'sh</span>
                   </div>
                 </div>
               </div>
@@ -113,18 +113,22 @@
       <template v-if="form.employeeId">
         <div class="step-header">
           <span class="step-num">4</span>
-          <span>Vaqt tanlang — {{ selectedEmp?.name }}</span>
+          <span class="flex items-center gap-2">
+            Vaqt tanlang
+            <i class="fa-solid fa-arrow-right-long"></i>
+            <span class="text-gray-600">{{ selectedEmp?.name }}</span>
+          </span>
         </div>
-        <div class="busy-bar">
+        <div class="busy-bar flex flex-col">
           <span class="busy-lbl">{{ store.formatDateShort(form.date) }} kuni:</span>
           <div class="busy-dots">
             <div
               v-for="t in store.timeSlots"
               :key="t"
-              class="busy-dot"
+              class="busy-dot p-2"
               :class="store.isSlotBusy(t, form.date, form.service, form.employeeId, null) ? 'red' : 'green'"
               :title="t"
-            ></div>
+            />
           </div>
           <span class="busy-hint">
             <span class="busy-dot green"></span> Bo'sh
@@ -138,16 +142,23 @@
                 :key="t"
                 @click="form.time = t"
                 type="button"
+                :title="store.isSlotBusy(t, form.date, form.service, form.employeeId, null) ? 'Band' : 'Bo\'sh'"
                 :disabled="store.isSlotBusy(t, form.date, form.service, form.employeeId, null)"
-                class="text-xs font-semibold cursor-pointer rounded-lg border border-gray-200"
+                class="text-xs text-white relative font-semibold p-3 cursor-pointer rounded-lg border border-gray-200"
                 :class="[
                   form.time === t ? 'bg-indigo-500 text-white hover:bg-indigo-500 hover:text-white' : '',
                   store.isSlotBusy(t, form.date, form.service, form.employeeId, null)
-                    ? 'bg-gray-200 text-gray-400 cursor-none'
-                    : 'hover:bg-indigo-50 p-3 text-gray-600 border hover:border-indigo-500 hover:text-indigo-500'
-                ]"
+                    ? 'bg-red-400 cursor-not-allowed'
+                    : 'hover:bg-indigo-50 bg-green-400 border hover:border-indigo-500 hover:text-indigo-500',
+            ]"
             >
-              {{ t }}
+              <span
+                  v-if="store.isSlotBusy(t, form.date, form.service, form.employeeId, null)"
+                  class="text-[11px] absolute top-0"
+              >
+                {{store.isSlotBusy(t, form.date, form.service, form.employeeId, null) ? 'Band' : ''}}
+              </span>
+                {{ t }}
             </button>
           </div>
           <span class="error-msg" v-if="errors.time">{{ errors.time }}</span>
@@ -218,7 +229,7 @@ const errors = reactive({
 const optionServices = computed(() => {
   return store.services.map((s: any) => ({
     value: s.name,
-    text: `${s.name} - ${s.price} so'm`,
+    text: `${s.name} - ${s.price} so'm - ${s.duration} min`,
   }))
 })
 
@@ -267,7 +278,7 @@ function pickEmployee(id: number) {
 
 function validate(): boolean {
   errors.clientName  = form.clientName.trim()  ? '' : 'Ism kiritilishi shart'
-  errors.phone       = form.phone.trim()       ? '' : 'Telefon raqam kiritilishi shart'
+  errors.phone       = form.phone.trim()       ? '' : 'Raqam kiritilishi shart'
   errors.service     = form.service            ? '' : 'Xizmat tanlanishi shart'
   errors.date        = form.date               ? '' : 'Sana tanlanishi shart'
   errors.employeeId  = form.employeeId         ? '' : 'Usta tanlanishi shart'

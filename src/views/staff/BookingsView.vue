@@ -47,6 +47,16 @@
     </div>
     <div class="bg-white border border-gray-200 rounded-xl overflow-x-auto">
       <table class="min-w-full text-sm">
+        <colgroup>
+          <col style="width: 2%">
+          <col style="width: 10%">
+          <col style="width: 8%">
+          <col style="width: 8%">
+          <col style="width: 8%">
+          <col style="width: 8%">
+          <col style="width: 8%">
+          <col style="width: 8%">
+        </colgroup>
         <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
         <tr>
           <th class="px-4 py-3 text-left">№</th>
@@ -69,7 +79,7 @@
           <td class="px-4 py-2">{{ index + 1 }}</td>
           <td class="px-4 py-2">
             <div class="flex flex-col">
-              <span class="font-semibold text-gray-800">{{ b.clientName }}</span>
+              <span class="font-semibold text-gray-800 break-words">{{ b.clientName }}</span>
               <span class="text-xs text-gray-400">{{ b.phone }}</span>
             </div>
           </td>
@@ -134,8 +144,8 @@
           </td>
         </tr>
         <tr v-if="filtered.length === 0">
-          <td colspan="8" class="text-center py-6 text-gray-400">
-            Navbat topilmadi. Filtrlarni o‘zgartiring.
+          <td colspan="8" class="text-center py-6 text-gray-500 font-semibold">
+            Navbat topilmadi. Filterlarni o‘zgartiring.
           </td>
         </tr>
         </tbody>

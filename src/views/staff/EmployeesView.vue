@@ -27,7 +27,7 @@
               {{ emp.name.charAt(0) }}
             </div>
             <div>
-              <p class="font-semibold">{{ emp.name }}</p>
+              <p class="font-semibold break-words">{{ emp.name }}</p>
               <p class="text-xs text-gray-400">{{ emp.role }}</p>
               <p class="text-xs text-gray-400">{{ emp.phone || '-' }}</p>
             </div>
