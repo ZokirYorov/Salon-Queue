@@ -333,7 +333,6 @@ const categories = [
   { name: 'Barber Shop', slug: 'barber' },
   { name: 'Ayollar saloni', slug: 'beauty-female' },
   { name: 'Manikyur / Kosmetologiya', slug: 'nails-spa' },
-  { name: 'Logistika', slug: 'Tranzit' },
 ];
 
 const allSalons = ref<Salon[]>([]);
