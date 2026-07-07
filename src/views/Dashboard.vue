@@ -116,7 +116,7 @@
         </section>
         <section class="bg-white rounded-2xl border border-slate-200/60 p-5 shadow-sm space-y-4">
           <div class="flex flex-col lg:flex-row gap-4 items-end lg:items-center justify-between">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 flex-1 w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 flex-1 w-full">
               <div class="flex items-center space-x-4 flex-1 max-w-md lg:ml-0">
                 <div class="relative w-full">
             <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
@@ -160,6 +160,17 @@
                   <option value="reviews">Ko'p sharhlar bo'yicha</option>
                 </select>
               </div>
+              <AppDatePicker model-value=""
+                             placeholder="dd.mm.yyyy"
+              />
+              <button
+                  type="submit"
+                  class="cursor-pointer rounded-xl hover:bg-gray-100 hover:text-blue-500 transition-all duration-200 border border-blue-100 text-blue-400"
+                  @click="resetFilters"
+              >
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+                Tozalash
+              </button>
             </div>
           </div>
           <div class="flex justify-between items-center gap-1.5 pt-2 border-t border-slate-100">
@@ -294,6 +305,7 @@ import image from '@/assets/salonimg.jpg'
 import barber from '@/assets/barber.avif'
 import barber1 from '@/assets/barber.jpg'
 import barber2 from '@/assets/barber2.png'
+import AppDatePicker from "@/components/AppDatePicker.vue";
 
 const emit = defineEmits(['toggle-sidebar'])
 
