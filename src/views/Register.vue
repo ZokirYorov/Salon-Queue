@@ -1,54 +1,56 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-2xl border border-gray-200">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-800 p-10 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700">
       <div>
-        <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900">
+        <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900 dark:text-white">
           Ro'yxatdan o'tish
         </h2>
-        <p class="mt-4 text-center text-base text-gray-600">
+        <p class="mt-4 text-center text-base text-gray-600 dark:text-slate-400">
           Hisobingiz bormi?
-          <RouterLink to="/login" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
+          <RouterLink to="/login" class="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors duration-200">
             Tizimga kiring
           </RouterLink>
         </p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="handleRegister">
+        <p v-if="error" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2">{{ error }}</p>
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="username" class="sr-only">Foydalanuvchi nomi</label>
-            <input id="username" name="username" type="text" autocomplete="username" required
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Foydalanuvchi nomi" v-model="username">
+            <label for="displayName" class="sr-only">Ism Familiya</label>
+            <input id="displayName" type="text" required
+                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                   placeholder="Ism Familiya" v-model="displayName">
+          </div>
+          <div>
+            <label for="login" class="sr-only">Login</label>
+            <input id="login" type="text" required
+                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                   placeholder="Login" v-model="login">
+          </div>
+          <div>
+            <label for="phone" class="sr-only">Telefon</label>
+            <input id="phone" type="text" required
+                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                   placeholder="+998 90 000 00 00" v-model="phone">
           </div>
           <div>
             <label for="email-address" class="sr-only">Email manzili</label>
-            <input id="email-address" name="email" type="email" autocomplete="email" required
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+            <input id="email-address" type="email" required
+                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
                    placeholder="Email manzili" v-model="email">
           </div>
           <div>
             <label for="password" class="sr-only">Parol</label>
-            <input id="password" name="password" type="password" autocomplete="new-password" required
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+            <input id="password" type="password" required
+                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
                    placeholder="Parol" v-model="password">
-          </div>
-          <div>
-            <label for="confirm-password" class="sr-only">Parolni tasdiqlash</label>
-            <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" required
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Parolni tasdiqlash" v-model="confirmPassword">
           </div>
         </div>
 
         <div>
-          <button type="submit"
-                  class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
-            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <svg class="h-6 w-6 text-indigo-300 group-hover:text-indigo-200 transition-colors duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-              </svg>
-            </span>
-            Ro'yxatdan o'tish
+          <button type="submit" :disabled="loading"
+                  class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 disabled:opacity-60">
+            {{ loading ? 'Yaratilmoqda...' : "Ro'yxatdan o'tish" }}
           </button>
         </div>
       </form>
@@ -59,61 +61,34 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
-
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  password?: string; // Parolni saqlash tavsiya etilmaydi, lekin simulyatsiya uchun
-  role: 'client' | 'staff';
-}
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
-const username = ref('');
+const authStore = useAuthStore();
+const displayName = ref('');
+const login = ref('');
+const phone = ref('');
 const email = ref('');
 const password = ref('');
-const confirmPassword = ref('');
+const loading = ref(false);
+const error = ref('');
 
-const handleRegister = () => {
-  if (password.value !== confirmPassword.value) {
-    alert('Parollar mos kelmadi!');
-    return;
-  }
-  console.log('Ro\'yxatdan o\'tish urinish:', username.value, email.value, password.value);
-
-  const userRole = 'client'; // Default rol
-  const userId = Date.now(); // Oddiy ID yaratish usuli
-
-  const existingUsersString = localStorage.getItem('users');
-  let users: User[] = existingUsersString ? JSON.parse(existingUsersString) : [];
-
-  // Email allaqachon ro'yxatdan o'tganligini tekshirish
-  if (users.some(user => user.email === email.value)) {
-    alert('Bu email allaqachon ro\'yxatdan o\'tgan!');
-    return;
-  }
-
-  const newUser: User = { id: userId, username: username.value, email: email.value, password: password.value, role: userRole };
-  users.push(newUser);
-  localStorage.setItem('users', JSON.stringify(users));
-
-  localStorage.setItem('role', userRole);
-  localStorage.setItem('currentUser', JSON.stringify(newUser));
-
-  const selectedSalonId = localStorage.getItem('selectedSalonId');
-
-  if (selectedSalonId) {
-    if (userRole === 'staff') {
-      router.push(`/staff/schedule?salonId=${selectedSalonId}`);
-    } else {
-      router.push(`/client/book?salonId=${selectedSalonId}`);
-    }
-  } else {
-    router.push('/');
+const handleRegister = async () => {
+  error.value = '';
+  loading.value = true;
+  try {
+    await authStore.register({
+      login: login.value.trim(),
+      password: password.value,
+      displayName: displayName.value.trim(),
+      email: email.value.trim(),
+      phone: phone.value.trim(),
+    });
+    router.push('/businesses');
+  } catch (e: any) {
+    error.value = e?.response?.data?.message || "Ro'yxatdan o'tishda xatolik yuz berdi";
+  } finally {
+    loading.value = false;
   }
 };
 </script>
-
-<style scoped>
-/* Tailwind CSS classes are used directly in the template */
-</style>

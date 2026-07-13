@@ -1,6 +1,7 @@
 import { createApp} from "vue";
 import { createPinia} from "pinia";
 import './main.css'
+import './composables/useTheme'
 import router from "./router";
 import 'vue-toastification/dist/index.css'
 import { VueDatePicker } from '@vuepic/vue-datepicker';

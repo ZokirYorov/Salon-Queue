@@ -1,112 +1,74 @@
 <template>
-  <div>
+  <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <div class="py-2">
-        <h2 class="page-title">Mening navbatlarim</h2>
-        <p class="text-sm text-gray-500">Telefon raqamingiz bilan qidiring</p>
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Mening navbatlarim</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Barcha buyurtmalaringiz shu yerda</p>
       </div>
-      <RouterLink to="/client/book" class="bg-blue-500 text-white px-2 py-1 rounded">+ Yangi navbat</RouterLink>
+      <RouterLink to="/businesses" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-3 py-2 rounded-lg transition">+ Yangi navbat</RouterLink>
     </div>
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input
-        v-model="phone"
-        type="search"
-        class="search-input"
-        placeholder="Telefon raqamingizni kiriting..."
-        @input="onInput"
-      />
+
+    <div v-if="loading" class="text-center py-16 text-slate-400">Yuklanmoqda...</div>
+    <div v-else-if="bookings.length === 0" class="text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
+      <p class="text-slate-400">Hali navbatlaringiz yo'q</p>
+      <RouterLink to="/businesses" class="inline-block mt-3 text-indigo-600 dark:text-indigo-400 font-semibold text-sm">Navbat olish →</RouterLink>
     </div>
-    <template v-if="phone.length >= 5">
-      <div v-if="myBookings.length === 0" class="empty-state">
-        <span>📭</span>
-        <p>Bu raqam bilan navbat topilmadi</p>
-        <RouterLink to="/client/book" class="btn-primary">Navbat olish</RouterLink>
-      </div>
-      <div v-else class="bookings-list">
-        <div v-for="b in myBookings" :key="b.id" class="booking-card">
-          <div class="bc-left">
-            <div class="bc-icon">{{ store.serviceIcon(b.service) }}</div>
-            <div class="bc-info">
-              <h4 class="bc-service">{{ b.service }}</h4>
-              <p class="bc-meta">
-                {{ store.formatDate(b.date) }} ·
-                {{ b.time }} — {{ store.addMinutes(b.time, b.duration) }}
-              </p>
-              <p class="bc-emp">
-                <span class="flex items-center justify-center w-7 h-7 rounded-full" :style="{ background: emp(b.employeeId)?.color || '#94a3b8' }">
-                  {{ emp(b.employeeId)?.name.charAt(0) || '?' }}
-                </span>
-                {{ emp(b.employeeId)?.name || '—' }}
-              </p>
-            </div>
-          </div>
-          <div class="bc-right">
-            <span class="src-badge" :class="b.source === 'online' ? 'src--online' : 'src--manual'">
-              {{ b.source === 'online' ? '🌐 Online' : "👔 Qo'lda" }}
-            </span>
-            <span class="status-badge" :class="store.statusClass(b.status)">
-              {{ b.status }}
-            </span>
-          </div>
+    <div v-else class="space-y-3">
+      <div
+        v-for="b in bookings" :key="b.id"
+        :class="['bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 border-l-4 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3', statusBorderClass(b.status)]"
+      >
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">{{ b.offeredServiceName || 'Xizmat' }}</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ b.businessName }} · {{ b.staffName || '—' }}</p>
+          <p class="text-xs text-slate-400 mt-0.5">{{ formatDateTime(b.startAt) }} — {{ formatTime(b.endAt) }}</p>
         </div>
-      </div>
-    </template>
-    <div v-else class="search-hint">
-      <p>Navbatlaringizni ko'rish uchun telefon raqamingizni kiriting</p>
-    </div>
-    <div class="today-schedule">
-      <h3 class="section-title">Bugungi jadval — barcha ustalar</h3>
-      <p class="section-sub">Band vaqtlarni ko'rib, navbat olishni rejalashtirishingiz mumkin</p>
-      <div class="schedule-scroll">
-        <div
-            class="grid bg-gray-50 border-b border-gray-200 sticky top-0 z-20"
-            :style="{ gridTemplateColumns: gridCols }"
-        >
-          <div class="sticky left-0 z-30 bg-gray-100 p-3 text-xs font-bold text-gray-400 border-r">
-            Vaqt
-          </div>
-          <div v-for="e in store.employees" :key="e.id" class="sch-emp-hd">
-            <span class="w-7 h-7 flex items-center justify-center rounded-full" :style="{ background: e.color }">{{ e.name.charAt(0) }}</span>
-            {{ e.name }}
-          </div>
-        </div>
-        <div
-            v-for="slot in store.timeSlots"
-            :key="slot"
-            class="grid border-b border-gray-100 hover:bg-gray-50"
-            :style="{ gridTemplateColumns: gridCols }"
-            :class="[
-              isCurrentSlot(slot)
-                ? 'bg-orange-50 relative before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-orange-400'
-                : ''
-            ]"
-        >
-          <div
-              class="sticky left-0 z-20 px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 flex items-center bg-white"
-              :class="[
-                isCurrentSlot(slot)
-                  ? 'bg-orange-50 z-40 relative before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-orange-400'
-                  : ''
-              ]"
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full" :class="statusClass(b.status)">{{ statusLabel(b.status) }}</span>
+          <button
+            v-if="canCancel(b.status)"
+            @click="cancelTarget = b"
+            class="text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 px-2.5 py-1 rounded-lg transition"
           >
-            {{ slot }}
-          </div>
-          <div v-for="e in store.employees" :key="e.id" class="sch-cell">
-            <template v-if="store.getCellBookings(slot, store.today, e.id).length"
-            >
-              <span
-                v-for="b in store.getCellBookings(slot, store.today, e.id)"
-                :key="b.id"
-                class="sch-chip"
-                :class="b.source === 'online' ? 'chip-online' : 'chip-manual'"
-              >
-                Band
-<!--                {{ b.service }}-->
-              </span>
-            </template>
-            <span v-else class="sch-free">Bo'sh</span>
-          </div>
+            Bekor qilish
+          </button>
+          <button
+            v-if="b.status === 'COMPLETED' && !reviewedBookingIds.has(b.id)"
+            @click="openReview(b)"
+            class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 px-2.5 py-1 rounded-lg transition"
+          >
+            Sharh qoldirish
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="cancelTarget" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Navbatni bekor qilish</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          <strong>{{ cancelTarget.offeredServiceName || 'Xizmat' }}</strong> — {{ formatDateTime(cancelTarget.startAt) }} uchun navbatni bekor qilishni tasdiqlaysizmi?
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+          <button @click="cancelTarget = null" class="text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition">Yo'q</button>
+          <button @click="confirmCancel" :disabled="cancelling" class="text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg py-2 transition disabled:opacity-60">
+            {{ cancelling ? 'Bekor qilinmoqda...' : 'Ha, bekor qilish' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="reviewTarget" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Sharh qoldirish</h3>
+        <div class="flex gap-1">
+          <button v-for="n in 5" :key="n" @click="reviewForm.stars = n" type="button" class="text-2xl" :class="n <= reviewForm.stars ? 'text-amber-400' : 'text-slate-200 dark:text-slate-600'">★</button>
+        </div>
+        <textarea v-model="reviewForm.comment" rows="3" class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2 text-sm" placeholder="Fikringiz..."></textarea>
+        <p v-if="reviewError" class="text-sm text-red-600 dark:text-red-400">{{ reviewError }}</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button @click="reviewTarget = null" class="text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition">Bekor qilish</button>
+          <button @click="submitReview" :disabled="submittingReview" class="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg py-2 transition disabled:opacity-60">Yuborish</button>
         </div>
       </div>
     </div>
@@ -114,170 +76,91 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useSalonStore } from '@/stores/salonStore'
+import { ref, onMounted, reactive } from 'vue';
+import { RouterLink } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { bookingsApi } from '@/api/bookings';
+import { reviewsApi } from '@/api/reviews';
+import { useAuthStore } from '@/stores/auth';
+import type { Booking } from '@/types/api';
+import { statusLabel, statusClass, statusBorderClass } from '@/utils/format';
 
-const store = useSalonStore()
+const authStore = useAuthStore();
+const toast = useToast();
+const bookings = ref<Booking[]>([]);
+const loading = ref(false);
+const reviewedBookingIds = ref<Set<string>>(new Set());
 
-const scheduleDate = ref(store.today)
+const reviewTarget = ref<Booking | null>(null);
+const reviewForm = reactive({ stars: 5, comment: '' });
+const reviewError = ref('');
+const submittingReview = ref(false);
 
-const phone = ref('')
+const cancelTarget = ref<Booking | null>(null);
+const cancelling = ref(false);
 
-onMounted(() => {
-  const saved = localStorage.getItem('lastPhone')
-  if (saved) phone.value = saved
-})
-
-function onInput() {
-  localStorage.setItem('lastPhone', phone.value)
+function formatDateTime(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
-const myBookings = computed(() =>
-  store.bookings.filter(b =>
-    b.phone.replace(/\s/g, '').includes(phone.value.replace(/\s/g, ''))
-  ).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
-)
-
-function emp(id: number) {
-  return store.getEmployee(id)
+function formatTime(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
 }
 
-const gridCols = computed(() => {
-  return `80px repeat(${store.employees.length}, minmax(180px, 1fr))`
-})
-
-function isCurrentSlot(slot: string): boolean {
-  if (scheduleDate.value !== store.today) return false
-  const now   = new Date()
-  const nowM  = now.getHours() * 60 + now.getMinutes()
-  const slotM = store.toMins(slot)
-  return nowM >= slotM && nowM < slotM + 30
+function canCancel(status: string): boolean {
+  return status === 'PENDING' || status === 'CONFIRMED';
 }
 
+async function loadBookings() {
+  if (!authStore.user) return;
+  loading.value = true;
+  try {
+    const { data } = await bookingsApi.getAll({ customerId: authStore.user.userId, size: 100 });
+    bookings.value = data.content.sort((a, b) => b.startAt.localeCompare(a.startAt));
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function confirmCancel() {
+  if (!cancelTarget.value) return;
+  cancelling.value = true;
+  try {
+    await bookingsApi.update(cancelTarget.value.id, { status: 'CANCELLED_BY_CUSTOMER' });
+    cancelTarget.value = null;
+    toast.success('Navbat bekor qilindi');
+    await loadBookings();
+  } catch (e: any) {
+    toast.error(e?.response?.data?.message || 'Bekor qilishda xatolik yuz berdi');
+  } finally {
+    cancelling.value = false;
+  }
+}
+
+function openReview(b: Booking) {
+  reviewTarget.value = b;
+  reviewForm.stars = 5;
+  reviewForm.comment = '';
+  reviewError.value = '';
+}
+
+async function submitReview() {
+  if (!reviewTarget.value) return;
+  submittingReview.value = true;
+  reviewError.value = '';
+  try {
+    await reviewsApi.create({ bookingId: reviewTarget.value.id, stars: reviewForm.stars, comment: reviewForm.comment.trim() || undefined });
+    reviewedBookingIds.value.add(reviewTarget.value.id);
+    reviewTarget.value = null;
+    toast.success('Sharh yuborildi, rahmat!');
+  } catch (e: any) {
+    reviewError.value = e?.response?.data?.message || 'Sharh yuborishda xatolik';
+  } finally {
+    submittingReview.value = false;
+  }
+}
+
+onMounted(loadBookings);
 </script>
-
-<style scoped>
-.search-box {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.search-icon {
-  position: absolute;
-  left: 14px;
-  font-size: 16px;
-  pointer-events: none;
-}
-.search-input {
-  width: 100%;
-  max-width: 480px;
-  padding: 12px 40px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  font-size: 15px;
-  background: #fff;
-  color: #1e293b;
-  outline: none;
-  font-family: inherit;
-}
-.search-input:focus { border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,0.1); }
-
-.bookings-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
-.booking-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.bc-left  { display: flex; align-items: center; gap: 12px; }
-.bc-icon  { font-size: 28px; flex-shrink: 0; }
-.bc-service { font-size: 15px; font-weight: 700; color: #1e293b; margin: 0 0 3px; }
-.bc-meta    { font-size: 12px; color: #64748b; margin: 0 0 4px; }
-.bc-emp     { font-size: 12px; color: #475569; margin: 0; display: flex; align-items: center; gap: 5px; }
-.bc-right   { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; flex-shrink: 0; }
-
-.status-badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-}
-.search-hint {
-  padding: 32px;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 15px;
-}
-.today-schedule { margin-top: 32px; }
-.section-title { font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 4px; }
-.section-sub   { font-size: 13px; color: #64748b; margin: 0 0 14px; }
-
-.schedule-scroll {
-  overflow-x: auto;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-}
-
-.sch-emp-hd {
-  flex: 1;
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #1e293b;
-  border-right: 1px solid #e2e8f0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 120px;
-}
-.sch-row {
-  display: flex;
-  border-bottom: 1px solid #f1f5f9;
-  min-height: 40px;
-}
-.sch-time {
-  width: 60px;
-  flex-shrink: 0;
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #94a3b8;
-  border-right: 1px solid #e2e8f0;
-  display: flex;
-  align-items: center;
-}
-.sch-cell {
-  flex: 1;
-  padding: 4px 8px;
-  border-right: 1px solid #f1f5f9;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 3px;
-  min-width: 120px;
-}
-.sch-chip {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 20px;
-  font-weight: 500;
-}
-.chip-online { background: #e0f2fe; color: #0369a1; }
-.chip-manual { background: #ede9fe; color: #4c1d95; }
-.sch-free    { font-size: 11px; color: #d1d5db; }
-
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: #94a3b8;
-}
-.empty-state span { font-size: 40px; display: block; margin-bottom: 12px; }
-.empty-state p    { font-size: 15px; margin: 0 0 16px; }
-</style>

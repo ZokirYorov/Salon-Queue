@@ -1,104 +1,87 @@
 <template>
-  <div class="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-    <div class="max-w-6xl mx-auto">
-      <!-- Back Button -->
-      <div class="mb-4">
-        <button @click="router.back()" class="flex items-center gap-2 text-sm font-medium border border-gray-200 p-2 rounded-lg cursor-pointer bg-blue-50 hover:bg-blue-100 text-slate-600 hover:text-indigo-600 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-          </svg>
-          Ortga
-        </button>
+  <div class="min-h-screen bg-slate-50/50 dark:bg-slate-900 transition-colors">
+    <AppHeader />
+    <div class="max-w-md mx-auto p-4 sm:p-6 lg:p-8">
+      <div v-if="!authStore.user" class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+        <p class="text-slate-600 dark:text-slate-300 mb-4">Profilni ko'rish uchun tizimga kiring.</p>
+        <RouterLink to="/login" class="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Tizimga kirish</RouterLink>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Left Column: User Info -->
-        <div class="lg:col-span-1 space-y-8">
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-            <div class="flex flex-col items-center">
-              <div class="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold mb-4">
-                {{ currentUser?.username.charAt(0).toUpperCase() }}
+      <template v-else>
+        <!-- Avatar + stats -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div class="flex flex-col items-center">
+            <div class="relative w-24 h-24 mb-4">
+              <div class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold">
+                <img v-if="mediaUrl(profile?.avatarUrl)" :src="mediaUrl(profile?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
+                <span v-else>{{ (profile?.displayName || authStore.user.login).charAt(0).toUpperCase() }}</span>
               </div>
-              <h1 class="text-2xl font-bold text-slate-900">{{ currentUser?.username }}</h1>
-              <p class="text-sm text-slate-500">{{ currentUser?.email }}</p>
-              <span :class="['mt-3 px-3 py-1 rounded-full text-xs font-semibold', currentUser?.role === 'staff' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800']">
-                {{ currentUser?.role === 'staff' ? 'Tashkilot Egasi' : 'Mijoz' }}
-              </span>
+              <label
+                class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-indigo-600 hover:bg-indigo-700 flex items-center justify-center cursor-pointer shadow-sm transition-colors"
+                :class="{ 'opacity-60 pointer-events-none': uploadingAvatar }"
+              >
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="onAvatarChange" />
+              </label>
             </div>
+            <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ profile?.displayName || authStore.user.login }}</h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400">@{{ authStore.user.login }}</p>
           </div>
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-             <h3 class="text-lg font-semibold text-slate-800 mb-3">Profil Boshqaruvi</h3>
-             <button @click="logout" class="w-full text-left flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" /></svg>
-                Tizimdan chiqish
-             </button>
+
+          <div class="grid grid-cols-2 gap-3 mt-5 pt-5 border-t border-slate-200 dark:border-slate-700">
+            <div class="text-center">
+              <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ stats.total }}</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Jami navbat</p>
+            </div>
+            <div class="text-center">
+              <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ stats.businesses }}</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Tashrif buyurgan salon</p>
+            </div>
           </div>
         </div>
 
-        <!-- Right Column: Salon Management -->
-        <div class="lg:col-span-2">
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-            <div v-if="!currentUser">
-                <p class="text-center text-slate-600">Profil ma'lumotlarini ko'rish va salonlarni boshqarish uchun tizimga kiring.</p>
-                <RouterLink to="/login" class="mt-4 w-full block text-center px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
-                  Tizimga kirish
-                </RouterLink>
+        <!-- Edit form -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mt-6">
+          <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4">Ma'lumotlarni tahrirlash</h2>
+          <form @submit.prevent="save" class="space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Ism Familiya</label>
+              <input v-model="form.displayName" type="text" class="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
-            <div v-else-if="currentUser.role === 'staff'">
-              <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-slate-800">Mening Salonlarim</h2>
-                <button v-if="mySalons.length > 0 && !showCreateForm" @click="showCreateForm = true" class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-all">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
-                  Yangi salon qo'shish
-                </button>
-              </div>
-
-              <!-- Salon Creation Form -->
-              <div v-if="mySalons.length === 0 || showCreateForm" class="space-y-6 bg-slate-50 p-6 rounded-xl border border-slate-200">
-                 <h3 class="text-xl font-semibold text-slate-800">{{ salonForm.id ? 'Salonni Tahrirlash' : 'Yangi Salon Yaratish' }}</h3>
-                 <form @submit.prevent="handleSaveSalon" class="space-y-4">
-                    <AppInput v-model="salonForm.name" label="Salon nomi" placeholder="Masalan, 'King Barbershop'" required />
-                    <AppInput v-model="salonForm.address" label="Manzil" placeholder="Masalan, 'Toshkent, Amir Temur ko`chasi 15'" required />
-                    <AppInput v-model="salonForm.imageUrl" label="Rasm URL" placeholder="https://..." />
-                    <div class="flex items-center justify-end gap-3 pt-4">
-                        <button type="button" @click="cancelCreation" class="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
-                            Bekor qilish
-                        </button>
-                        <button type="submit" class="px-6 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition">
-                            {{ salonForm.id ? 'Saqlash' : 'Yaratish' }}
-                        </button>
-                    </div>
-                 </form>
-              </div>
-
-              <!-- My Salons List -->
-              <div v-if="mySalons.length > 0 && !showCreateForm" class="space-y-4 mt-6">
-                <div v-for="salon in mySalons"
-                     :key="Number(salon.id)"
-                     class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 flex items-center justify-between hover:border-indigo-300 transition"
-                >
-                  <div class="flex items-center gap-4">
-                      <img :src="salon.imageUrl || 'https://via.placeholder.com/100'" alt="Salon" class="w-16 h-16 rounded-lg object-cover bg-slate-200">
-                      <div>
-                        <h3 class="text-base font-bold text-slate-800">{{ salon.name }}</h3>
-                        <p class="text-xs text-slate-500">{{ salon.address }}</p>
-                      </div>
-                  </div>
-                  <div class="flex gap-2">
-                    <button @click="editSalon(salon)" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-100 rounded-md transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
-                    </button>
-                    <button @click="deleteSalon(salon.id)" class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-100 rounded-md transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Email</label>
+              <input v-model="form.email" type="email" class="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
-             <div v-else>
-                <p class="text-center text-slate-600">Sizda salonlarni boshqarish huquqi yo'q.</p>
-             </div>
-          </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Telefon</label>
+              <input v-model="form.phone" type="tel" placeholder="+998901234567" class="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Yangi parol</label>
+              <input v-model="form.password" type="password" placeholder="O'zgartirmaslik uchun bo'sh qoldiring" class="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <button type="submit" :disabled="saving" class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold py-2.5 rounded-lg transition">
+              {{ saving ? 'Saqlanmoqda...' : 'Saqlash' }}
+            </button>
+          </form>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mt-6">
+          <button @click="showLogoutConfirm = true" class="w-full text-left flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" /></svg>
+            Tizimdan chiqish
+          </button>
+        </div>
+      </template>
+    </div>
+
+    <div v-if="showLogoutConfirm" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tizimdan chiqish</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button @click="showLogoutConfirm = false" class="text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition">Bekor qilish</button>
+          <button @click="logout" class="text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg py-2 transition">Chiqish</button>
         </div>
       </div>
     </div>
@@ -106,140 +89,107 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
-import AppInput from "@/components/ui/AppInput.vue";
-
-interface Salon {
-  id: number | null;
-  name: string;
-  address: string;
-  imageUrl: string;
-  adminId?: number;
-}
-
-interface SalonForm{
-  id: number | null;
-  name: string;
-  address: string;
-  imageUrl: string;
-}
-
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  role: 'client' | 'staff';
-}
+import { useToast } from 'vue-toastification';
+import { useAuthStore } from '@/stores/auth';
+import { usersApi } from '@/api/users';
+import { bookingsApi } from '@/api/bookings';
+import { mediaUrl } from '@/utils/media';
+import AppHeader from '@/components/AppHeader.vue';
+import type { User } from '@/types/api';
 
 const router = useRouter();
-const currentUser = ref<User | null>(null);
-const allSalons = ref<Salon[]>([]);
-const showCreateForm = ref(false);
+const authStore = useAuthStore();
+const toast = useToast();
 
-const salonForm = reactive<SalonForm>({
-  id: null,
-  name: '',
-  address: '',
-  imageUrl: '',
-});
+const profile = ref<User | null>(null);
+const saving = ref(false);
+const uploadingAvatar = ref(false);
+const showLogoutConfirm = ref(false);
+const stats = reactive({ total: 0, businesses: 0 });
 
-const mySalons = computed(() => {
-    if (!currentUser.value) return [];
-    return allSalons.value.filter(salon => salon.adminId === currentUser.value?.id);
-});
+const form = reactive({ displayName: '', email: '', phone: '', password: '' });
+
+const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+const ALLOWED_AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+function applyProfile(data: User) {
+  profile.value = data;
+  form.displayName = data.displayName ?? '';
+  form.email = data.email ?? '';
+  form.phone = data.phone ?? '';
+  form.password = '';
+}
+
+async function loadProfile() {
+  if (!authStore.user) return;
+  const { data } = await usersApi.getById(authStore.user.userId);
+  applyProfile(data);
+}
+
+async function loadStats() {
+  if (!authStore.user) return;
+  const { data } = await bookingsApi.getAll({ customerId: authStore.user.userId, size: 200 });
+  stats.total = data.totalElements;
+  stats.businesses = new Set(data.content.map((b) => b.businessId)).size;
+}
 
 onMounted(() => {
-  loadUserData();
-  loadAllSalons();
-  if (currentUser.value && currentUser.value.role === 'staff' && mySalons.value.length === 0) {
-    showCreateForm.value = true;
-  }
+  loadProfile();
+  loadStats();
 });
 
-const loadUserData = () => {
-  const storedUser = localStorage.getItem('currentUser');
-  if (storedUser) {
-    currentUser.value = JSON.parse(storedUser);
+async function onAvatarChange(e: Event) {
+  const input = e.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file || !authStore.user) return;
+  if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
+    toast.error('Faqat JPEG, PNG yoki WEBP formatidagi rasm yuklang');
+    input.value = '';
+    return;
   }
-};
-
-const loadAllSalons = () => {
-  const storedSalons = localStorage.getItem('salons');
-  if (storedSalons) {
-    allSalons.value = JSON.parse(storedSalons);
+  if (file.size > MAX_AVATAR_SIZE) {
+    toast.error('Rasm hajmi 5MB dan oshmasligi kerak');
+    input.value = '';
+    return;
   }
-};
-
-const persistSalons = () => {
-    localStorage.setItem('salons', JSON.stringify(allSalons.value));
-};
-
-const resetForm = () => {
-    salonForm.id = null;
-    salonForm.name = '';
-    salonForm.address = '';
-    salonForm.imageUrl = '';
+  uploadingAvatar.value = true;
+  try {
+    const { data } = await usersApi.uploadAvatar(authStore.user.userId, file);
+    applyProfile(data);
+    authStore.updateAvatar(data.avatarUrl);
+    toast.success('Rasm yangilandi');
+  } catch {
+    toast.error('Rasmni yuklashda xatolik');
+  } finally {
+    uploadingAvatar.value = false;
+    input.value = '';
+  }
 }
 
-const editSalon = (salon: Salon) => {
-  salonForm.id = salon.id;
-  salonForm.name = salon.name;
-  salonForm.address = salon.address;
-  salonForm.imageUrl = salon.imageUrl;
-  showCreateForm.value = true;
-};
-
-const cancelCreation = () => {
-    resetForm();
-    if (mySalons.value.length > 0) {
-        showCreateForm.value = false;
-    }
-}
-
-const handleSaveSalon = () => {
-    if (!salonForm.name || !salonForm.address) {
-        alert("Iltimos, salon nomi va manzilini to'ldiring.");
-        return;
-    }
-
-    if (salonForm.id) { // Editing existing salon
-        const index = allSalons.value.findIndex(s => s.id === salonForm.id);
-        if (index !== -1) {
-            allSalons.value[index] = { ...allSalons.value[index], ...salonForm };
-        }
-    } else { // Creating new salon
-        const newSalon: Salon = {
-            id: Date.now(),
-            name: salonForm.name,
-            address: salonForm.address,
-            imageUrl: salonForm.imageUrl || 'https://via.placeholder.com/400x250?text=Salon',
-            adminId: currentUser.value?.id,
-        };
-        allSalons.value.push(newSalon);
-    }
-
-    persistSalons();
-    alert(`Salon ma'lumotlari muvaffaqiyatli saqlandi!`);
-    resetForm();
-    showCreateForm.value = false;
-}
-
-const deleteSalon = (salonId: number | null) => {
-  if (confirm("Haqiqatan ham bu salonni o'chirmoqchimisiz? Bu amalni ortga qaytarib bo'lmaydi.")) {
-    allSalons.value = allSalons.value.filter(salon => salon.id !== salonId);
-    persistSalons();
-    alert('Salon muvaffaqiyatli o\'chirildi!');
+async function save() {
+  if (!authStore.user) return;
+  saving.value = true;
+  try {
+    const { data } = await usersApi.update(authStore.user.userId, {
+      displayName: form.displayName.trim() || undefined,
+      email: form.email.trim() || undefined,
+      phone: form.phone.trim() || undefined,
+      password: form.password || undefined,
+    });
+    applyProfile(data);
+    authStore.updateProfile({ displayName: data.displayName });
+    toast.success('Profil yangilandi');
+  } catch (e: any) {
+    toast.error(e?.response?.data?.message || 'Saqlashda xatolik yuz berdi');
+  } finally {
+    saving.value = false;
   }
-};
+}
 
 const logout = () => {
-    if (confirm("Haqiqatan ham tizimdan chiqmoqchimisiz?")) {
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('role');
-        localStorage.removeItem('selectedSalonId');
-        currentUser.value = null;
-        router.push('/login');
-    }
-}
+  authStore.logout();
+  router.push('/login');
+};
 </script>

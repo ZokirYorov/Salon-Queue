@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_API, // https://photobook-backend-production.up.railway.app
+    baseURL: "/api/v1",
     headers: {
         "Content-Type": "application/json"
     }
@@ -19,9 +19,12 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
     response => response,
     error => {
-        if (error.response && (error.response.status === 403 || error.response.status === 401)) {
-            // localStorage.removeItem("access_token");
-            // window.location.href = '/login';
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("current_user");
+            if (location.pathname !== '/login') {
+                location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }

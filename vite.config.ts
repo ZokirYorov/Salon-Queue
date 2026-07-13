@@ -18,12 +18,16 @@ export default defineConfig(({ mode }) => {
             }
         },
         server: {
+            port: 5175,
             proxy: {
                 '/api': {
-                    target: env.VITE_BASE_API,
+                    target: env.VITE_BASE_API || 'http://localhost:9092',
                     changeOrigin: true,
-                    secure: true
-                }
+                },
+                '/uploads': {
+                    target: env.VITE_BASE_API || 'http://localhost:9092',
+                    changeOrigin: true,
+                },
             }
         }
     }
