@@ -148,6 +148,13 @@ const menuItems = [
     path: '/client',
     iconType: 'fa',
     icon: 'fa-regular fa-user'
+  },
+  {
+    id: 7,
+    name: 'New project',
+    path: '/new',
+    iconType: 'fa',
+    icon: 'fa-solid fa-plus'
   }
 ]
 

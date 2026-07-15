@@ -25,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/admin/AdminManagementView.vue'),
                 meta: { requiresRole: 'staff' }
             },
+            {
+                path: "/new",
+                name: "New",
+                component: () => import('@/views/DashboardPage.vue'),
+            }
         ]
     },
 
