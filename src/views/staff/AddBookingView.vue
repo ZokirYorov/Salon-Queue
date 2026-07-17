@@ -40,8 +40,8 @@
             :class="{ error: errors.service }"
           >
             <option value="">Tanlang...</option>
-            <option v-for="s in store.services" :key="s.name" :value="s.name">
-              {{ s.name }} — {{ store.formatPrice(s.price ?? 0) }} ({{ s.duration }} min)
+            <option v-for="s in salonStore.services" :key="s.name" :value="s.name">
+              {{ s.name }} — {{ salonStore.formatPrice(s.price ?? 0) }} ({{ s.duration }} min)
             </option>
           </select>
           <span class="error-msg" v-if="errors.service">{{ errors.service }}</span>
@@ -51,7 +51,7 @@
           <input
             type="date"
             v-model="form.date"
-            :min="store.today"
+            :min="salonStore.today"
             @change="form.employeeId = 0; form.time = ''"
             :class="{ error: errors.date }"
           />
@@ -75,7 +75,7 @@
             class="emp-pick-card"
             :class="{
               selected: form.employeeId === emp.id,
-              full: store.isEmployeeFull(emp.id, form.date, form.service)
+              full: salonStore.isEmployeeFull(emp.id, form.date, form.service)
             }"
             @click="pickEmployee(emp.id)"
           >
@@ -89,14 +89,14 @@
             <div class="ep-right">
               <span
                 class="ep-free"
-                :class="{ none: store.freeSlotCount(emp.id, form.date, form.service) === 0 }"
+                :class="{ none: salonStore.freeSlotCount(emp.id, form.date, form.service) === 0 }"
               >
-                {{ store.isEmployeeFull(emp.id, form.date, form.service)
+                {{ salonStore.isEmployeeFull(emp.id, form.date, form.service)
                     ? "To'liq band"
-                    : store.freeSlotCount(emp.id, form.date, form.service) + ' ta bo\'sh' }}
+                    : salonStore.freeSlotCount(emp.id, form.date, form.service) + ' ta bo\'sh' }}
               </span>
               <span class="ep-busy-count">
-                {{ store.busyCount(emp.id, form.date) }} navbat band
+                {{ salonStore.busyCount(emp.id, form.date) }} navbat band
               </span>
             </div>
           </div>
@@ -114,16 +114,16 @@
         </p>
         <div class="slots-grid">
           <button
-            v-for="t in store.timeSlots"
+            v-for="t in salonStore.timeSlots"
             :key="t"
             type="button"
             class="slot-btn"
             :class="{
               selected: form.time === t,
-              busy: store.isSlotBusy(t, form.date, form.service, form.employeeId, null),
-              free: !store.isSlotBusy(t, form.date, form.service, form.employeeId, null),
+              busy: salonStore.isSlotBusy(t, form.date, form.service, form.employeeId, null),
+              free: !salonStore.isSlotBusy(t, form.date, form.service, form.employeeId, null),
             }"
-            :disabled="store.isSlotBusy(t, form.date, form.service, form.employeeId, null)"
+            :disabled="salonStore.isSlotBusy(t, form.date, form.service, form.employeeId, null)"
             @click="form.time = t"
           >{{ t }}</button>
         </div>
@@ -137,31 +137,34 @@
 
       <div class="form-footer">
         <RouterLink to="/staff/schedule" class="btn-secondary">Bekor qilish</RouterLink>
-        <button class="btn-primary" @click="submit">Navbatni saqlash</button>
+        <button class="btn-primary" @click="submit" :disabled="firebaseStore.loading">
+          {{ firebaseStore.loading ? 'Saqlanmoqda...' : 'Navbatni saqlash' }}
+        </button>
       </div>
-
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
-import { useSalonStore } from '@/stores/salonStore'
+import { ref, computed, reactive } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
+import { useSalonStore } from '@/stores/salonStore';
+import { useFirebaseStore } from '@/stores/firebaseStore';
 
-const store  = useSalonStore()
-const router = useRouter()
+const salonStore = useSalonStore();
+const firebaseStore = useFirebaseStore();
+const router = useRouter();
 
 const form = reactive({
   clientName: '',
   phone:      '',
   service:    '',
   duration:   0,
-  date:       store.today,
+  date:       salonStore.today,
   time:       '',
   employeeId: 0,
   note:       '',
-})
+});
 
 const errors = reactive({
   clientName:  '',
@@ -169,39 +172,38 @@ const errors = reactive({
   date:        '',
   employeeId:  '',
   time:        '',
-})
+});
 
-// ── Faqat mos xodimlar ──
 const availableEmployees = computed(() =>
-  store.employeesForService(form.service)
-)
+  salonStore.employeesForService(form.service)
+);
 
 function onServiceChange() {
-  const svc = store.services.find(s => s.name === form.service)
-  form.duration    = svc?.duration ?? 0
-  form.employeeId  = 0
-  form.time        = ''
+  const svc = salonStore.services.find(s => s.name === form.service);
+  form.duration    = svc?.duration ?? 0;
+  form.employeeId  = 0;
+  form.time        = '';
 }
 
 function pickEmployee(id: number) {
-  if (store.isEmployeeFull(id, form.date, form.service)) return
-  form.employeeId = id
-  form.time       = ''
+  if (salonStore.isEmployeeFull(id, form.date, form.service)) return;
+  form.employeeId = id;
+  form.time       = '';
 }
 
 function validate(): boolean {
-  errors.clientName  = form.clientName.trim()  ? '' : 'Mijoz ismi kiritilishi shart'
-  errors.service     = form.service            ? '' : 'Xizmat turi tanlanishi shart'
-  errors.date        = form.date               ? '' : 'Sana tanlanishi shart'
-  errors.employeeId  = form.employeeId         ? '' : 'Xodim tanlanishi shart'
-  errors.time        = form.time               ? '' : 'Vaqt tanlanishi shart'
-  return Object.values(errors).every(e => !e)
+  errors.clientName  = form.clientName.trim()  ? '' : 'Mijoz ismi kiritilishi shart';
+  errors.service     = form.service            ? '' : 'Xizmat turi tanlanishi shart';
+  errors.date        = form.date               ? '' : 'Sana tanlanishi shart';
+  errors.employeeId  = form.employeeId         ? '' : 'Xodim tanlanishi shart';
+  errors.time        = form.time               ? '' : 'Vaqt tanlanishi shart';
+  return Object.values(errors).every(e => !e);
 }
 
-function submit() {
-  if (!validate()) return
+const submit = async () => {
+  if (!validate()) return;
 
-  store.addBooking({
+  await firebaseStore.addBooking({
     clientName: form.clientName.trim(),
     phone:      form.phone.trim(),
     service:    form.service,
@@ -209,12 +211,13 @@ function submit() {
     date:       form.date,
     time:       form.time,
     status:     'Kutilmoqda',
-    source:     'staff',
-    employeeId: form.employeeId,
-    note:       form.note.trim() || undefined,
-  })
+    source:     'manual',
+    employeeId: String(form.employeeId),
+  });
 
-  router.push('/staff/schedule')
+  if (!firebaseStore.error) {
+    await router.push('/staff/schedule');
+  }
 }
 </script>
 
@@ -227,34 +230,27 @@ function submit() {
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
-
-/* header */
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
 }
-
 .page-title {
   font-size: 24px;
   font-weight: 800;
   color: #0f172a;
 }
-
 .page-sub {
   font-size: 14px;
   color: #64748b;
 }
-
-/* step */
 .step-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: 32px 0 16px;
 }
-
 .step-num {
   width: 32px;
   height: 32px;
@@ -267,21 +263,17 @@ function submit() {
   align-items: center;
   justify-content: center;
 }
-
 .step-label {
   font-size: 16px;
   font-weight: 700;
   color: #1e293b;
 }
-
-/* inputs */
 .form-group label {
   font-size: 13px;
   font-weight: 600;
   color: #334155;
   margin-bottom: 6px;
 }
-
 input, select, textarea {
   width: 100%;
   padding: 10px 12px;
@@ -291,7 +283,6 @@ input, select, textarea {
   transition: all 0.2s ease;
   font-size: 14px;
 }
-
 input:focus,
 select:focus,
 textarea:focus {
@@ -299,25 +290,19 @@ textarea:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
 }
-
-/* error */
 .error {
   border-color: #ef4444 !important;
 }
-
 .error-msg {
   font-size: 12px;
   color: #ef4444;
   margin-top: 4px;
 }
-
-/* employee cards */
 .emp-picker {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 12px;
 }
-
 .emp-pick-card {
   display: flex;
   align-items: center;
@@ -329,22 +314,18 @@ textarea:focus {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
 .emp-pick-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0,0,0,0.06);
 }
-
 .emp-pick-card.selected {
   border-color: #6366f1;
   background: #eef2ff;
 }
-
 .emp-pick-card.full {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 .ep-avatar {
   width: 40px;
   height: 40px;
@@ -355,49 +336,39 @@ textarea:focus {
   align-items: center;
   justify-content: center;
 }
-
 .ep-info {
   display: flex;
   flex-direction: column;
 }
-
 .ep-name {
   font-weight: 600;
   font-size: 14px;
 }
-
 .ep-role {
   font-size: 12px;
   color: #64748b;
 }
-
 .ep-right {
   margin-left: auto;
   text-align: right;
 }
-
 .ep-free {
   font-size: 12px;
   font-weight: 600;
   color: #16a34a;
 }
-
 .ep-free.none {
   color: #ef4444;
 }
-
 .ep-busy-count {
   font-size: 11px;
   color: #94a3b8;
 }
-
-/* time slots */
 .slots-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
   gap: 8px;
 }
-
 .slot-btn {
   padding: 8px;
   border-radius: 10px;
@@ -407,32 +378,25 @@ textarea:focus {
   font-size: 13px;
   transition: all 0.2s ease;
 }
-
 .slot-btn:hover {
   background: #f1f5f9;
 }
-
 .slot-btn.selected {
   background: #6366f1;
   color: white;
   border-color: #6366f1;
 }
-
 .slot-btn.busy {
   background: #f1f5f9;
   color: #94a3b8;
   cursor: not-allowed;
 }
-
-/* footer */
 .form-footer {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
   margin-top: 30px;
 }
-
-/* buttons */
 .btn-primary {
   background: linear-gradient(135deg, #6366f1, #4f46e5);
   color: white;
@@ -441,12 +405,10 @@ textarea:focus {
   font-weight: 600;
   transition: 0.2s;
 }
-
 .btn-primary:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(79,70,229,0.3);
 }
-
 .btn-secondary {
   background: #f1f5f9;
   padding: 10px 16px;
