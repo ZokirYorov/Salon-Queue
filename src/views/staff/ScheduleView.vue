@@ -33,7 +33,16 @@
         </div>
 
         <!-- Scrollable Body -->
-        <div v-if="dayBookings.length === 0 && !firebaseStore.loading" class="text-center py-10 text-gray-400">Ushbu sanada navbatlar yo'q</div>
+        <div
+            v-if="dayBookings.length === 0 && !firebaseStore.loading"
+            class="flex items-center justify-center sm:text-base lg:text-lg text-gray-400 font-medium max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-7xl py-10 px-4"
+        >
+          <span
+              class="text-center text-sm"
+          >
+            Ushbu sanada navbatlar yo'q
+          </span>
+        </div>
         <div v-else v-for="slot in timeSlots" :key="slot" class="grid border-b border-gray-100 hover:bg-gray-50" :style="{ gridTemplateColumns: gridCols }" :class="{'current-time-row': isCurrentSlot(slot)}">
           <div class="sticky left-0 px-3 z-10 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 flex items-center bg-white" :class="{'bg-orange-50': isCurrentSlot(slot)}">{{ slot }}</div>
           <div v-for="emp in firebaseStore.employees" :key="emp.id" class="flex flex-col gap-1 p-1 border-r border-gray-200 min-h-[48px]">
