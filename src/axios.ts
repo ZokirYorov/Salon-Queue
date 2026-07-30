@@ -19,12 +19,14 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
     response => response,
     error => {
-        if (error.response && error.response.status === 401) {
+        // Faqat token yuborilgan so'rov 401 qaytarsa (ya'ni sessiya haqiqatan tugagan bo'lsa)
+        // tozalaymiz — bo'lmasa, bu shunchaki tizimga kirmagan mehmonning ochiq sahifada
+        // fon vazifasi (masalan kunlik bandlik) 401 olishi, bu sahifani majburan
+        // login'ga uloqtirishga sabab bo'lmasligi kerak.
+        const hadToken = Boolean(error.config?.headers?.Authorization);
+        if (hadToken && error.response && error.response.status === 401) {
             localStorage.removeItem("access_token");
             localStorage.removeItem("current_user");
-            if (location.pathname !== '/login') {
-                location.href = '/login';
-            }
         }
         return Promise.reject(error);
     }

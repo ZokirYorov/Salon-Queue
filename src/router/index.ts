@@ -7,13 +7,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/businesses',
         name: 'Dashboard',
         component: () => import('@/views/Dashboard.vue'),
-        meta: { requiresAuth: true },
     },
     {
         path: '/business/:id',
         name: 'business-detail',
         component: () => import('@/views/client/BookView.vue'),
-        meta: { requiresAuth: true },
     },
     {
         path: '/client',

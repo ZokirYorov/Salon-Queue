@@ -7,12 +7,27 @@
         <RouterLink to="/login" class="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Tizimga kirish</RouterLink>
       </div>
 
+      <div v-else-if="loading" class="space-y-6">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 animate-pulse">
+          <div class="flex flex-col items-center">
+            <div class="w-24 h-24 rounded-full bg-slate-200 dark:bg-slate-700 mb-4" />
+            <div class="h-5 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-2" />
+            <div class="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
+          </div>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 animate-pulse space-y-3">
+          <div class="h-3 w-40 bg-slate-200 dark:bg-slate-700 rounded" />
+          <div class="h-9 bg-slate-100 dark:bg-slate-700 rounded-lg" />
+          <div class="h-9 bg-slate-100 dark:bg-slate-700 rounded-lg" />
+        </div>
+      </div>
+
       <template v-else>
         <!-- Avatar + stats -->
         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
           <div class="flex flex-col items-center">
             <div class="relative w-24 h-24 mb-4">
-              <div class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold">
+              <div class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold ring-4 ring-indigo-50 dark:ring-slate-700">
                 <img v-if="mediaUrl(profile?.avatarUrl)" :src="mediaUrl(profile?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
                 <span v-else>{{ (profile?.displayName || authStore.user.login).charAt(0).toUpperCase() }}</span>
               </div>
@@ -43,22 +58,34 @@
         <!-- Edit form -->
         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mt-6">
           <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4">Ma'lumotlarni tahrirlash</h2>
-          <form @submit.prevent="save" class="space-y-3">
+          <form @submit.prevent="save" class="space-y-3.5">
             <div>
               <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Ism Familiya</label>
-              <input v-model="form.displayName" type="text" class="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                <input v-model="form.displayName" type="text" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Email</label>
-              <input v-model="form.email" type="email" class="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                <input v-model="form.email" type="email" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Telefon</label>
-              <input v-model="form.phone" type="tel" placeholder="+998901234567" class="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                <input v-model="form.phone" type="tel" placeholder="+998901234567" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Yangi parol</label>
-              <input v-model="form.password" type="password" placeholder="O'zgartirmaslik uchun bo'sh qoldiring" class="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                <input v-model="form.password" type="password" placeholder="O'zgartirmaslik uchun bo'sh qoldiring" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
             </div>
             <button type="submit" :disabled="saving" class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold py-2.5 rounded-lg transition">
               {{ saving ? 'Saqlanmoqda...' : 'Saqlash' }}
@@ -66,31 +93,14 @@
           </form>
         </div>
 
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mt-6">
-          <button @click="showLogoutConfirm = true" class="w-full text-left flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" /></svg>
-            Tizimdan chiqish
-          </button>
-        </div>
       </template>
-    </div>
-
-    <div v-if="showLogoutConfirm" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50">
-      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tizimdan chiqish</h3>
-        <p class="text-sm text-slate-500 dark:text-slate-400">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
-        <div class="grid grid-cols-2 gap-2">
-          <button @click="showLogoutConfirm = false" class="text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition">Bekor qilish</button>
-          <button @click="logout" class="text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg py-2 transition">Chiqish</button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
-import { useRouter, RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useAuthStore } from '@/stores/auth';
 import { usersApi } from '@/api/users';
@@ -99,14 +109,13 @@ import { mediaUrl } from '@/utils/media';
 import AppHeader from '@/components/AppHeader.vue';
 import type { User } from '@/types/api';
 
-const router = useRouter();
 const authStore = useAuthStore();
 const toast = useToast();
 
 const profile = ref<User | null>(null);
+const loading = ref(true);
 const saving = ref(false);
 const uploadingAvatar = ref(false);
-const showLogoutConfirm = ref(false);
 const stats = reactive({ total: 0, businesses: 0 });
 
 const form = reactive({ displayName: '', email: '', phone: '', password: '' });
@@ -135,9 +144,12 @@ async function loadStats() {
   stats.businesses = new Set(data.content.map((b) => b.businessId)).size;
 }
 
-onMounted(() => {
-  loadProfile();
-  loadStats();
+onMounted(async () => {
+  try {
+    await Promise.all([loadProfile(), loadStats()]);
+  } finally {
+    loading.value = false;
+  }
 });
 
 async function onAvatarChange(e: Event) {
@@ -187,9 +199,4 @@ async function save() {
     saving.value = false;
   }
 }
-
-const logout = () => {
-  authStore.logout();
-  router.push('/login');
-};
 </script>

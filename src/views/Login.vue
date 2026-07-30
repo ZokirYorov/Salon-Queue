@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors">
+  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors">
+    <RouterLink to="/businesses" class="mb-6 text-xl font-black tracking-tight text-slate-900 dark:text-white">
+      Nav<span class="text-indigo-600 dark:text-indigo-400">bat</span>
+    </RouterLink>
     <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-800 p-10 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700">
       <div>
         <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900 dark:text-white">
@@ -7,7 +10,7 @@
         </h2>
         <p class="mt-4 text-center text-base text-gray-600 dark:text-slate-400">
           Hisobingiz yo'qmi?
-          <RouterLink to="/register" class="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors duration-200">
+          <RouterLink :to="{ name: 'Register', query: route.query }" class="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors duration-200">
             Ro'yxatdan o'ting
           </RouterLink>
         </p>
@@ -41,10 +44,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter, RouterLink } from 'vue-router';
+import { useRouter, useRoute, RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
 const login = ref('');
 const password = ref('');
@@ -56,7 +60,8 @@ const handleLogin = async () => {
   loading.value = true;
   try {
     await authStore.login({ login: login.value.trim(), password: password.value });
-    router.push('/businesses');
+    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/businesses';
+    router.push(redirect);
   } catch (e: any) {
     error.value = e?.response?.data?.message || 'Login yoki parol noto\'g\'ri';
   } finally {
