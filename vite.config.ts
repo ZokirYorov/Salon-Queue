@@ -17,18 +17,18 @@ export default defineConfig(({ mode }) => {
                 "@": path.resolve(__dirname, "src"),
             }
         },
-        server: {
-            port: 5175,
-            proxy: {
-                '/api': {
-                    target: env.VITE_BASE_API || 'http://34.76.229.135',
-                    changeOrigin: true,
-                },
-                '/uploads': {
-                    target: env.VITE_BASE_API || 'http://34.76.229.135',
-                    changeOrigin: true,
-                },
-            }
-        }
+        // server: {
+        //     port: 5175,
+        //     proxy: {
+        //         '/api': {
+        //             target: env.VITE_BASE_API || 'http://34.76.229.135',
+        //             changeOrigin: true,
+        //         },
+        //         '/uploads': {
+        //             target: env.VITE_BASE_API || 'http://34.76.229.135',
+        //             changeOrigin: true,
+        //         },
+        //     }
+        // }
     }
 })
