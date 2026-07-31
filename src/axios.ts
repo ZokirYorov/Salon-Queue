@@ -3,7 +3,7 @@ import axios from "axios";
 const axiosInstance = axios.create({
     // Proxy ishlashi uchun baseURL to'liq manzil bo'lmasligi kerak.
     // Barcha so'rovlar /api/v1/... dan boshlanadi va vite proxy'si buni to'g'ri manzilga yo'naltiradi.
-    baseURL: `http://34.76.229.135/api/v1`,
+    baseURL: `https://34-76-229-135.nip.io/api/v1`,
     headers: {
         "Content-Type": "application/json"
     }

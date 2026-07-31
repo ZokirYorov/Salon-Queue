@@ -15,7 +15,9 @@ axios.defaults.baseURL="";
 const pinia = createPinia()
 
 createApp(App)
-    .use(Toast)
+    .use(Toast, {
+        timeout: 1800
+    })
     .use(router)
     .component('VueDatePicker',VueDatePicker)
     .use(pinia)
