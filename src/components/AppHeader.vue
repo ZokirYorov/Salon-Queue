@@ -26,13 +26,13 @@
         <!-- Anonymous: Kirish / Ro'yxatdan o'tish -->
         <template v-if="!authStore.user">
           <button
-            @click="authModal.open({ mode: 'login', anchorEl: $event.currentTarget })"
+            @click="authModal.open({ mode: 'login' })"
             class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
           >
             Kirish
           </button>
           <button
-            @click="authModal.open({ mode: 'register', anchorEl: $event.currentTarget })"
+            @click="authModal.open({ mode: 'register' })"
             class="text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg transition"
           >
             Ro'yxatdan o'tish

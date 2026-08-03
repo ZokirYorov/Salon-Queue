@@ -99,7 +99,7 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="step-title">Xizmatni tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">Xizmatni tanlang</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
               <button
                 v-for="svc in services"
@@ -134,7 +134,7 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="step-title">Sana tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">Sana tanlang</p>
             <div class="flex flex-wrap items-center gap-2 mt-3">
               <button
                 type="button"
@@ -165,7 +165,7 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="step-title">Ustani tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">Ustani tanlang</p>
             <div v-if="staff.length === 0" class="text-sm text-slate-400 mt-2">Bu salonda faol xodim topilmadi.</div>
             <div class="flex gap-3 mt-3 overflow-x-auto pb-1 -mx-1 px-1">
               <button
@@ -198,7 +198,7 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="step-title">Vaqtni tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">Vaqtni tanlang</p>
             <p v-if="dayClosed" class="text-sm text-amber-600 dark:text-amber-400 mt-2">Bu kunda salon yopiq.</p>
             <p v-else-if="possibleStarts.length === 0" class="text-sm text-slate-400 mt-2">Bo'sh vaqt topilmadi.</p>
             <div v-else class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-3">
@@ -228,8 +228,8 @@
             <span class="step-num" :class="{ active: step5Reachable }">5</span>
           </div>
           <div class="step-body">
-            <p class="step-title">Izoh <span class="font-normal text-slate-400">(ixtiyoriy)</span></p>
-            <textarea v-model="form.customerNote" rows="2" class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white dark:placeholder-slate-400 rounded-lg px-3 py-2 text-sm mt-3" placeholder="Qo'shimcha izoh"></textarea>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">Izoh <span class="font-normal text-slate-400">(ixtiyoriy)</span></p>
+            <textarea v-model="form.customerNote" rows="2" class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 font-bold text-slate-800 dark:text-white dark:placeholder-slate-400 rounded-lg px-3 py-2 text-sm mt-3" placeholder="Qo'shimcha izoh"></textarea>
             <p v-if="submitError" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2 mt-3">{{ submitError }}</p>
           </div>
         </div>
@@ -283,7 +283,7 @@ import { useAuthModal } from '@/composables/useAuthModal';
 import type { Business, OfferedService, StaffMember, BusinessHours, Booking, Review } from '@/types/api';
 import { weekdayFromDate, toMinutes, todayIso, isStaffBusy, generatePossibleStarts, minutesToLabel, dateAndMinutesToIso } from '@/utils/scheduling';
 import { formatPrice, formatDate } from '@/utils/format';
-import { mediaUrl } from '@/utils/media';
+// import { mediaUrl } from '@/utils/media';
 import DatePicker from '@/components/DatePicker.vue';
 import AppHeader from '@/components/AppHeader.vue';
 
