@@ -67,7 +67,7 @@
           <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-indigo-500 to-cyan-400 flex-shrink-0">
             <img
               v-if="card.image"
-              :src="getAvatarUrl(card.image)"
+              :src="getAvatarUrl(card.image)!"
               :alt="card.business.name"
               class="h-full w-full object-cover object-center transition duration-300 group-hover:scale-105"
             />
