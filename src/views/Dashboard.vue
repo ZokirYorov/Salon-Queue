@@ -67,7 +67,7 @@
           <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-indigo-500 to-cyan-400 flex-shrink-0">
             <img
               v-if="card.image"
-              :src="mediaUrl(card.image)!"
+              :src="getAvatarUrl(card.image)!"
               :alt="card.business.name"
               class="h-full w-full object-cover object-center transition duration-300 group-hover:scale-105"
             />
@@ -208,4 +208,13 @@ const filteredCards = computed(() => {
 
   return result;
 });
+
+const BASE_URL = import.meta.env.VITE_BASE_API as string;
+
+const getAvatarUrl = (url: string | undefined): string => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  return `${BASE_URL}${url}`;
+};
+
 </script>
