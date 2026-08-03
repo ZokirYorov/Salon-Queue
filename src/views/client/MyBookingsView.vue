@@ -42,7 +42,10 @@
           <div class="flex-1 min-w-0">
             <h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">{{ b.offeredServiceName || 'Xizmat' }}</h4>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{{ b.businessName }} · {{ b.staffName || '—' }}</p>
-            <p class="text-xs text-slate-400 mt-0.5">{{ formatDateTime(b.startAt) }} — {{ formatTime(b.endAt) }}</p>
+            <p class="text-xs items-center flex gap-1 text-slate-400 mt-0.5">
+              <i class="fa-regular fa-calendar-check"></i>
+              {{ formatDateTime(b.startAt) }} — {{ formatTime(b.endAt) }}
+            </p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
             <span class="text-xs font-semibold px-2.5 py-1 rounded-full" :class="statusClass(b.status)">{{ statusLabel(b.status) }}</span>
@@ -70,7 +73,10 @@
           <div class="flex-1 min-w-0">
             <h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">{{ b.offeredServiceName || 'Xizmat' }}</h4>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{{ b.businessName }} · {{ b.staffName || '—' }}</p>
-            <p class="text-xs text-slate-400 mt-0.5">{{ formatDateTime(b.startAt) }}</p>
+            <p class="text-xs flex items-center gap-1 text-slate-400 mt-0.5">
+              <i class="fa-regular fa-calendar-check"></i>
+              {{ formatDateTime(b.startAt) }}
+            </p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
             <span class="text-xs font-semibold px-2.5 py-1 rounded-full" :class="statusClass(b.status)">{{ statusLabel(b.status) }}</span>
@@ -86,7 +92,10 @@
       </section>
     </template>
 
-    <div v-if="cancelTarget" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50">
+    <div
+        v-if="cancelTarget"
+        @click.self="cancelTarget = null"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50">
       <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
         <h3 class="text-lg font-bold text-slate-900 dark:text-white">Navbatni bekor qilish</h3>
         <p class="text-sm text-slate-500 dark:text-slate-400">
@@ -101,7 +110,11 @@
       </div>
     </div>
 
-    <div v-if="reviewTarget" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50">
+    <div
+        v-if="reviewTarget"
+        @click.self="reviewTarget = null"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50"
+    >
       <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
         <h3 class="text-lg font-bold text-slate-900 dark:text-white">Sharh qoldirish</h3>
         <div class="flex gap-1">
