@@ -110,7 +110,7 @@
                 :class="form.offeredServiceId === svc.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
                 <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-700 flex-shrink-0 flex items-center justify-center">
-                  <img v-if="svc.imageUrl" :src="mediaUrl(svc.imageUrl)!" :alt="svc.name" class="w-full h-full object-cover" />
+                  <img v-if="svc.imageUrl" :src="getAvatarUrl(svc.imageUrl)" :alt="svc.name" class="w-full h-full object-cover" />
                   <span v-else class="text-indigo-400 text-lg font-bold">{{ svc.name.charAt(0).toUpperCase() }}</span>
                 </div>
                 <div class="min-w-0">
@@ -458,6 +458,14 @@ function selectService(svc: OfferedService) {
   form.staffId = '';
   form.startMinutes = null;
 }
+
+const BASE_URL = import.meta.env.VITE_BASE_API as string;
+
+const getAvatarUrl = (url: string | undefined): string => {
+  if (!url) return "";
+  if (url.startsWith("https")) return url;
+  return `${BASE_URL}${url}`;
+};
 
 function selectStaff(id: string) {
   form.staffId = id;
