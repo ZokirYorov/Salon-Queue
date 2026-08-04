@@ -36,7 +36,7 @@
 
       <!-- Reviews -->
       <div v-if="!loadingServices" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 mb-4">
-        <button type="button" @click="reviewsOpen = !reviewsOpen" class="w-full flex items-center justify-between text-left rounded-lg -mx-2 px-2 py-1 transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
+        <button type="button" @click="reviewsOpen = !reviewsOpen" class="w-full flex cursor-pointer items-center justify-between text-left rounded-lg -mx-2 px-2 py-1 transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
           <p class="text-sm font-bold text-slate-800 dark:text-white">Mijozlar sharhlari</p>
           <div class="flex items-center gap-2">
             <div v-if="businessReviewCount > 0" class="flex items-center gap-1 text-xs">
@@ -106,7 +106,7 @@
                 :key="svc.id"
                 type="button"
                 @click="selectService(svc)"
-                class="flex items-center gap-3 text-left border rounded-xl p-2.5 transition"
+                class="flex items-center cursor-pointer gap-3 text-left border rounded-xl p-2.5 transition"
                 :class="form.offeredServiceId === svc.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
                 <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-700 flex-shrink-0 flex items-center justify-center">
@@ -257,12 +257,49 @@
           </p>
         </div>
         <button
+            type="button"
+            @click="openModal = true"
+            class="flex-shrink-0 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 p-2.5 rounded-xl transition cursor-pointer"
+        >
+          Bekor qilish
+        </button>
+        <button
           type="button"
           :disabled="submitting || form.startMinutes === null"
           @click="submit"
-          class="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition"
+          class="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-sm font-semibold cursor-pointer px-5 py-2.5 rounded-xl transition"
+          :class="{ 'disabled:opacity-40 cursor-not-allowed': submitting || form.startMinutes === null }"
         >
           {{ submitting ? 'Yuborilmoqda...' : authStore.user ? 'Navbat olish' : 'Tizimga kirish' }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+      v-if="openModal === true"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 transition-opacity w-full h-full"
+      @click="openModal = false"
+  >
+    <div
+        class=" bg-white dark:bg-gray-800 p-6 rounded-2xl flex flex-col justify-between gap-4 relative"
+    >
+      <button
+          class="w-4 h-4 p-3.5 cursor-pointer hover:border-gray-300 dark:hover:border-gray-400 dark:border-gray-600 border text-lg border-gray-200 dark:text-gray-400 dark:hover:text-gray-200 text-gray-500 flex items-center justify-center absolute rounded-md top-2 right-2"
+          @click="openModal = false"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="flex flex-col items-center border-b border-slate-200 dark:border-slate-700 py-6">
+        <p class="text-lg font-bold text-slate-600 dark:text-white">Tanlanganlarni bekor qilishni xohlaysizmi ?</p>
+        <p class="text-blue-800 dark:text-blue-400 text-sm font-semibold">Unda qaytadan tanlashga harakat qilish mumkin !</p>
+      </div>
+      <div class="flex items-center gap-2 justify-center">
+        <button class="text-red-600 bg-red-100 hover:bg-red-200 hover:text-red-700 cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold" @click="openModal = false">Yo'q</button>
+        <button
+            class="bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
+            @click="formCleaned"
+        >
+          Ha, bekor
         </button>
       </div>
     </div>
@@ -302,6 +339,7 @@ const loadingServices = ref(false);
 const loadError = ref('');
 const submitting = ref(false);
 const submitError = ref('');
+const openModal = ref(false);
 
 const form = reactive({
   offeredServiceId: '',
@@ -310,6 +348,15 @@ const form = reactive({
   startMinutes: null as number | null,
   customerNote: '',
 });
+
+const formCleaned = () => {
+  form.offeredServiceId = '';
+  form.staffId = '';
+  form.startMinutes = null;
+  form.customerNote = '';
+}
+
+
 
 function tomorrowIso(): string {
   const d = new Date();
