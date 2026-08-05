@@ -16,8 +16,8 @@
 
         <button
           @click="toggleTheme"
-          class="w-9 h-9 rounded-lg flex items-center justify-center text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex-shrink-0"
-          :aria-label="theme === 'dark' ? 'Yorug\' rejimga o\'tish' : 'Tungi rejimga o\'tish'"
+          class="w-9 h-9 rounded-lg cursor-pointer flex items-center justify-center text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex-shrink-0"
+          :title="theme === 'dark' ? 'Yorug\' rejimga o\'tish' : 'Tungi rejimga o\'tish'"
         >
           <svg v-if="theme === 'dark'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
           <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
@@ -43,7 +43,7 @@
         <div v-else class="relative" v-click-outside="() => (dropdownOpen = false)">
           <button
             @click="dropdownOpen = !dropdownOpen"
-            class="flex items-center gap-2 text-sm font-semibold rounded-lg px-2 py-1.5 transition"
+            class="flex items-center cursor-pointer gap-2 text-sm font-semibold rounded-lg px-2 py-1.5 transition"
             :class="isActive('/profile') ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-500/30' : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'"
           >
             <span class="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -89,13 +89,26 @@
   </header>
 
   <Teleport to="body">
-    <div v-if="showLogoutConfirm" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50">
+    <div v-if="showLogoutConfirm"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50"
+         @click="showLogoutConfirm = false"
+    >
       <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
         <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tizimdan chiqish</h3>
         <p class="text-sm text-slate-500 dark:text-slate-400">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
         <div class="grid grid-cols-2 gap-2">
-          <button @click="showLogoutConfirm = false" class="text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition">Bekor qilish</button>
-          <button @click="logout" class="text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg py-2 transition">Chiqish</button>
+          <button
+              @click="showLogoutConfirm = false"
+              class="text-sm cursor-pointer font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition"
+          >
+            Bekor qilish
+          </button>
+          <button
+              @click="logout"
+              class="text-sm cursor-pointer font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg py-2 transition"
+          >
+            Chiqish
+          </button>
         </div>
       </div>
     </div>
