@@ -3,6 +3,14 @@
     <AppHeader />
 
     <main class="max-w-3xl mx-auto px-4 sm:px-6 py-6" :class="selectedService ? 'pb-28' : 'pb-6'">
+      <button
+          type="button"
+          @click="router.back()"
+          class="text-gray-800 rounded-lg cursor-pointer dark:hover:bg-gray-800 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 border border-gray-200 px-2 py-1 mb-2"
+      >
+        <i class="fa-solid fa-arrow-left"></i>
+        Orqaga
+      </button>
       <p v-if="loadError" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2 mb-6">{{ loadError }}</p>
 
       <!-- Business info -->
@@ -36,7 +44,11 @@
 
       <!-- Reviews -->
       <div v-if="!loadingServices" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 mb-4">
-        <button type="button" @click="reviewsOpen = !reviewsOpen" class="w-full flex cursor-pointer items-center justify-between text-left rounded-lg -mx-2 px-2 py-1 transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
+        <button
+            type="button"
+            @click="reviewsOpen = !reviewsOpen"
+            class="w-full shadow-sm dark:bg-slate-700/80 flex cursor-pointer items-center justify-between text-left rounded-lg -mx-2 px-2 py-2 transition hover:bg-slate-50 dark:hover:bg-slate-700/50"
+        >
           <p class="text-sm font-bold text-slate-800 dark:text-white">Mijozlar sharhlari</p>
           <div class="flex items-center gap-2">
             <div v-if="businessReviewCount > 0" class="flex items-center gap-1 text-xs">
@@ -167,7 +179,7 @@
           <div class="step-body">
             <p class="text-sm font-bold text-slate-800 dark:text-white">Ustani tanlang</p>
             <div v-if="filteredStaff.length === 0" class="text-sm text-slate-400 mt-2">Bu xizmat uchun faol xodim topilmadi.</div>
-            <div class="flex gap-3 mt-3 overflow-x-auto pb-1 -mx-1 px-1">
+            <div class="flex gap-3 mt-3 flex-wrap pb-1 -mx-1 px-1">
               <button
                 v-for="s in filteredStaff"
                 :key="s.id"

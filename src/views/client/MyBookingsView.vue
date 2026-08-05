@@ -8,7 +8,6 @@
       <RouterLink to="/businesses" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-3.5 py-2 rounded-lg transition flex-shrink-0">+ Yangi navbat</RouterLink>
     </div>
 
-    <!-- Loading skeleton -->
     <div v-if="loading" class="space-y-3">
       <div v-for="i in 3" :key="i" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 animate-pulse flex items-center gap-4">
         <div class="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-700 flex-shrink-0" />
@@ -19,7 +18,6 @@
       </div>
     </div>
 
-    <!-- Empty state -->
     <div v-else-if="bookings.length === 0" class="text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
       <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center">
         <svg class="w-7 h-7 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -29,7 +27,6 @@
     </div>
 
     <template v-else>
-      <!-- Upcoming -->
       <section v-if="upcoming.length > 0" class="space-y-3">
         <h3 class="text-xs font-bold uppercase tracking-wide text-slate-400">Kelayotgan navbatlar</h3>
         <div
@@ -59,16 +56,14 @@
           </div>
         </div>
       </section>
-
-      <!-- Past -->
       <section v-if="past.length > 0" class="space-y-3">
         <h3 class="text-xs font-bold uppercase tracking-wide text-slate-400">O'tgan navbatlar</h3>
         <div
           v-for="b in past" :key="b.id"
           :class="['bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 border-l-4 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-3 opacity-90', statusBorderClass(b.status)]"
         >
-          <div class="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-400 flex items-center justify-center font-bold text-sm flex-shrink-0">
-            {{ (b.offeredServiceName || 'X').charAt(0).toUpperCase() }}
+          <div class="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-500 flex items-center justify-center font-bold text-sm flex-shrink-0">
+            {{ (b.businessName || 'X').charAt(0).toUpperCase() }}
           </div>
           <div class="flex-1 min-w-0">
             <h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">{{ b.offeredServiceName || 'Xizmat' }}</h4>
@@ -83,7 +78,7 @@
             <button
               v-if="b.status === 'COMPLETED'"
               @click="openReview(b)"
-              class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 px-2.5 py-1 rounded-lg transition"
+              class="text-xs font-semibold cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 px-2.5 py-1 rounded-lg transition"
             >
               {{ reviewedBookingIds.has(b.id) ? 'Yana sharh qoldirish' : 'Sharh qoldirish' }}
             </button>
@@ -91,7 +86,6 @@
         </div>
       </section>
     </template>
-
     <div
         v-if="cancelTarget"
         @click.self="cancelTarget = null"
@@ -109,22 +103,112 @@
         </div>
       </div>
     </div>
-
     <div
         v-if="reviewTarget"
         @click.self="reviewTarget = null"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50"
     >
       <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Sharh qoldirish</h3>
-        <div class="flex gap-1">
-          <button v-for="n in 5" :key="n" @click="reviewForm.stars = n" type="button" class="text-2xl transition hover:scale-110 hover:text-amber-400" :class="n <= reviewForm.stars ? 'text-amber-400' : 'text-slate-200 dark:text-slate-600'">★</button>
+        <div class="flex items-center justify-between gap-3">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Sharh qoldirish</h3>
+          <button
+              @click="reviewTarget = null"
+              class="flex items-center justify-center cursor-pointer rounded text-gray-600 dark:text-white/60 dark:hover:text-gray-200 dark:hover:border-gray-500 w-4 h-4 p-3.5 border border-gray-200 dark:border-gray-600">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
-        <textarea v-model="reviewForm.comment" rows="3" class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2 text-sm" placeholder="Fikringiz..."></textarea>
+        <div class="flex gap-2 items-center text-sm font-semibold">
+          <div class="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 dark:text-indigo-300 flex items-center justify-center font-bold text-sm flex-shrink-0">
+            {{ (reviewTarget.businessName || 'X').charAt(0).toUpperCase() }}
+          </div>
+          <div>
+            <p class="text-gray-800 dark:text-white/80">Tashkilot: <span class="text-gray-600 dark:text-white/80">{{reviewTarget.businessName}}</span></p>
+            <p class="text-gray-800 dark:text-white/80">Xodim: <span class="text-gray-600 dark:text-white/80">{{reviewTarget.staffName}}</span></p>
+          </div>
+        </div>
+        <div class="flex flex-col border-b border-gray-100 dark:border-gray-600 pb-3 gap-2">
+          <div class="flex gap-1">
+            <button
+                type="button"
+                v-for="n in 5"
+                :key="n"
+                @click="reviewForm.stars = n"
+                class="text-2xl transition hover:scale-110 hover:text-amber-400" :class="n <= reviewForm.stars ? 'text-amber-400' : 'text-slate-200 dark:text-slate-600'"
+            >
+              ★
+            </button>
+          </div>
+          <div class="flex gap-4 text-gray-600 dark:text-gray-400 font-semibold text-xs">
+            <div class="flex items-center">
+              <span>
+                1 - 2 <i class="fa-solid fa-arrow-right text-xs"></i> Yomon,
+<!--                <span-->
+<!--                    class="text-amber-400"-->
+<!--                >-->
+<!--                  ★ - ★-->
+<!--                </span>-->
+              </span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span>
+                3 <i class="fa-solid fa-arrow-right text-xs"></i> O'rtacha,
+
+<!--                <span-->
+<!--                    class="text-amber-400"-->
+<!--                >-->
+<!--                  ★-->
+<!--                </span>-->
+              </span>
+            </div>
+            <div class="flex flex-col">
+              <span>
+                4 <i class="fa-solid fa-arrow-right text-xs"></i> Yaxshi,
+
+                <!--                <span-->
+<!--                    class="text-amber-400"-->
+<!--                >-->
+<!--                  ★-->
+<!--                </span>-->
+            </span>
+            </div>
+            <div class="flex flex-col">
+              <span>
+                5 <i class="fa-solid fa-arrow-right text-xs"></i> A'lo
+<!--                <span-->
+<!--                    class="text-amber-400"-->
+<!--                >-->
+<!--                  ★-->
+<!--                </span>-->
+            </span>
+            </div>
+          </div>
+        </div>
+        <span
+            class="text-xs text-gray-800 dark:text-white mb-1 flex"
+        >
+          Xizmat haqida nimalarni ta'kidlagan bo'lardingiz? (ixtiyoriy)
+        </span>
+        <textarea
+            v-model="reviewForm.comment"
+            rows="3"
+            class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2 text-sm" placeholder="Fikringiz..."
+        >
+        </textarea>
         <p v-if="reviewError" class="text-sm text-red-600 dark:text-red-400">{{ reviewError }}</p>
         <div class="grid grid-cols-2 gap-2">
-          <button @click="reviewTarget = null" class="text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition">Bekor qilish</button>
-          <button @click="submitReview" :disabled="submittingReview" class="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg py-2 transition disabled:opacity-60">Yuborish</button>
+          <button
+              @click="reviewTarget = null"
+              class="text-sm cursor-pointer font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition"
+          >
+            Bekor qilish
+          </button>
+          <button
+              @click="submitReview"
+              :disabled="submittingReview"
+              class="text-sm cursor-pointer font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg py-2 transition disabled:opacity-60"
+          >
+            Yuborish
+          </button>
         </div>
       </div>
     </div>
