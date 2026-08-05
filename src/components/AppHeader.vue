@@ -48,7 +48,7 @@
           >
             <span class="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
               <img v-if="mediaUrl(authStore.user?.avatarUrl)" :src="mediaUrl(authStore.user?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
-              <template v-else>{{ (authStore.user?.displayName || authStore.user?.login || '?').charAt(0).toUpperCase() }}</template>
+              <template v-else>{{ firstInitial(authStore.user) }}</template>
             </span>
             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
           </button>
@@ -60,10 +60,10 @@
             <div class="flex items-center gap-3 px-4 py-3 border-b border-slate-100 dark:border-slate-700">
               <span class="w-9 h-9 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
                 <img v-if="mediaUrl(authStore.user?.avatarUrl)" :src="mediaUrl(authStore.user?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
-                <template v-else>{{ (authStore.user?.displayName || authStore.user?.login || '?').charAt(0).toUpperCase() }}</template>
+                <template v-else>{{ firstInitial(authStore.user) }}</template>
               </span>
               <div class="min-w-0">
-                <p class="text-sm font-semibold text-slate-800 dark:text-white truncate">{{ authStore.user?.displayName || authStore.user?.login }}</p>
+                <p class="text-sm font-semibold text-slate-800 dark:text-white truncate">{{ personName(authStore.user) || authStore.user?.login }}</p>
                 <p class="text-xs text-slate-400 truncate">@{{ authStore.user?.login }}</p>
               </div>
             </div>
@@ -109,6 +109,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useTheme } from '@/composables/useTheme';
 import { useAuthModal } from '@/composables/useAuthModal';
 import { mediaUrl } from '@/utils/media';
+import { firstInitial, personName } from '@/utils/names';
 
 const route = useRoute();
 const router = useRouter();

@@ -166,10 +166,10 @@
           </div>
           <div class="step-body">
             <p class="text-sm font-bold text-slate-800 dark:text-white">Ustani tanlang</p>
-            <div v-if="staff.length === 0" class="text-sm text-slate-400 mt-2">Bu salonda faol xodim topilmadi.</div>
+            <div v-if="filteredStaff.length === 0" class="text-sm text-slate-400 mt-2">Bu xizmat uchun faol xodim topilmadi.</div>
             <div class="flex gap-3 mt-3 overflow-x-auto pb-1 -mx-1 px-1">
               <button
-                v-for="s in staff"
+                v-for="s in filteredStaff"
                 :key="s.id"
                 type="button"
                 @click="selectStaff(s.id)"
@@ -177,9 +177,9 @@
                 :class="form.staffId === s.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
                 <span class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center">
-                  {{ s.displayName.charAt(0).toUpperCase() }}
+                  {{ firstInitial(s) }}
                 </span>
-                <span class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate w-full">{{ s.displayName }}</span>
+                <span class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate w-full">{{ personName(s) }}</span>
                 <span v-if="staffRatings[s.id]" class="text-[11px] text-amber-500 font-semibold flex items-center gap-0.5">
                   ⭐ {{ staffRatings[s.id].toFixed(1) }}
                 </span>
@@ -245,7 +245,7 @@
         <div class="min-w-0 flex-1">
           <p class="text-sm font-semibold text-slate-900 dark:text-white truncate">
             {{ selectedService.name }}
-            <span v-if="selectedStaff" class="text-slate-400 font-normal">· {{ selectedStaff.displayName }}</span>
+            <span v-if="selectedStaff" class="text-slate-400 font-normal">· {{ personName(selectedStaff) }}</span>
           </p>
           <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
             <template v-if="form.startMinutes !== null">
@@ -320,6 +320,7 @@ import { useAuthModal } from '@/composables/useAuthModal';
 import type { Business, OfferedService, StaffMember, BusinessHours, Booking, Review } from '@/types/api';
 import { weekdayFromDate, toMinutes, todayIso, isStaffBusy, generatePossibleStarts, minutesToLabel, dateAndMinutesToIso } from '@/utils/scheduling';
 import { formatPrice, formatDate } from '@/utils/format';
+import { firstInitial, personName } from '@/utils/names';
 // import { mediaUrl } from '@/utils/media';
 import DatePicker from '@/components/DatePicker.vue';
 import AppHeader from '@/components/AppHeader.vue';
@@ -366,6 +367,10 @@ function tomorrowIso(): string {
 
 const selectedService = computed(() => services.value.find((s) => s.id === form.offeredServiceId) || null);
 const selectedStaff = computed(() => staff.value.find((s) => s.id === form.staffId) || null);
+const filteredStaff = computed(() => {
+  if (!form.offeredServiceId) return staff.value;
+  return staff.value.filter((s) => s.serviceIds?.includes(form.offeredServiceId));
+});
 const staffRatings = ref<Record<string, number>>({});
 const businessAvgRating = ref(0);
 const businessReviewCount = ref(0);
@@ -493,6 +498,12 @@ onMounted(() => {
 watch(() => form.date, () => {
   form.startMinutes = null;
   loadDayBookings();
+});
+
+watch(() => form.offeredServiceId, () => {
+  if (form.staffId && !filteredStaff.value.some((s) => s.id === form.staffId)) {
+    form.staffId = '';
+  }
 });
 
 // Mehmon tizimga kirgandan so'ng (masalan bron oynasidan), band vaqtlarni endi ko'ra oladi

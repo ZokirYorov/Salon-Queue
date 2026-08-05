@@ -19,10 +19,10 @@
         <p v-if="error" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2">{{ error }}</p>
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="displayName" class="sr-only">Ism Familiya</label>
-            <input id="displayName" type="text" required
+            <label for="fullName" class="sr-only">Ism Familiya</label>
+            <input id="fullName" type="text" required
                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Ism Familiya" v-model="displayName">
+                   placeholder="Ism Familiya" v-model="fullName">
           </div>
           <div>
             <label for="login" class="sr-only">Login</label>
@@ -65,11 +65,12 @@
 import { ref } from 'vue';
 import { useRouter, useRoute, RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { splitFullName } from '@/utils/names';
 
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
-const displayName = ref('');
+const fullName = ref('');
 const login = ref('');
 const phone = ref('');
 const email = ref('');
@@ -81,10 +82,12 @@ const handleRegister = async () => {
   error.value = '';
   loading.value = true;
   try {
+    const { firstName, lastName } = splitFullName(fullName.value);
     await authStore.register({
       login: login.value.trim(),
       password: password.value,
-      displayName: displayName.value.trim(),
+      firstName,
+      lastName,
       email: email.value.trim(),
       phone: phone.value.trim(),
     });

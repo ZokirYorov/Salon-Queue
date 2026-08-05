@@ -6,7 +6,8 @@ import type { AuthResponse, LoginRequest, RegisterRequest } from '@/types/api'
 interface CurrentUser {
   userId: string
   login: string
-  displayName: string | null
+  firstName: string | null
+  lastName: string | null
   avatarUrl?: string | null
 }
 
@@ -16,12 +17,18 @@ export const useAuthStore = defineStore('auth', () => {
 
   function persist(res: AuthResponse) {
     token.value = res.accessToken
-    user.value = { userId: res.userId, login: res.login, displayName: res.displayName, avatarUrl: res.avatarUrl }
+    user.value = {
+      userId: res.userId,
+      login: res.login,
+      firstName: res.firstName,
+      lastName: res.lastName,
+      avatarUrl: res.avatarUrl,
+    }
     localStorage.setItem('access_token', res.accessToken)
     localStorage.setItem('current_user', JSON.stringify(user.value))
   }
 
-  function updateProfile(partial: { displayName?: string; avatarUrl?: string | null }) {
+  function updateProfile(partial: { firstName?: string | null; lastName?: string | null; avatarUrl?: string | null }) {
     if (!user.value) return
     user.value = { ...user.value, ...partial }
     localStorage.setItem('current_user', JSON.stringify(user.value))

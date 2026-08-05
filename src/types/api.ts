@@ -6,7 +6,8 @@ export interface LoginRequest {
 export interface RegisterRequest {
   login: string
   password: string
-  displayName: string
+  firstName: string
+  lastName?: string
   email: string
   phone: string
 }
@@ -17,7 +18,8 @@ export interface AuthResponse {
   expiresInSeconds: number
   userId: string
   login: string
-  displayName: string | null
+  firstName: string | null
+  lastName: string | null
   avatarUrl: string | null
   businessOwner: boolean
   admin: boolean
@@ -65,7 +67,9 @@ export interface StaffMember {
   id: string
   businessId: string
   linkedUserId: string | null
-  displayName: string
+  firstName: string
+  lastName: string | null
+  serviceIds: string[]
   active: boolean
 }
 
@@ -133,7 +137,8 @@ export interface BookingUpdateRequest {
 export interface User {
   id: string
   login: string
-  displayName: string
+  firstName: string | null
+  lastName: string | null
   email: string
   phone: string
   avatarUrl: string | null
@@ -141,7 +146,8 @@ export interface User {
 
 export interface UserUpdateRequest {
   password?: string
-  displayName?: string
+  firstName?: string
+  lastName?: string
   email?: string
   phone?: string
 }

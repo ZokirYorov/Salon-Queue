@@ -29,7 +29,7 @@
             <div class="relative w-24 h-24 mb-4">
               <div class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold ring-4 ring-indigo-50 dark:ring-slate-700">
                 <img v-if="mediaUrl(profile?.avatarUrl)" :src="mediaUrl(profile?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
-                <span v-else>{{ (profile?.displayName || authStore.user.login).charAt(0).toUpperCase() }}</span>
+                <span v-else>{{ firstInitial(profile || authStore.user) }}</span>
               </div>
               <label
                 class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-indigo-600 hover:bg-indigo-700 flex items-center justify-center cursor-pointer shadow-sm transition-colors"
@@ -39,7 +39,7 @@
                 <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="onAvatarChange" />
               </label>
             </div>
-            <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ profile?.displayName || authStore.user.login }}</h1>
+            <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ personName(profile || authStore.user) || authStore.user.login }}</h1>
             <p class="text-sm text-slate-500 dark:text-slate-400">@{{ authStore.user.login }}</p>
           </div>
 
@@ -63,7 +63,7 @@
               <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Ism Familiya</label>
               <div class="relative">
                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                <input v-model="form.displayName" type="text" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                <input v-model="form.fullName" type="text" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </div>
             </div>
             <div>
@@ -106,6 +106,7 @@ import { useAuthStore } from '@/stores/auth';
 import { usersApi } from '@/api/users';
 import { bookingsApi } from '@/api/bookings';
 import { mediaUrl } from '@/utils/media';
+import { firstInitial, personName, splitFullName } from '@/utils/names';
 import AppHeader from '@/components/AppHeader.vue';
 import type { User } from '@/types/api';
 
@@ -118,14 +119,14 @@ const saving = ref(false);
 const uploadingAvatar = ref(false);
 const stats = reactive({ total: 0, businesses: 0 });
 
-const form = reactive({ displayName: '', email: '', phone: '', password: '' });
+const form = reactive({ fullName: '', email: '', phone: '', password: '' });
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
 const ALLOWED_AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 function applyProfile(data: User) {
   profile.value = data;
-  form.displayName = data.displayName ?? '';
+  form.fullName = personName(data);
   form.email = data.email ?? '';
   form.phone = data.phone ?? '';
   form.password = '';
@@ -184,14 +185,16 @@ async function save() {
   if (!authStore.user) return;
   saving.value = true;
   try {
+    const { firstName, lastName } = splitFullName(form.fullName);
     const { data } = await usersApi.update(authStore.user.userId, {
-      displayName: form.displayName.trim() || undefined,
+      firstName: firstName || undefined,
+      lastName,
       email: form.email.trim() || undefined,
       phone: form.phone.trim() || undefined,
       password: form.password || undefined,
     });
     applyProfile(data);
-    authStore.updateProfile({ displayName: data.displayName });
+    authStore.updateProfile({ firstName: data.firstName, lastName: data.lastName });
     toast.success('Profil yangilandi');
   } catch (e: any) {
     toast.error(e?.response?.data?.message || 'Saqlashda xatolik yuz berdi');
