@@ -1,18 +1,20 @@
 <template>
   <div class="min-h-screen bg-slate-50/50 dark:bg-slate-900 transition-colors">
     <AppHeader />
-    <div class="max-w-md mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
       <div v-if="!authStore.user" class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
         <p class="text-slate-600 dark:text-slate-300 mb-4">Profilni ko'rish uchun tizimga kiring.</p>
         <RouterLink to="/login" class="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Tizimga kirish</RouterLink>
       </div>
 
-      <div v-else-if="loading" class="space-y-6">
+      <div v-else-if="loading" class="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4">
         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 animate-pulse">
-          <div class="flex flex-col items-center">
-            <div class="w-24 h-24 rounded-full bg-slate-200 dark:bg-slate-700 mb-4" />
-            <div class="h-5 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-2" />
-            <div class="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-700" />
+            <div class="space-y-2">
+              <div class="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" />
+              <div class="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
+            </div>
           </div>
         </div>
         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 animate-pulse space-y-3">
@@ -23,11 +25,10 @@
       </div>
 
       <template v-else>
-        <!-- Avatar + stats -->
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-          <div class="flex flex-col items-center">
-            <div class="relative w-24 h-24 mb-4">
-              <div class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold ring-4 ring-indigo-50 dark:ring-slate-700">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 border-b border-slate-200 dark:border-slate-700">
+            <div class="relative w-16 h-16 flex-shrink-0">
+              <div class="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold ring-4 ring-indigo-50 dark:ring-slate-700">
                 <img v-if="mediaUrl(profile?.avatarUrl)" :src="mediaUrl(profile?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
                 <span v-else>{{ firstInitial(profile || authStore.user) }}</span>
               </div>
@@ -39,58 +40,89 @@
                 <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="onAvatarChange" />
               </label>
             </div>
-            <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ personName(profile || authStore.user) || authStore.user.login }}</h1>
-            <p class="text-sm text-slate-500 dark:text-slate-400">@{{ authStore.user.login }}</p>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3 mt-5 pt-5 border-t border-slate-200 dark:border-slate-700">
-            <div class="text-center">
-              <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ stats.total }}</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Jami navbat</p>
-            </div>
-            <div class="text-center">
-              <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ stats.businesses }}</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Tashrif buyurgan salon</p>
+            <div class="min-w-0 flex-1">
+              <h1 class="text-lg font-bold text-slate-900 dark:text-white truncate">{{ personName(profile || authStore.user) || authStore.user.login }}</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 truncate">@{{ authStore.user.login }}</p>
             </div>
           </div>
-        </div>
 
-        <!-- Edit form -->
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mt-6">
-          <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4">Ma'lumotlarni tahrirlash</h2>
-          <form @submit.prevent="save" class="space-y-3.5">
-            <div>
-              <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Ism Familiya</label>
-              <div class="relative">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                <input v-model="form.fullName" type="text" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <div class="p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <form @submit.prevent="save" class="space-y-3.5">
+              <div class="flex items-center justify-between gap-3">
+                <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100">Shaxsiy ma'lumotlar</h2>
+                <span class="text-[11px] text-slate-400">Profil</span>
               </div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Email</label>
-              <div class="relative">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                <input v-model="form.email" type="email" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <div>
+                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Ism Familiya</label>
+                <div class="relative">
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                  <input v-model="form.fullName" type="text" autocomplete="name" placeholder="Masalan: Shaxzod Ruziqulov" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
               </div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Telefon</label>
-              <div class="relative">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                <input v-model="form.phone" type="tel" placeholder="+998901234567" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <div>
+                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Email</label>
+                <div class="relative">
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                  <input v-model="form.email" type="email" autocomplete="email" placeholder="name@example.com" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
               </div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Yangi parol</label>
-              <div class="relative">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                <input v-model="form.password" type="password" placeholder="O'zgartirmaslik uchun bo'sh qoldiring" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <div>
+                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Telefon</label>
+                <div class="relative">
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                  <input v-model="form.phone" type="tel" autocomplete="tel" placeholder="+998901234567" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
               </div>
-            </div>
-            <button type="submit" :disabled="saving" class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold py-2.5 rounded-lg transition">
-              {{ saving ? 'Saqlanmoqda...' : 'Saqlash' }}
-            </button>
-          </form>
+              <button type="submit" :disabled="saving" class="w-full sm:w-auto px-5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold py-2.5 rounded-lg transition">
+                {{ saving ? 'Saqlanmoqda...' : "Ma'lumotlarni saqlash" }}
+              </button>
+            </form>
+
+            <form @submit.prevent="changePassword" class="space-y-3.5 lg:border-l lg:border-slate-200 lg:dark:border-slate-700 lg:pl-6">
+              <div class="flex items-center justify-between gap-3">
+                <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100">Parolni o'zgartirish</h2>
+                <span class="text-[11px] text-slate-400">Xavfsizlik</span>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Joriy parol</label>
+                <div class="relative">
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                  <input v-model="passwordForm.currentPassword" :type="showCurrentPassword ? 'text' : 'password'" autocomplete="current-password" placeholder="Joriy parol" class="w-full pl-9 pr-10 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors" @click="showCurrentPassword = !showCurrentPassword" :aria-label="showCurrentPassword ? 'Parolni yashirish' : 'Parolni ko‘rsatish'">
+                    <svg v-if="showCurrentPassword" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58M9.88 4.24A9.77 9.77 0 0112 4c5 0 9 4 10 8a11.8 11.8 0 01-2.1 3.62M6.1 6.1A11.8 11.8 0 002 12c1 4 5 8 10 8 1.4 0 2.72-.31 3.9-.86" /></svg>
+                    <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 100-6 3 3 0 000 6z" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Yangi parol</label>
+                  <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    <input v-model="passwordForm.newPassword" :type="showNewPassword ? 'text' : 'password'" autocomplete="new-password" placeholder="Kamida 4 belgi" class="w-full pl-9 pr-10 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors" @click="showNewPassword = !showNewPassword" :aria-label="showNewPassword ? 'Parolni yashirish' : 'Parolni ko‘rsatish'">
+                      <svg v-if="showNewPassword" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58M9.88 4.24A9.77 9.77 0 0112 4c5 0 9 4 10 8a11.8 11.8 0 01-2.1 3.62M6.1 6.1A11.8 11.8 0 002 12c1 4 5 8 10 8 1.4 0 2.72-.31 3.9-.86" /></svg>
+                      <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 100-6 3 3 0 000 6z" /></svg>
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Tasdiqlash</label>
+                  <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    <input v-model="passwordForm.confirmPassword" :type="showConfirmPassword ? 'text' : 'password'" autocomplete="new-password" placeholder="Yangi parolni qayta kiriting" class="w-full pl-9 pr-10 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors" @click="showConfirmPassword = !showConfirmPassword" :aria-label="showConfirmPassword ? 'Parolni yashirish' : 'Parolni ko‘rsatish'">
+                      <svg v-if="showConfirmPassword" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58M9.88 4.24A9.77 9.77 0 0112 4c5 0 9 4 10 8a11.8 11.8 0 01-2.1 3.62M6.1 6.1A11.8 11.8 0 002 12c1 4 5 8 10 8 1.4 0 2.72-.31 3.9-.86" /></svg>
+                      <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 100-6 3 3 0 000 6z" /></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" :disabled="passwordSaving" class="w-full sm:w-auto px-5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold py-2.5 rounded-lg transition">
+                {{ passwordSaving ? "O'zgartirilmoqda..." : "Parolni saqlash" }}
+              </button>
+            </form>
+          </div>
         </div>
 
       </template>
@@ -104,7 +136,6 @@ import { RouterLink } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useAuthStore } from '@/stores/auth';
 import { usersApi } from '@/api/users';
-import { bookingsApi } from '@/api/bookings';
 import { mediaUrl } from '@/utils/media';
 import { firstInitial, personName, splitFullName } from '@/utils/names';
 import AppHeader from '@/components/AppHeader.vue';
@@ -116,10 +147,14 @@ const toast = useToast();
 const profile = ref<User | null>(null);
 const loading = ref(true);
 const saving = ref(false);
+const passwordSaving = ref(false);
 const uploadingAvatar = ref(false);
-const stats = reactive({ total: 0, businesses: 0 });
+const showCurrentPassword = ref(false);
+const showNewPassword = ref(false);
+const showConfirmPassword = ref(false);
 
-const form = reactive({ fullName: '', email: '', phone: '', password: '' });
+const form = reactive({ fullName: '', email: '', phone: '' });
+const passwordForm = reactive({ currentPassword: '', newPassword: '', confirmPassword: '' });
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
 const ALLOWED_AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
@@ -129,7 +164,6 @@ function applyProfile(data: User) {
   form.fullName = personName(data);
   form.email = data.email ?? '';
   form.phone = data.phone ?? '';
-  form.password = '';
 }
 
 async function loadProfile() {
@@ -138,16 +172,9 @@ async function loadProfile() {
   applyProfile(data);
 }
 
-async function loadStats() {
-  if (!authStore.user) return;
-  const { data } = await bookingsApi.getAll({ customerId: authStore.user.userId, size: 200 });
-  stats.total = data.totalElements;
-  stats.businesses = new Set(data.content.map((b) => b.businessId)).size;
-}
-
 onMounted(async () => {
   try {
-    await Promise.all([loadProfile(), loadStats()]);
+    await loadProfile();
   } finally {
     loading.value = false;
   }
@@ -183,6 +210,10 @@ async function onAvatarChange(e: Event) {
 
 async function save() {
   if (!authStore.user) return;
+  if (!form.fullName.trim()) {
+    toast.error('Ism familiya kiritilishi shart');
+    return;
+  }
   saving.value = true;
   try {
     const { firstName, lastName } = splitFullName(form.fullName);
@@ -191,7 +222,6 @@ async function save() {
       lastName,
       email: form.email.trim() || undefined,
       phone: form.phone.trim() || undefined,
-      password: form.password || undefined,
     });
     applyProfile(data);
     authStore.updateProfile({ firstName: data.firstName, lastName: data.lastName });
@@ -200,6 +230,36 @@ async function save() {
     toast.error(e?.response?.data?.message || 'Saqlashda xatolik yuz berdi');
   } finally {
     saving.value = false;
+  }
+}
+
+async function changePassword() {
+  if (!passwordForm.currentPassword || !passwordForm.newPassword) {
+    toast.error('Joriy parol va yangi parolni kiriting');
+    return;
+  }
+  if (passwordForm.newPassword.length < 4) {
+    toast.error("Yangi parol kamida 4 belgidan iborat bo'lishi kerak");
+    return;
+  }
+  if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+    toast.error('Yangi parollar mos kelmadi');
+    return;
+  }
+  passwordSaving.value = true;
+  try {
+    await usersApi.changePassword({
+      currentPassword: passwordForm.currentPassword,
+      newPassword: passwordForm.newPassword,
+    });
+    passwordForm.currentPassword = '';
+    passwordForm.newPassword = '';
+    passwordForm.confirmPassword = '';
+    toast.success("Parol o'zgartirildi");
+  } catch (e: any) {
+    toast.error(e?.response?.data?.message || "Parolni o'zgartirishda xatolik yuz berdi");
+  } finally {
+    passwordSaving.value = false;
   }
 }
 </script>

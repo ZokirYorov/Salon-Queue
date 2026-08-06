@@ -131,7 +131,7 @@
                 </div>
               </button>
             </div>
-            <p v-if="!loadingServices && services.length === 0" class="text-sm text-slate-400 mt-2">Bu salonda hali xizmatlar mavjud emas.</p>
+            <p v-if="!loadingServices && services.length === 0" class="text-sm text-slate-400 mt-2">Bu xizmat ko'rsatuvchida hali xizmatlar mavjud emas.</p>
             <p v-if="selectedService?.description" class="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">{{ selectedService.description }}</p>
           </div>
         </div>
@@ -211,7 +211,7 @@
           </div>
           <div class="step-body">
             <p class="text-sm font-bold text-slate-800 dark:text-white">Vaqtni tanlang</p>
-            <p v-if="dayClosed" class="text-sm text-amber-600 dark:text-amber-400 mt-2">Bu kunda salon yopiq.</p>
+            <p v-if="dayClosed" class="text-sm text-amber-600 dark:text-amber-400 mt-2">Bu kunda xizmat ko'rsatuvchi yopiq.</p>
             <p v-else-if="possibleStarts.length === 0" class="text-sm text-slate-400 mt-2">Bo'sh vaqt topilmadi.</p>
             <div v-else class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-3">
               <button
@@ -454,7 +454,7 @@ async function loadStatic() {
     loadStaffRatings();
     loadBusinessRating();
   } catch {
-    loadError.value = "Salon ma'lumotlarini yuklab bo'lmadi";
+    loadError.value = "Xizmat ko'rsatuvchi ma'lumotlarini yuklab bo'lmadi";
   } finally {
     loadingServices.value = false;
   }
@@ -620,16 +620,16 @@ async function submit() {
   color: #64748b;
 }
 .step-num.active {
-  border-color: #4f46e5;
-  color: #4f46e5;
+  border-color: #0d9488;
+  color: #0d9488;
 }
 :global(.dark) .step-num.active {
-  border-color: #818cf8;
-  color: #818cf8;
+  border-color: #2dd4bf;
+  color: #2dd4bf;
 }
 .step-num.done {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: #0d9488;
+  border-color: #0d9488;
   color: #fff;
 }
 .step-line {

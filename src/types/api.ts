@@ -27,12 +27,24 @@ export interface AuthResponse {
 }
 
 export type BusinessStatus = 'TRIAL' | 'ACTIVE' | 'EXPIRED' | 'SUSPENDED' | 'DRAFT' | 'PENDING_REVIEW'
+export type BusinessCategory =
+  | 'BARBER'
+  | 'BEAUTY'
+  | 'MEDICAL'
+  | 'REPAIR'
+  | 'CONSULTING'
+  | 'EDUCATION'
+  | 'FITNESS'
+  | 'AUTO'
+  | 'LEGAL'
+  | 'OTHER'
 
 export interface Business {
   id: string
   ownerId: string
   name: string
   description: string
+  category: BusinessCategory
   status: BusinessStatus
   contactPhone: string
   addressLine: string
@@ -150,6 +162,11 @@ export interface UserUpdateRequest {
   lastName?: string
   email?: string
   phone?: string
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string
+  newPassword: string
 }
 
 export interface Review {

@@ -92,7 +92,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const variants: Record<TButtonVariants, string> = {
-  primary: "bg-[#1929B9] hover:bg-[#4B5BE7] disabled:bg-[#1929B9] focus:ring-blue-500",
+  primary: "bg-[#0d9488] hover:bg-[#0f766e] disabled:bg-[#0d9488] focus:ring-teal-500",
   secondary: "bg-button-secondary-bg hover:bg-button-secondary-bg-hover text-text-primary-inverted",
   "outline-primary": "bg-bg-white border-none shadow-inset-1 disabled:border-0 hover:shadow-inset-2 text-text-primary",
   "outline-accent": "bg-bg-white border-none shadow-filter-inset-1 disabled:border-0 hover:shadow-filter-inset-2 text-text-primary-brand",

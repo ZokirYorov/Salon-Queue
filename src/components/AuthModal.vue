@@ -2,12 +2,12 @@
   <Teleport to="body">
     <div v-if="isOpen" class="fixed inset-0 z-[60]" @click="close" @keydown.esc="close">
       <div
-        class="absolute w-[22rem] max-w-[calc(100vw-2rem)] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-2xl shadow-2xl dark:shadow-black/60 dark:ring-1 dark:ring-black/40"
+        class="absolute w-[22rem] max-w-[calc(100vw-1rem)] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-2xl shadow-2xl dark:shadow-black/60 dark:ring-1 dark:ring-black/40"
         :style="panelStyle"
         @click.stop
       >
         <!-- Pointer caret towards the trigger button -->
-        <div class="absolute -top-1.5 w-3 h-3 rotate-45 bg-white dark:bg-slate-800 border-t border-l border-slate-200 dark:border-slate-600" :style="caretStyle" />
+        <div v-if="anchor" class="absolute -top-1.5 w-3 h-3 rotate-45 bg-white dark:bg-slate-800 border-t border-l border-slate-200 dark:border-slate-600" :style="caretStyle" />
 
         <div class="relative flex items-center justify-between px-5 pt-5">
           <h3 class="text-base font-bold text-slate-800 dark:text-white">
@@ -77,13 +77,20 @@ const registerForm = reactive({ fullName: '', login: '', phone: '', email: '', p
 
 // Agar tugma joyi ma'lum bo'lmasa (masalan BookView'dan ochilgan bo'lsa), sarlavha ostiga tushadi
 const panelStyle = computed(() => {
-  if (anchor.value) return { top: `${anchor.value.top}px`, right: `${anchor.value.right}px` };
-  return { top: '68px', right: '16px' };
+  const width = Math.min(352, window.innerWidth - 16);
+  if (anchor.value) {
+    const right = Math.max(8, Math.min(anchor.value.right, window.innerWidth - width - 8));
+    return { top: `${anchor.value.top}px`, right: `${right}px` };
+  }
+  return { top: '76px', left: '50%', transform: 'translateX(-50%)' };
 });
 
 const caretStyle = computed(() => {
-  // Popup o'ng chetidan taxminan tugma markaziga to'g'ri keladigan joyga strelka qo'yamiz
-  return { right: '24px' };
+  if (!anchor.value) return { right: '24px' };
+  const width = Math.min(352, window.innerWidth - 16);
+  const right = Math.max(8, Math.min(anchor.value.right, window.innerWidth - width - 8));
+  const caretRight = Math.max(18, Math.min(anchor.value.centerRight - right - 6, width - 28));
+  return { right: `${caretRight}px` };
 });
 
 watch(isOpen, (open) => {

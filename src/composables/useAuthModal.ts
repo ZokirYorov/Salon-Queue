@@ -5,6 +5,7 @@ type Mode = 'login' | 'register'
 interface AnchorRect {
   top: number
   right: number
+  centerRight: number
 }
 
 const isOpen = ref(false)
@@ -18,7 +19,11 @@ export function useAuthModal() {
     successCallback = opts?.onSuccess ?? null
     if (opts?.anchorEl) {
       const rect = opts.anchorEl.getBoundingClientRect()
-      anchor.value = { top: rect.bottom + 8, right: window.innerWidth - rect.right }
+      anchor.value = {
+        top: rect.bottom + 8,
+        right: window.innerWidth - rect.right,
+        centerRight: window.innerWidth - (rect.left + rect.width / 2),
+      }
     } else {
       anchor.value = null
     }

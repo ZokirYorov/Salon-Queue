@@ -1,48 +1,101 @@
 <template>
-  <div class="min-h-screen bg-slate-50/50 dark:bg-slate-900 transition-colors">
+  <div class="min-h-screen bg-slate-50 text-slate-950 transition-colors dark:bg-slate-950 dark:text-white">
     <AppHeader />
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-      <div>
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Salonlar</h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Navbat olish uchun salon tanlang</p>
-      </div>
+    <main>
+      <section class="relative overflow-hidden border-b border-slate-200 bg-[linear-gradient(135deg,#f8fafc_0%,#eefaf7_48%,#fff7ed_100%)] dark:border-slate-800 dark:bg-[linear-gradient(135deg,#020617_0%,#0f2f2c_58%,#1f1607_100%)]">
+        <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-50 to-transparent dark:from-slate-950" />
+        <div class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:py-16">
+          <div>
+            <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-teal-800 shadow-sm dark:border-teal-700 dark:bg-slate-900/70 dark:text-teal-200">
+              <span class="h-2 w-2 rounded-full bg-teal-500" />
+              Tez qidiruv, aniq navbat
+            </div>
+            <h1 class="max-w-3xl text-4xl font-black leading-tight tracking-normal text-slate-950 dark:text-white sm:text-5xl lg:text-[58px]">
+              Kerakli ustani toping, vaqtni o'zingiz tanlang
+            </h1>
+            <p class="mt-5 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:text-lg">
+              Sartaroshdan tibbiyotgacha: yaqin xizmat ko'rsatuvchilar, reytinglar va band qilish jarayoni bitta sahifada.
+            </p>
 
-      <!-- Filters -->
-      <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 space-y-3">
-        <div class="flex flex-col sm:flex-row gap-3">
-          <div class="relative flex-1">
-            <span class="absolute inset-y-0 left-3 flex items-center text-slate-400">
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </span>
-            <input
-              v-model="searchQuery"
-              type="text"
-              placeholder="Salon nomi yoki manzil bo'yicha qidirish..."
-              class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-700 text-sm transition"
-            />
+            <div class="mt-8 grid gap-3 rounded-3xl border border-slate-200 bg-white/95 p-3 shadow-[0_18px_55px_rgba(15,23,42,0.12)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 md:grid-cols-[1.35fr_0.95fr_0.95fr_auto]">
+              <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
+                <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
+                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  Qidiruv
+                </span>
+                <input
+                  v-model="searchQuery"
+                  type="text"
+                  placeholder="Xizmat, biznes yoki manzil"
+                  class="w-full bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none dark:text-white"
+                />
+              </label>
+              <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
+                <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
+                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                  Hudud
+                </span>
+                <select v-model="cityFilter" class="w-full cursor-pointer bg-transparent text-sm font-semibold text-slate-900 focus:outline-none dark:text-white">
+                  <option value="">Barcha shaharlar</option>
+                  <option v-for="c in availableCities" :key="c" :value="c">{{ c }}</option>
+                </select>
+              </label>
+              <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
+                <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
+                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" /></svg>
+                  Tartib
+                </span>
+                <select v-model="sortBy" class="w-full cursor-pointer bg-transparent text-sm font-semibold text-slate-900 focus:outline-none dark:text-white">
+                  <option value="rating">Eng yuqori reyting</option>
+                  <option value="reviews">Ko'p sharhlar</option>
+                  <option value="name">Nomi bo'yicha</option>
+                </select>
+              </label>
+              <button
+                type="button"
+                @click="runSearch"
+                class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-teal-600 px-7 text-sm font-black text-white transition hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400"
+              >
+                Qidirish
+              </button>
+            </div>
+
+            <div class="mt-5 flex flex-wrap items-center gap-2">
+              <button
+                v-for="cat in categoryOptions"
+                :key="cat.value"
+                type="button"
+                @click="setCategory(cat.value)"
+                class="inline-flex items-center gap-2 rounded-2xl border px-3.5 py-2 text-sm font-bold transition"
+                :class="categoryFilter === cat.value ? 'border-teal-600 bg-teal-600 text-white shadow-sm' : 'border-slate-200 bg-white/80 text-slate-700 hover:border-teal-300 hover:text-teal-700 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-teal-500'"
+              >
+                {{ cat.label }}
+              </button>
+            </div>
           </div>
-          <select
-            v-model="cityFilter"
-            class="px-3 py-2.5 bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm cursor-pointer"
-          >
-            <option value="">Barcha shaharlar</option>
-            <option v-for="c in availableCities" :key="c" :value="c">{{ c }}</option>
-          </select>
-          <select
-            v-model="sortBy"
-            class="px-3 py-2.5 bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm cursor-pointer"
-          >
-            <option value="rating">Eng yuqori reytingli</option>
-            <option value="reviews">Ko'p sharhlar bo'yicha</option>
-            <option value="name">Nomi bo'yicha (A-Z)</option>
-          </select>
         </div>
+      </section>
+
+      <section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+      <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 class="text-2xl font-black text-slate-950 dark:text-white">Tavsiya etilganlar</h2>
+          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ filteredCards.length }} ta natija</p>
+        </div>
+        <button
+          v-if="hasActiveFilters"
+          type="button"
+          @click="clearFilters"
+          class="self-start rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-teal-300 hover:text-teal-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+        >
+          Filtrlarni tozalash
+        </button>
       </div>
 
       <div v-if="loading" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div v-for="i in 6" :key="i" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden animate-pulse">
-          <div class="h-40 bg-slate-100 dark:bg-slate-700" />
+        <div v-for="i in 6" :key="i" class="overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900 animate-pulse">
+          <div class="h-48 bg-slate-100 dark:bg-slate-800" />
           <div class="p-5 space-y-2.5">
             <div class="h-4 bg-slate-100 dark:bg-slate-700 rounded w-2/3" />
             <div class="h-3 bg-slate-100 dark:bg-slate-700 rounded w-1/3" />
@@ -51,9 +104,9 @@
         </div>
       </div>
       <div v-else-if="error" class="text-center py-20 text-red-500">{{ error }}</div>
-      <div v-else-if="filteredCards.length === 0" class="text-center py-20 bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
+      <div v-else-if="filteredCards.length === 0" class="text-center py-20 bg-white dark:bg-slate-900 rounded-[24px] border border-dashed border-slate-200 dark:border-slate-700">
         <svg class="mx-auto h-10 w-10 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <p class="mt-3 text-sm font-bold text-slate-900 dark:text-white">Hech qanday salon topilmadi</p>
+        <p class="mt-3 text-sm font-bold text-slate-900 dark:text-white">Hech qanday xizmat ko'rsatuvchi topilmadi</p>
         <p class="mt-1 text-xs text-slate-400">Qidiruv parametrlarini o'zgartirib ko'ring</p>
       </div>
 
@@ -62,47 +115,53 @@
           v-for="card in filteredCards"
           :key="card.business.id"
           :to="`/business/${card.business.id}`"
-          class="group flex flex-col bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-500 transition duration-200 overflow-hidden"
+          class="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900 dark:hover:border-teal-500"
         >
-          <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-indigo-500 to-cyan-400 flex-shrink-0">
+          <div class="relative h-44 w-full overflow-hidden bg-slate-900 flex-shrink-0">
             <img
               v-if="card.image"
               :src="getAvatarUrl(card.image)"
               :alt="card.business.name"
-              class="h-full w-full object-cover object-center transition duration-300 group-hover:scale-105"
+              class="h-full w-full object-cover object-center opacity-95 transition duration-500 group-hover:scale-105"
             />
-            <div v-else class="h-full w-full flex items-center justify-center text-white text-4xl font-black">
-              {{ card.business.name.charAt(0).toUpperCase() }}
+            <div v-else class="h-full w-full bg-[linear-gradient(135deg,#0f766e,#f59e0b)]" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent" />
+            <div class="absolute bottom-4 left-4 right-4">
+              <div class="flex items-end justify-between gap-3">
+                <div v-if="!card.image" class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white text-lg font-black text-teal-700 shadow-lg">
+                  {{ card.business.name.charAt(0).toUpperCase() }}
+                </div>
+                <div v-if="card.avgRating > 0" class="rounded-full bg-white/95 px-3 py-1.5 text-sm font-black text-slate-950 shadow-sm">
+                  ★ {{ card.avgRating.toFixed(1) }}
+                </div>
+              </div>
             </div>
-            <div v-if="card.serviceCount > 0" class="absolute top-3 left-3">
-              <span class="inline-flex items-center rounded-lg bg-slate-900/70 px-2 py-1 text-xs font-semibold text-white backdrop-blur-md">
+            <div class="absolute left-3 top-3 flex flex-wrap gap-2">
+              <span class="inline-flex items-center rounded-2xl bg-white/95 px-3 py-1.5 text-xs font-black text-slate-900 shadow-sm backdrop-blur-md">
+                {{ categoryLabel(card.business.category) }}
+              </span>
+              <span v-if="card.serviceCount > 0" class="inline-flex items-center rounded-2xl bg-teal-600/90 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-md">
                 {{ card.serviceCount }} ta xizmat
               </span>
             </div>
           </div>
 
           <div class="p-5 flex-1 flex flex-col">
-            <div class="flex items-start justify-between gap-2 mb-1">
-              <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1">
+            <div class="mb-2 flex items-start justify-between gap-2">
+              <h3 class="line-clamp-1 text-lg font-black text-slate-950 transition-colors group-hover:text-teal-700 dark:text-white dark:group-hover:text-teal-300">
                 {{ card.business.name }}
               </h3>
-              <div v-if="card.avgRating > 0" class="flex items-center gap-0.5 text-amber-500 font-bold text-sm shrink-0">
-                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z"></path></svg>
-                <span>{{ card.avgRating.toFixed(1) }}</span>
-              </div>
             </div>
-            <div class="text-xs text-slate-400 font-medium mb-3">{{ card.business.city }}</div>
-
-            <div class="text-xs w-full text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mb-4 bg-slate-50 dark:bg-slate-700/50 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
-              <span class="truncate">{{ card.business.addressLine || card.business.city }}</span>
+            <div class="mb-4 flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-slate-400">
+              <svg class="h-4 w-4 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+              <span class="truncate">{{ [card.business.city, card.business.addressLine].filter(Boolean).join(', ') || 'Manzil kiritilmagan' }}</span>
             </div>
 
-            <div class="mt-auto pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs">
-              <span class="text-slate-400 font-medium">
+            <div class="mt-auto grid grid-cols-[1fr_auto] items-center gap-3 border-t border-slate-200 pt-4 text-xs dark:border-slate-700">
+              <span class="min-w-0 truncate text-slate-400 font-medium">
                 {{ card.reviewCount > 0 ? `${card.reviewCount} ta sharh` : 'Hali sharh yo\'q' }}
               </span>
-              <span class="text-sm font-bold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-500/20 group-hover:bg-indigo-600 group-hover:text-white dark:group-hover:bg-indigo-600 px-3 py-1.5 rounded-lg transition-colors duration-200">
+              <span class="rounded-2xl bg-slate-950 px-4 py-2 text-sm font-black text-white transition-colors duration-200 group-hover:bg-teal-600 dark:bg-white dark:text-slate-950 dark:group-hover:bg-teal-400">
                 Navbat olish
               </span>
             </div>
@@ -121,6 +180,7 @@
           {{ p }}
         </button>
       </div>
+      </section>
     </main>
   </div>
 </template>
@@ -133,7 +193,7 @@ import { servicesApi } from '@/api/services';
 import { reviewsApi } from '@/api/reviews';
 // import { mediaUrl } from '@/utils/media';
 import AppHeader from '@/components/AppHeader.vue';
-import type { Business } from '@/types/api';
+import type { Business, BusinessCategory } from '@/types/api';
 
 interface BusinessCard {
   business: Business;
@@ -144,7 +204,9 @@ interface BusinessCard {
 }
 
 const cards = ref<BusinessCard[]>([]);
+const cities = ref<string[]>([]);
 const searchQuery = ref('');
+const categoryFilter = ref<BusinessCategory | ''>('');
 const cityFilter = ref('');
 const sortBy = ref<'rating' | 'reviews' | 'name'>('rating');
 const loading = ref(false);
@@ -152,11 +214,56 @@ const error = ref('');
 const page = ref(0);
 const totalPages = ref(1);
 
+const categoryOptions: { value: BusinessCategory; label: string }[] = [
+  { value: 'BARBER', label: 'Sartarosh' },
+  { value: 'BEAUTY', label: "Go'zallik" },
+  { value: 'MEDICAL', label: 'Tibbiyot' },
+  { value: 'REPAIR', label: "Ta'mirlash" },
+  { value: 'CONSULTING', label: 'Konsultatsiya' },
+  { value: 'EDUCATION', label: "Ta'lim" },
+  { value: 'FITNESS', label: 'Sport' },
+  { value: 'AUTO', label: 'Avto xizmat' },
+  { value: 'LEGAL', label: 'Yuridik xizmat' },
+  { value: 'OTHER', label: 'Boshqa' },
+];
+
+function categoryLabel(category?: BusinessCategory) {
+  return categoryOptions.find((c) => c.value === category)?.label ?? 'Boshqa';
+}
+
+const hasActiveFilters = computed(() =>
+  Boolean(searchQuery.value.trim() || categoryFilter.value || cityFilter.value)
+);
+
+function setCategory(category: BusinessCategory) {
+  categoryFilter.value = categoryFilter.value === category ? '' : category;
+  runSearch();
+}
+
+function clearFilters() {
+  searchQuery.value = '';
+  categoryFilter.value = '';
+  cityFilter.value = '';
+  runSearch();
+}
+
+function runSearch() {
+  if (page.value === 0) loadBusinesses();
+  else page.value = 0;
+}
+
 async function loadBusinesses() {
   loading.value = true;
   error.value = '';
   try {
-    const { data } = await businessesApi.getAll({ page: page.value, size: 12 });
+    const { data } = await businessesApi.getAll({
+      page: page.value,
+      size: 12,
+      q: searchQuery.value.trim() || undefined,
+      city: cityFilter.value || undefined,
+      category: categoryFilter.value || undefined,
+      sort: sortParam.value,
+    });
     const list = data.content.filter((b) => b.accessAllowed);
     totalPages.value = data.totalPages;
 
@@ -178,35 +285,42 @@ async function loadBusinesses() {
       })
     );
   } catch {
-    error.value = 'Salonlar ro\'yxatini yuklab bo\'lmadi';
+    error.value = "Xizmat ko'rsatuvchilar ro'yxatini yuklab bo'lmadi";
   } finally {
     loading.value = false;
   }
 }
 
-onMounted(loadBusinesses);
+async function loadCities() {
+  try {
+    const { data } = await businessesApi.getCities();
+    cities.value = data;
+  } catch {
+    cities.value = [];
+  }
+}
+
+onMounted(() => {
+  loadBusinesses();
+  loadCities();
+});
 watch(page, loadBusinesses);
+watch(cityFilter, runSearch);
+watch(sortBy, runSearch);
 
 const availableCities = computed(() => {
-  const cities = new Set(cards.value.map((c) => c.business.city).filter(Boolean));
-  return [...cities].sort();
+  return cities.value;
 });
 
 const filteredCards = computed(() => {
-  const q = searchQuery.value.trim().toLowerCase();
-  let result = cards.value.filter((c) => {
-    const matchesSearch = !q || c.business.name.toLowerCase().includes(q) || c.business.addressLine?.toLowerCase().includes(q);
-    const matchesCity = !cityFilter.value || c.business.city === cityFilter.value;
-    return matchesSearch && matchesCity;
-  });
+  return cards.value;
+});
 
-  result = [...result].sort((a, b) => {
-    if (sortBy.value === 'rating') return b.avgRating - a.avgRating;
-    if (sortBy.value === 'reviews') return b.reviewCount - a.reviewCount;
-    return a.business.name.localeCompare(b.business.name);
-  });
-
-  return result;
+const sortParam = computed(() => {
+  if (sortBy.value === 'rating') return 'rating,desc';
+  if (sortBy.value === 'reviews') return 'reviews,desc';
+  if (sortBy.value === 'name') return 'name,asc';
+  return 'createdAt,desc';
 });
 
 const BASE_URL = import.meta.env.VITE_BASE_API as string;

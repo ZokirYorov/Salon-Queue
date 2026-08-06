@@ -1,10 +1,12 @@
 import apiClient from '@/axios'
-import type { User, UserUpdateRequest } from '@/types/api'
+import type { ChangePasswordRequest, User, UserUpdateRequest } from '@/types/api'
 
 export const usersApi = {
   getById: (id: string) => apiClient.get<User>(`/users/${id}`),
 
   update: (id: string, data: UserUpdateRequest) => apiClient.put<User>(`/users/${id}`, data),
+
+  changePassword: (data: ChangePasswordRequest) => apiClient.put('/users/me/password', data),
 
   uploadAvatar: (id: string, file: File) => {
     const form = new FormData()
