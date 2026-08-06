@@ -76,6 +76,13 @@
               Profilim
             </RouterLink>
             <button
+              @click="openBusinessApp"
+              class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9h1m-1 4h1m-1 4h1" /></svg>
+              Biznes boshqaruvi
+            </button>
+            <button
               @click="dropdownOpen = false; showLogoutConfirm = true"
               class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
             >
@@ -132,6 +139,7 @@ const authModal = useAuthModal();
 
 const dropdownOpen = ref(false);
 const showLogoutConfirm = ref(false);
+const businessAppUrl = (import.meta.env.VITE_BUSINESS_APP_URL as string | undefined) || 'http://localhost:5174';
 
 function isActive(prefix: string) {
   return route.path.startsWith(prefix);
@@ -145,5 +153,10 @@ function logout() {
   showLogoutConfirm.value = false;
   authStore.logout();
   router.push('/businesses');
+}
+
+function openBusinessApp() {
+  dropdownOpen.value = false;
+  window.location.href = businessAppUrl;
 }
 </script>
