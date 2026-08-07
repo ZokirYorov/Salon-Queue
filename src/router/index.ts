@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { checkToken } from "@/helpers/checkToken";
+import { useToast } from 'vue-toastification';
+
+const Toast = useToast();
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -48,17 +52,33 @@ const router = createRouter({
     routes,
 })
 
-router.beforeEach((to) => {
+let sessionExpiredShown = false;
+router.beforeEach((to, _, next) => {
     const authStore = useAuthStore()
     const isAuthenticated = !!authStore.token
 
+    if (isAuthenticated) {
+        const isValid = checkToken();
+        if (!isValid) {
+            if (!sessionExpiredShown) {
+                Toast.info('Tizimga qayta kiring !')
+                sessionExpiredShown = true;
+            }
+            authStore.logout();
+            if (to.name === 'Login' || to.name === 'Register') return next()
+            return next({ name: 'Login' })
+        }
+        sessionExpiredShown = false;
+    }
+
     if (to.meta.requiresAuth && !isAuthenticated) {
-        return { name: 'Login' }
+        return next({ name: 'Login' })
     }
 
     if ((to.name === 'Login' || to.name === 'Register') && isAuthenticated) {
-        return { name: 'Dashboard' }
+        return next({ name: 'Dashboard' })
     }
+    next()
 })
 
 export default router;

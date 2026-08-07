@@ -451,8 +451,8 @@ async function loadStatic() {
     services.value = svcRes.data.filter((s) => s.active);
     staff.value = staffRes.data.filter((s) => s.active);
     hours.value = hoursRes.data;
-    loadStaffRatings();
-    loadBusinessRating();
+    await loadStaffRatings();
+    await loadBusinessRating();
   } catch {
     loadError.value = "Xizmat ko'rsatuvchi ma'lumotlarini yuklab bo'lmadi";
   } finally {
@@ -571,7 +571,7 @@ async function submit() {
       endAt,
       customerNote: form.customerNote.trim() || undefined,
     });
-    router.push('/client/my');
+    await router.push('/client/my');
   } catch (e: any) {
     submitError.value = e?.response?.data?.message || 'Navbat olishda xatolik yuz berdi';
   } finally {
