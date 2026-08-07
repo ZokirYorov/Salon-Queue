@@ -31,27 +31,69 @@
                   class="w-full bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none dark:text-white"
                 />
               </label>
-              <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
+              <div class="relative rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80" v-click-outside="() => (cityMenuOpen = false)">
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
                   <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
                   Hudud
                 </span>
-                <select v-model="cityFilter" class="w-full cursor-pointer bg-transparent text-sm font-semibold text-slate-900 focus:outline-none dark:text-white">
-                  <option value="">Barcha shaharlar</option>
-                  <option v-for="c in availableCities" :key="c" :value="c">{{ c }}</option>
-                </select>
-              </label>
-              <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
+                <button
+                  type="button"
+                  @click="cityMenuOpen = !cityMenuOpen"
+                  class="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold text-slate-900 focus:outline-none dark:text-white"
+                >
+                  <span class="truncate">{{ cityFilter || 'Barcha shaharlar' }}</span>
+                  <svg class="h-4 w-4 shrink-0 text-slate-400 transition" :class="cityMenuOpen && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div
+                  v-if="cityMenuOpen"
+                  class="absolute left-0 right-0 top-full z-30 mt-2 max-h-64 overflow-auto rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <button
+                    type="button"
+                    @click="selectCity('')"
+                    :class="dropdownItemClass(cityFilter === '')"
+                  >
+                    Barcha shaharlar
+                  </button>
+                  <button
+                    v-for="c in availableCities"
+                    :key="c"
+                    type="button"
+                    @click="selectCity(c)"
+                    :class="dropdownItemClass(cityFilter === c)"
+                  >
+                    {{ c }}
+                  </button>
+                </div>
+              </div>
+              <div class="relative rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80" v-click-outside="() => (sortMenuOpen = false)">
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
                   <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" /></svg>
                   Tartib
                 </span>
-                <select v-model="sortBy" class="w-full cursor-pointer bg-transparent text-sm font-semibold text-slate-900 focus:outline-none dark:text-white">
-                  <option value="rating">Eng yuqori reyting</option>
-                  <option value="reviews">Ko'p sharhlar</option>
-                  <option value="name">Nomi bo'yicha</option>
-                </select>
-              </label>
+                <button
+                  type="button"
+                  @click="sortMenuOpen = !sortMenuOpen"
+                  class="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold text-slate-900 focus:outline-none dark:text-white"
+                >
+                  <span class="truncate">{{ sortLabel }}</span>
+                  <svg class="h-4 w-4 shrink-0 text-slate-400 transition" :class="sortMenuOpen && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div
+                  v-if="sortMenuOpen"
+                  class="absolute left-0 right-0 top-full z-30 mt-2 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <button
+                    v-for="option in sortOptions"
+                    :key="option.value"
+                    type="button"
+                    @click="selectSort(option.value)"
+                    :class="dropdownItemClass(sortBy === option.value)"
+                  >
+                    {{ option.label }}
+                  </button>
+                </div>
+              </div>
               <button
                 type="button"
                 @click="runSearch"
@@ -144,6 +186,12 @@
                 {{ card.serviceCount }} ta xizmat
               </span>
             </div>
+            <div class="absolute right-3 top-3">
+              <span class="inline-flex items-center gap-1 rounded-2xl bg-emerald-500/95 px-3 py-1.5 text-xs font-black text-white shadow-sm backdrop-blur-md">
+                <span class="h-1.5 w-1.5 rounded-full bg-white" />
+                Faol
+              </span>
+            </div>
           </div>
 
           <div class="p-5 flex-1 flex flex-col">
@@ -156,11 +204,20 @@
               <svg class="h-4 w-4 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
               <span class="truncate">{{ [card.business.city, card.business.addressLine].filter(Boolean).join(', ') || 'Manzil kiritilmagan' }}</span>
             </div>
+            <p class="mb-4 line-clamp-2 min-h-10 text-sm leading-5 text-slate-500 dark:text-slate-400">
+              {{ card.business.description || 'Xizmatlar, ustalar va bo\'sh vaqtlarni ko\'rib, o\'zingizga qulay navbatni tanlang.' }}
+            </p>
 
-            <div class="mt-auto grid grid-cols-[1fr_auto] items-center gap-3 border-t border-slate-200 pt-4 text-xs dark:border-slate-700">
-              <span class="min-w-0 truncate text-slate-400 font-medium">
-                {{ card.reviewCount > 0 ? `${card.reviewCount} ta sharh` : 'Hali sharh yo\'q' }}
+            <div class="mt-auto grid grid-cols-2 gap-2 border-t border-slate-200 pt-4 text-xs dark:border-slate-700">
+              <span class="rounded-2xl bg-slate-50 px-3 py-2 font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                {{ card.serviceCount }} xizmat
               </span>
+              <span class="rounded-2xl bg-slate-50 px-3 py-2 font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                {{ card.reviewCount > 0 ? `${card.reviewCount} sharh` : 'Yangi' }}
+              </span>
+            </div>
+            <div class="mt-3 flex items-center justify-between gap-3">
+              <span class="text-xs font-semibold text-slate-400">Sahifaga kirib vaqt tanlang</span>
               <span class="rounded-2xl bg-slate-950 px-4 py-2 text-sm font-black text-white transition-colors duration-200 group-hover:bg-teal-600 dark:bg-white dark:text-slate-950 dark:group-hover:bg-teal-400">
                 Navbat olish
               </span>
@@ -175,7 +232,7 @@
           :key="p"
           @click="page = p - 1"
           class="w-8 h-8 rounded-lg text-xs font-semibold transition"
-          :class="page === p - 1 ? 'bg-indigo-600 text-white' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'"
+          :class="page === p - 1 ? 'bg-teal-600 text-white' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'"
         >
           {{ p }}
         </button>
@@ -192,6 +249,7 @@ import { businessesApi } from '@/api/businesses';
 import { servicesApi } from '@/api/services';
 import { reviewsApi } from '@/api/reviews';
 // import { mediaUrl } from '@/utils/media';
+import { apiErrorMessage } from '@/utils/apiError';
 import AppHeader from '@/components/AppHeader.vue';
 import type { Business, BusinessCategory } from '@/types/api';
 
@@ -209,6 +267,8 @@ const searchQuery = ref('');
 const categoryFilter = ref<BusinessCategory | ''>('');
 const cityFilter = ref('');
 const sortBy = ref<'rating' | 'reviews' | 'name'>('rating');
+const cityMenuOpen = ref(false);
+const sortMenuOpen = ref(false);
 const loading = ref(false);
 const error = ref('');
 const page = ref(0);
@@ -225,6 +285,11 @@ const categoryOptions: { value: BusinessCategory; label: string }[] = [
   { value: 'AUTO', label: 'Avto xizmat' },
   { value: 'LEGAL', label: 'Yuridik xizmat' },
   { value: 'OTHER', label: 'Boshqa' },
+];
+const sortOptions: { value: typeof sortBy.value; label: string }[] = [
+  { value: 'rating', label: 'Eng yuqori reyting' },
+  { value: 'reviews', label: "Ko'p sharhlar" },
+  { value: 'name', label: "Nomi bo'yicha" },
 ];
 
 function categoryLabel(category?: BusinessCategory) {
@@ -245,6 +310,25 @@ function clearFilters() {
   categoryFilter.value = '';
   cityFilter.value = '';
   runSearch();
+}
+
+function selectCity(city: string) {
+  cityFilter.value = city;
+  cityMenuOpen.value = false;
+}
+
+function selectSort(sort: typeof sortBy.value) {
+  sortBy.value = sort;
+  sortMenuOpen.value = false;
+}
+
+function dropdownItemClass(active: boolean) {
+  return [
+    'flex w-full items-center rounded-xl px-3 py-2 text-left text-sm font-semibold transition-colors',
+    active
+      ? 'bg-teal-600 text-white dark:bg-teal-500 dark:text-slate-950'
+      : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700',
+  ];
 }
 
 function runSearch() {
@@ -284,8 +368,8 @@ async function loadBusinesses() {
         };
       })
     );
-  } catch {
-    error.value = "Xizmat ko'rsatuvchilar ro'yxatini yuklab bo'lmadi";
+  } catch (e) {
+    error.value = apiErrorMessage(e, "Xizmat ko'rsatuvchilar ro'yxatini yuklab bo'lmadi");
   } finally {
     loading.value = false;
   }
@@ -295,7 +379,8 @@ async function loadCities() {
   try {
     const { data } = await businessesApi.getCities();
     cities.value = data;
-  } catch {
+  } catch (e) {
+    console.warn(apiErrorMessage(e, "Shaharlar ro'yxatini yuklab bo'lmadi"));
     cities.value = [];
   }
 }
@@ -322,6 +407,10 @@ const sortParam = computed(() => {
   if (sortBy.value === 'name') return 'name,asc';
   return 'createdAt,desc';
 });
+
+const sortLabel = computed(() =>
+  sortOptions.find((option) => option.value === sortBy.value)?.label ?? 'Tartiblash'
+);
 
 const BASE_URL = import.meta.env.VITE_BASE_API as string;
 
