@@ -32,7 +32,7 @@
         <div class="p-4">
         <div class="flex items-start justify-between gap-2">
           <div class="min-w-0">
-            <h2 class="text-sm font-bold text-slate-900 dark:text-white">Salon haqida</h2>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-white">Tashkilot haqida</h2>
             <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ business.addressLine || business.city }}</p>
           </div>
           <div v-if="businessReviewCount > 0" class="flex-shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 rounded-full px-2.5 py-1">
@@ -121,7 +121,7 @@
                 <span class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-teal-600 text-xs font-black text-white">{{ reviewInitial(r) }}</span>
                 <div class="min-w-0">
                   <p class="truncate text-sm font-black text-slate-800 dark:text-white">{{ r.customerName || 'Mijoz' }}</p>
-                  <p v-if="r.staffName" class="truncate text-xs font-semibold text-slate-400">Usta: {{ r.staffName }}</p>
+                  <p v-if="r.staffName" class="truncate text-xs font-semibold text-slate-400">Xodim: {{ r.staffName }}</p>
                 </div>
               </div>
               <span class="text-amber-400 text-xs">{{ '★'.repeat(r.stars) }}{{ '☆'.repeat(5 - r.stars) }}</span>
@@ -260,7 +260,7 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="text-sm font-bold text-slate-800 dark:text-white">Ustani tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">Xodimni tanlang</p>
             <div v-if="filteredStaff.length === 0" class="text-sm text-slate-400 mt-2">Bu xizmat uchun faol xodim topilmadi.</div>
             <div class="flex gap-3 mt-3 flex-wrap pb-1 -mx-1 px-1">
               <button
@@ -303,14 +303,14 @@
               <button
                 v-if="unavailableStarts.length > 0"
                 type="button"
-                class="w-fit rounded-full border border-slate-200 px-3 py-1.5 text-xs font-black text-slate-500 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
+                class="w-fit cursor-pointer rounded-full border border-slate-200 px-3 py-1.5 text-xs font-black text-slate-500 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
                 @click="showUnavailableSlots = !showUnavailableSlots"
               >
                 {{ showUnavailableSlots ? 'Band vaqtlarni yashirish' : 'Band vaqtlarni ko\'rsatish' }}
               </button>
             </div>
             <p v-if="dayClosed" class="text-sm text-amber-600 dark:text-amber-400 mt-2">Bu kunda xizmat ko'rsatuvchi yopiq.</p>
-            <p v-else-if="availableStarts.length === 0" class="text-sm text-slate-400 mt-2">Bu usta uchun bo'sh vaqt topilmadi. Boshqa sana yoki ustani tanlab ko'ring.</p>
+            <p v-else-if="availableStarts.length === 0" class="text-sm text-slate-400 mt-2">Bu xodim uchun bo'sh vaqt topilmadi. Boshqa sana yoki xodimni tanlab ko'ring.</p>
             <div v-else class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-3">
               <button
                 v-for="min in availableStarts"
@@ -334,7 +334,7 @@
                   :key="min"
                   type="button"
                   disabled
-                  class="rounded-lg border border-slate-200 bg-slate-100 py-2 text-xs font-semibold text-slate-300 line-through decoration-2 opacity-70 dark:border-slate-700 dark:bg-slate-700 dark:text-slate-500"
+                  class="rounded-lg border border-slate-200 bg-slate-50 py-2 text-xs font-semibold text-slate-500 line-through decoration-2 opacity-70 dark:border-slate-500 dark:bg-slate-700 dark:text-slate-500"
                   :title="slotUnavailableReason(min)"
                 >
                   {{ minutesToLabel(min) }}
@@ -374,7 +374,7 @@
               {{ formatDate(form.date) }}, {{ minutesToLabel(form.startMinutes) }} — {{ formatPrice(selectedService.basePrice) }}
             </template>
             <template v-else>
-              Davom eting — sana, usta va vaqtni tanlang
+              Davom eting — xodim, sana va vaqtni tanlang
             </template>
           </p>
         </div>
@@ -568,7 +568,7 @@ const businessImage = computed(() => services.value.find((service) => service.im
 const bookingSteps = computed(() => [
   { key: 'service', label: 'Xizmat', done: step1Done.value, active: !step1Done.value },
   { key: 'date', label: 'Sana', done: step2Done.value, active: step2Reachable.value && !step2Done.value },
-  { key: 'staff', label: 'Usta', done: step3Done.value, active: step3Reachable.value && !step3Done.value },
+  { key: 'staff', label: 'Xodim', done: step3Done.value, active: step3Reachable.value && !step3Done.value },
   { key: 'time', label: 'Vaqt', done: step4Done.value, active: step4Reachable.value && !step4Done.value },
 ]);
 const bookingProgressLabel = computed(() => {
