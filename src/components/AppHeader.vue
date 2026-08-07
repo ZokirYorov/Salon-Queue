@@ -2,14 +2,14 @@
   <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 transition-colors">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <RouterLink to="/businesses" class="text-lg font-black tracking-tight text-slate-900 dark:text-white">
-        Nav<span class="text-indigo-600 dark:text-indigo-400">bat</span>
+        Nav<span class="text-teal-600 dark:text-teal-400">bat</span>
       </RouterLink>
       <div class="flex items-center gap-3">
         <RouterLink
           v-if="authStore.user"
           to="/client/my"
           class="text-sm font-medium transition"
-          :class="isActive('/client') ? 'text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'"
+          :class="isActive('/client') ? 'text-teal-600 dark:text-teal-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400'"
         >
           Navbatlarim
         </RouterLink>
@@ -27,13 +27,13 @@
         <template v-if="!authStore.user">
           <button
             @click="openAuth($event, 'login')"
-            class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+            class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition"
           >
             Kirish
           </button>
           <button
             @click="openAuth($event, 'register')"
-            class="text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg transition"
+            class="text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white px-3.5 py-1.5 rounded-lg transition"
           >
             Ro'yxatdan o'tish
           </button>
@@ -44,9 +44,9 @@
           <button
             @click="dropdownOpen = !dropdownOpen"
             class="flex items-center cursor-pointer gap-2 text-sm font-semibold rounded-lg px-2 py-1.5 transition"
-            :class="isActive('/profile') ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-500/30' : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'"
+            :class="isActive('/profile') ? 'bg-teal-100 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 hover:bg-teal-200 dark:hover:bg-teal-500/30' : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'"
           >
-            <span class="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <span class="w-7 h-7 rounded-full bg-teal-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
               <img v-if="mediaUrl(authStore.user?.avatarUrl)" :src="mediaUrl(authStore.user?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
               <template v-else>{{ firstInitial(authStore.user) }}</template>
             </span>
@@ -58,7 +58,7 @@
             class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg py-1 z-50"
           >
             <div class="flex items-center gap-3 px-4 py-3 border-b border-slate-100 dark:border-slate-700">
-              <span class="w-9 h-9 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
+              <span class="w-9 h-9 rounded-full bg-teal-500 text-white text-sm font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
                 <img v-if="mediaUrl(authStore.user?.avatarUrl)" :src="mediaUrl(authStore.user?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
                 <template v-else>{{ firstInitial(authStore.user) }}</template>
               </span>
