@@ -151,14 +151,14 @@
               <button
                 type="button"
                 @click="form.date = todayIso()"
-                :class="['px-3 py-1.5 rounded-lg text-xs font-semibold border transition', form.date === todayIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
+                :class="['px-3 py-1.5 cursor-pointer rounded-lg text-xs font-semibold border transition', form.date === todayIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
               >
                 Bugun
               </button>
               <button
                 type="button"
                 @click="form.date = tomorrowIso()"
-                :class="['px-3 py-1.5 rounded-lg text-xs font-semibold border transition', form.date === tomorrowIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
+                :class="['px-3 py-1.5 cursor-pointer rounded-lg text-xs font-semibold border transition', form.date === tomorrowIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
               >
                 Ertaga
               </button>
@@ -185,7 +185,7 @@
                 :key="s.id"
                 type="button"
                 @click="selectStaff(s.id)"
-                class="flex flex-col items-center gap-1.5 text-center border rounded-xl px-3 py-3 flex-shrink-0 w-28 transition"
+                class="flex flex-col cursor-pointer items-center gap-1.5 text-center border rounded-xl px-3 py-3 flex-shrink-0 w-28 transition"
                 :class="form.staffId === s.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
                 <span class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center">
@@ -220,7 +220,7 @@
                 type="button"
                 :disabled="isSlotDisabled(min)"
                 @click="form.startMinutes = min"
-                class="text-xs font-semibold py-2 rounded-lg border transition"
+                class="text-xs cursor-pointer font-semibold py-2 rounded-lg border transition"
                 :class="[
                   form.startMinutes === min ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : '',
                   isSlotDisabled(min)
@@ -419,7 +419,7 @@ const possibleStarts = computed(() => {
     toMinutes(dayHours.value.opensAt),
     toMinutes(dayHours.value.closesAt),
     selectedService.value.durationMinutes,
-    30
+    15
   );
 });
 
