@@ -9,7 +9,7 @@
           <div>
             <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-teal-800 shadow-sm dark:border-teal-700 dark:bg-slate-900/70 dark:text-teal-200">
               <span class="h-2 w-2 rounded-full bg-teal-500" />
-              Tez qidiruv, aniq navbat
+              Tezkor qidiruv, aniq navbat
             </div>
             <h1 class="max-w-3xl text-4xl font-black leading-tight tracking-normal text-slate-950 dark:text-white sm:text-5xl lg:text-[58px]">
               Kerakli ustani toping, vaqtni o'zingiz tanlang
