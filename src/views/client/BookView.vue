@@ -629,10 +629,6 @@ async function loadStatic() {
     await loadBusinessRating();
   } catch (e) {
     loadError.value = apiErrorMessage(e, "Xizmat ko'rsatuvchi ma'lumotlarini yuklab bo'lmadi");
-    await loadStaffRatings();
-    await loadBusinessRating();
-  } catch {
-    loadError.value = "Xizmat ko'rsatuvchi ma'lumotlarini yuklab bo'lmadi";
   } finally {
     loadingServices.value = false;
   }
