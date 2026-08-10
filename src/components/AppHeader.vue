@@ -77,14 +77,14 @@
             </RouterLink>
             <button
               @click="openBusinessApp"
-              class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+              class="w-full flex cursor-pointer items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9h1m-1 4h1m-1 4h1" /></svg>
               Biznes boshqaruvi
             </button>
             <button
               @click="dropdownOpen = false; showLogoutConfirm = true"
-              class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+              class="w-full flex items-center cursor-pointer gap-2 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
               Tizimdan chiqish
@@ -101,7 +101,15 @@
          @click="showLogoutConfirm = false"
     >
       <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tizimdan chiqish</h3>
+        <div class="flex items-center justify-between gap-3">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tizimdan chiqish</h3>
+          <button
+              @click="showLogoutConfirm = false"
+              class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700 "
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
         <p class="text-sm text-slate-500 dark:text-slate-400">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
         <div class="grid grid-cols-2 gap-2">
           <button
@@ -139,7 +147,7 @@ const authModal = useAuthModal();
 
 const dropdownOpen = ref(false);
 const showLogoutConfirm = ref(false);
-const businessAppUrl = (import.meta.env.VITE_BUSINESS_APP_URL as string | undefined) || 'http://localhost:5174';
+// const businessAppUrl = (import.meta.env.VITE_BUSINESS_APP_URL as string | undefined) || 'http://localhost:5174';
 
 function isActive(prefix: string) {
   return route.path.startsWith(prefix);
@@ -156,7 +164,7 @@ function logout() {
 }
 
 function openBusinessApp() {
-  dropdownOpen.value = false;
-  window.location.href = businessAppUrl;
+  // dropdownOpen.value = false;
+  // window.location.href = businessAppUrl;
 }
 </script>

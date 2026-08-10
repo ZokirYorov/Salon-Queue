@@ -32,7 +32,7 @@
         <div class="p-4">
         <div class="flex items-start justify-between gap-2">
           <div class="min-w-0">
-            <h2 class="text-sm font-bold text-slate-900 dark:text-white">Salon haqida</h2>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-white">Tashkilot haqida</h2>
             <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ business.addressLine || business.city }}</p>
           </div>
           <div v-if="businessReviewCount > 0" class="flex-shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 rounded-full px-2.5 py-1">
@@ -42,21 +42,21 @@
           </div>
         </div>
         <p v-if="business.description" class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2">{{ business.description }}</p>
-        <div class="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
+        <div class="mt-4 grid grid-cols-2 gap-3 text-gray-600 dark:text-slate-400 text-xs sm:grid-cols-4">
           <div class="border-l-2 border-teal-500 pl-3">
-            <p class="font-semibold text-slate-400">Reyting</p>
+            <p class="font-semibold">Reyting</p>
             <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount > 0 ? businessAvgRating.toFixed(1) : 'Yangi' }}</p>
           </div>
           <div class="border-l-2 border-amber-400 pl-3">
-            <p class="font-semibold text-slate-400">Sharhlar</p>
+            <p class="font-semibold">Sharhlar</p>
             <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount }} ta</p>
           </div>
           <div class="border-l-2 border-indigo-400 pl-3">
-            <p class="font-semibold text-slate-400">Bugun</p>
+            <p class="font-semibold">Bugun</p>
             <p class="mt-1 font-black text-slate-900 dark:text-white">{{ todayOpen ? todayHoursLabel : 'Yopiq' }}</p>
           </div>
           <div class="border-l-2 border-slate-300 pl-3 dark:border-slate-600">
-            <p class="font-semibold text-slate-400">Hudud</p>
+            <p class="font-semibold">Hudud</p>
             <p class="mt-1 truncate font-black text-slate-900 dark:text-white">{{ business.city || 'Kiritilmagan' }}</p>
           </div>
         </div>
@@ -121,7 +121,7 @@
                 <span class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-teal-600 text-xs font-black text-white">{{ reviewInitial(r) }}</span>
                 <div class="min-w-0">
                   <p class="truncate text-sm font-black text-slate-800 dark:text-white">{{ r.customerName || 'Mijoz' }}</p>
-                  <p v-if="r.staffName" class="truncate text-xs font-semibold text-slate-400">Usta: {{ r.staffName }}</p>
+                  <p v-if="r.staffName" class="truncate text-xs font-semibold text-slate-400">Xodim: {{ r.staffName }}</p>
                 </div>
               </div>
               <span class="text-amber-400 text-xs">{{ '★'.repeat(r.stars) }}{{ '☆'.repeat(5 - r.stars) }}</span>
@@ -148,7 +148,7 @@
           <button
             v-if="businessReviews.length > visibleBusinessReviews.length"
             type="button"
-            class="mt-4 rounded-full border border-slate-200 px-4 py-2 text-xs font-black text-slate-600 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
+            class="mt-4 cursor-pointer rounded-full border border-slate-200 px-4 py-2 text-xs font-black text-slate-600 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
             @click="showAllReviews = true"
           >
             Yana {{ businessReviews.length - visibleBusinessReviews.length }} ta sharhni ko'rsatish
@@ -234,14 +234,14 @@
               <button
                 type="button"
                 @click="form.date = todayIso()"
-                :class="['px-3 py-1.5 rounded-lg text-xs font-semibold border transition', form.date === todayIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
+                :class="['px-3 py-1.5 cursor-pointer rounded-lg text-xs font-semibold border transition', form.date === todayIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
               >
                 Bugun
               </button>
               <button
                 type="button"
                 @click="form.date = tomorrowIso()"
-                :class="['px-3 py-1.5 rounded-lg text-xs font-semibold border transition', form.date === tomorrowIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
+                :class="['px-3 py-1.5 cursor-pointer rounded-lg text-xs font-semibold border transition', form.date === tomorrowIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
               >
                 Ertaga
               </button>
@@ -260,7 +260,7 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="text-sm font-bold text-slate-800 dark:text-white">Ustani tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">Xodimni tanlang</p>
             <div v-if="filteredStaff.length === 0" class="text-sm text-slate-400 mt-2">Bu xizmat uchun faol xodim topilmadi.</div>
             <div class="flex gap-3 mt-3 flex-wrap pb-1 -mx-1 px-1">
               <button
@@ -268,7 +268,7 @@
                 :key="s.id"
                 type="button"
                 @click="selectStaff(s.id)"
-                class="flex flex-col items-center gap-1.5 text-center border rounded-xl px-3 py-3 flex-shrink-0 w-28 transition"
+                class="flex flex-col cursor-pointer items-center gap-1.5 text-center border rounded-xl px-3 py-3 flex-shrink-0 w-28 transition"
                 :class="form.staffId === s.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
                 <span class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center">
@@ -303,21 +303,21 @@
               <button
                 v-if="unavailableStarts.length > 0"
                 type="button"
-                class="w-fit rounded-full border border-slate-200 px-3 py-1.5 text-xs font-black text-slate-500 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
+                class="w-fit cursor-pointer rounded-full border border-slate-200 px-3 py-1.5 text-xs font-black text-slate-500 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
                 @click="showUnavailableSlots = !showUnavailableSlots"
               >
                 {{ showUnavailableSlots ? 'Band vaqtlarni yashirish' : 'Band vaqtlarni ko\'rsatish' }}
               </button>
             </div>
             <p v-if="dayClosed" class="text-sm text-amber-600 dark:text-amber-400 mt-2">Bu kunda xizmat ko'rsatuvchi yopiq.</p>
-            <p v-else-if="availableStarts.length === 0" class="text-sm text-slate-400 mt-2">Bu usta uchun bo'sh vaqt topilmadi. Boshqa sana yoki ustani tanlab ko'ring.</p>
+            <p v-else-if="availableStarts.length === 0" class="text-sm text-slate-400 mt-2">Bu xodim uchun bo'sh vaqt topilmadi. Boshqa sana yoki xodimni tanlab ko'ring.</p>
             <div v-else class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-3">
               <button
                 v-for="min in availableStarts"
                 :key="min"
                 type="button"
                 @click="form.startMinutes = min"
-                class="text-xs font-semibold py-2 rounded-lg border transition"
+                class="text-xs cursor-pointer font-semibold py-2 rounded-lg border transition"
                 :class="[
                   form.startMinutes === min ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : '',
                   form.startMinutes !== min ? 'border-slate-200 dark:border-slate-600 hover:border-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300' : ''
@@ -334,7 +334,7 @@
                   :key="min"
                   type="button"
                   disabled
-                  class="rounded-lg border border-slate-200 bg-slate-100 py-2 text-xs font-semibold text-slate-300 line-through decoration-2 opacity-70 dark:border-slate-700 dark:bg-slate-700 dark:text-slate-500"
+                  class="rounded-lg border border-slate-200 bg-slate-50 py-2 text-xs font-semibold text-slate-500 line-through decoration-2 opacity-70 dark:border-slate-500 dark:bg-slate-700 dark:text-slate-500"
                   :title="slotUnavailableReason(min)"
                 >
                   {{ minutesToLabel(min) }}
@@ -374,7 +374,7 @@
               {{ formatDate(form.date) }}, {{ minutesToLabel(form.startMinutes) }} — {{ formatPrice(selectedService.basePrice) }}
             </template>
             <template v-else>
-              Davom eting — sana, usta va vaqtni tanlang
+              Davom eting — xodim, sana va vaqtni tanlang
             </template>
           </p>
         </div>
@@ -568,7 +568,7 @@ const businessImage = computed(() => services.value.find((service) => service.im
 const bookingSteps = computed(() => [
   { key: 'service', label: 'Xizmat', done: step1Done.value, active: !step1Done.value },
   { key: 'date', label: 'Sana', done: step2Done.value, active: step2Reachable.value && !step2Done.value },
-  { key: 'staff', label: 'Usta', done: step3Done.value, active: step3Reachable.value && !step3Done.value },
+  { key: 'staff', label: 'Xodim', done: step3Done.value, active: step3Reachable.value && !step3Done.value },
   { key: 'time', label: 'Vaqt', done: step4Done.value, active: step4Reachable.value && !step4Done.value },
 ]);
 const bookingProgressLabel = computed(() => {
@@ -585,7 +585,7 @@ const possibleStarts = computed(() => {
     toMinutes(dayHours.value.opensAt),
     toMinutes(dayHours.value.closesAt),
     selectedService.value.durationMinutes,
-    30
+    15
   );
 });
 const availableStarts = computed(() => possibleStarts.value.filter((min) => !isSlotDisabled(min)));

@@ -5,11 +5,11 @@
     <main>
       <section class="relative overflow-hidden border-b border-slate-200 bg-[linear-gradient(135deg,#f8fafc_0%,#eefaf7_48%,#fff7ed_100%)] dark:border-slate-800 dark:bg-[linear-gradient(135deg,#020617_0%,#0f2f2c_58%,#1f1607_100%)]">
         <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-50 to-transparent dark:from-slate-950" />
-        <div class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:py-16">
+        <div class="relative mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-14 lg:py-6">
           <div>
             <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-teal-800 shadow-sm dark:border-teal-700 dark:bg-slate-900/70 dark:text-teal-200">
               <span class="h-2 w-2 rounded-full bg-teal-500" />
-              Tez qidiruv, aniq navbat
+              Tezkor qidiruv, aniq navbat
             </div>
             <h1 class="max-w-3xl text-4xl font-black leading-tight tracking-normal text-slate-950 dark:text-white sm:text-5xl lg:text-[58px]">
               Kerakli ustani toping, vaqtni o'zingiz tanlang
@@ -97,7 +97,7 @@
               <button
                 type="button"
                 @click="runSearch"
-                class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-teal-600 px-7 text-sm font-black text-white transition hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400"
+                class="inline-flex min-h-14 cursor-pointer items-center justify-center rounded-2xl bg-teal-600 px-7 text-sm font-black text-white transition hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400"
               >
                 Qidirish
               </button>
@@ -109,7 +109,7 @@
                 :key="cat.value"
                 type="button"
                 @click="setCategory(cat.value)"
-                class="inline-flex items-center gap-2 rounded-2xl border px-3.5 py-2 text-sm font-bold transition"
+                class="inline-flex cursor-pointer items-center gap-2 rounded-2xl border px-3.5 py-2 text-sm font-bold transition"
                 :class="categoryFilter === cat.value ? 'border-teal-600 bg-teal-600 text-white shadow-sm' : 'border-slate-200 bg-white/80 text-slate-700 hover:border-teal-300 hover:text-teal-700 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-teal-500'"
               >
                 {{ cat.label }}
@@ -182,9 +182,6 @@
               <span class="inline-flex items-center rounded-2xl bg-white/95 px-3 py-1.5 text-xs font-black text-slate-900 shadow-sm backdrop-blur-md">
                 {{ categoryLabel(card.business.category) }}
               </span>
-              <span v-if="card.serviceCount > 0" class="inline-flex items-center rounded-2xl bg-teal-600/90 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-md">
-                {{ card.serviceCount }} ta xizmat
-              </span>
             </div>
             <div class="absolute right-3 top-3">
               <span class="inline-flex items-center gap-1 rounded-2xl bg-emerald-500/95 px-3 py-1.5 text-xs font-black text-white shadow-sm backdrop-blur-md">
@@ -218,7 +215,7 @@
             </div>
             <div class="mt-3 flex items-center justify-between gap-3">
               <span class="text-xs font-semibold text-slate-400">Sahifaga kirib vaqt tanlang</span>
-              <span class="rounded-2xl bg-slate-950 px-4 py-2 text-sm font-black text-white transition-colors duration-200 group-hover:bg-teal-600 dark:bg-white dark:text-slate-950 dark:group-hover:bg-teal-400">
+              <span class="rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-black text-white transition-colors duration-200 group-hover:bg-teal-600 dark:bg-white dark:text-slate-950 dark:group-hover:bg-teal-400">
                 Navbat olish
               </span>
             </div>

@@ -49,7 +49,7 @@
             </div>
             <div class="min-w-0">
               <p class="text-xs font-black uppercase tracking-wide text-teal-700 dark:text-teal-300">Eng yaqin navbat</p>
-              <h3 class="mt-1 truncate text-lg font-black text-slate-900 dark:text-white">{{ nextBooking.offeredServiceName || 'Xizmat' }}</h3>
+              <h3 class="mt-1 truncate text-lg font-black text-slate-700 dark:text-white">{{ nextBooking.offeredServiceName || 'Xizmat' }}</h3>
               <p class="mt-1 truncate text-sm font-semibold text-slate-500 dark:text-slate-300">{{ nextBooking.businessName }} · {{ nextBooking.staffName || 'Usta tanlanmagan' }}</p>
               <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">
                 <i class="fa-regular fa-calendar-check"></i>
@@ -59,11 +59,16 @@
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <span class="rounded-full px-3 py-1.5 text-xs font-black" :class="statusClass(nextBooking.status)">{{ statusLabel(nextBooking.status) }}</span>
-            <RouterLink :to="`/business/${nextBooking.businessId}`" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-200 dark:hover:border-teal-400 dark:hover:text-teal-300">Salon sahifasi</RouterLink>
+            <RouterLink
+                :to="`/business/${nextBooking.businessId}`"
+                class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-200 dark:hover:border-teal-400 dark:hover:text-teal-300"
+            >
+              {{nextBooking.businessName}} sahifasi
+            </RouterLink>
             <button
               v-if="canCancel(nextBooking.status)"
               @click="cancelTarget = nextBooking"
-              class="rounded-xl bg-red-50 px-3 py-2 text-xs font-black text-red-600 transition hover:bg-red-100 dark:bg-red-500/10 dark:text-red-300 dark:hover:bg-red-500/20"
+              class="rounded-xl cursor-pointer bg-red-50 px-3 py-2 text-xs font-black text-red-600 transition hover:bg-red-100 dark:bg-red-500/10 dark:text-red-300 dark:hover:bg-red-500/20"
             >
               Bekor qilish
             </button>
@@ -77,8 +82,8 @@
           :key="tab.key"
           type="button"
           @click="activeFilter = tab.key"
-          class="whitespace-nowrap rounded-full px-4 py-2 text-xs font-black transition"
-          :class="activeFilter === tab.key ? 'bg-teal-600 text-white' : 'bg-white text-slate-500 hover:text-slate-900 dark:bg-slate-800 dark:text-slate-300 dark:hover:text-white'"
+          class="whitespace-nowrap cursor-pointer rounded-full px-4 py-2 text-xs font-black transition"
+          :class="activeFilter === tab.key ? 'bg-teal-600 text-white' : 'bg-gray-200 text-slate-500 hover:text-indigo-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-gray-700 dark:hover:text-white'"
         >
           {{ tab.label }}
         </button>
@@ -108,11 +113,16 @@
             </p>
           </div>
           <div class="flex flex-wrap items-center gap-2 shrink-0">
-            <RouterLink :to="`/business/${b.businessId}`" class="rounded-lg px-2.5 py-1.5 text-xs font-black text-slate-600 transition hover:text-teal-600 dark:text-slate-300 dark:hover:text-teal-300">Salon sahifasi</RouterLink>
+            <RouterLink
+                :to="`/business/${b.businessId}`"
+                class="rounded-lg px-2.5 py-1.5 text-sm font-black text-slate-500 transition hover:text-teal-600 dark:text-slate-300 dark:hover:text-teal-300"
+            >
+              {{b.businessName}} sahifasi
+            </RouterLink>
             <button
               v-if="canCancel(b.status)"
               @click="cancelTarget = b"
-              class="rounded-lg px-2.5 py-1.5 text-xs font-black text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10"
+              class="rounded-lg cursor-pointer px-2.5 py-1.5 text-xs font-black text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10"
             >
               Bekor qilish
             </button>
@@ -130,13 +140,22 @@
 
     <div v-if="cancelTarget" @click.self="cancelTarget = null" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
       <div class="w-full max-w-sm space-y-4 rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-800">
-        <h3 class="text-lg font-black text-slate-900 dark:text-white">Navbatni bekor qilish</h3>
+        <div class="flex items-center justify-between gap-3">
+          <h3 class="text-lg font-black text-slate-700 dark:text-white">Navbatni bekor qilish</h3>
+          <button
+              @click="cancelTarget = null"
+              class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
         <p class="text-sm text-slate-500 dark:text-slate-400">
           <strong>{{ cancelTarget.offeredServiceName || 'Xizmat' }}</strong> - {{ formatDateTime(cancelTarget.startAt) }} uchun navbatni bekor qilishni tasdiqlaysizmi?
         </p>
         <div class="grid grid-cols-2 gap-2">
-          <button @click="cancelTarget = null" class="rounded-lg bg-slate-100 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">Yo'q</button>
-          <button @click="confirmCancel" :disabled="cancelling" class="rounded-lg bg-red-600 py-2 text-sm font-bold text-white transition hover:bg-red-700 disabled:opacity-60">
+          <button @click="cancelTarget = null" class="rounded-lg cursor-pointer bg-slate-100 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">Yo'q</button>
+          <button @click="confirmCancel" :disabled="cancelling" class="rounded-lg cursor-pointer bg-red-600 py-2 text-sm font-bold text-white transition hover:bg-red-700 disabled:opacity-60">
             {{ cancelling ? 'Bekor qilinmoqda...' : 'Ha, bekor qilish' }}
           </button>
         </div>
@@ -146,12 +165,15 @@
     <div v-if="reviewTarget" @click.self="reviewTarget = null" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
       <div class="w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-800">
         <div class="flex items-center justify-between gap-3">
-          <h3 class="text-lg font-black text-slate-900 dark:text-white">Sharh qoldirish</h3>
-          <button @click="reviewTarget = null" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700">
+          <h3 class="text-lg font-black text-slate-700 dark:text-white">Sharh qoldirish</h3>
+          <button
+              @click="reviewTarget = null"
+              class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+          >
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-        <div class="flex items-center gap-3 rounded-2xl bg-slate-50 p-3 dark:bg-slate-900/30">
+        <div class="flex items-center gap-3 rounded-2xl bg-slate-100 p-3 dark:bg-slate-900/30">
           <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-teal-50 text-sm font-black text-teal-600 dark:bg-teal-500/10 dark:text-teal-300">
             {{ bookingInitial(reviewTarget) }}
           </div>
@@ -181,8 +203,8 @@
         </label>
         <p v-if="reviewError" class="text-sm text-red-600 dark:text-red-400">{{ reviewError }}</p>
         <div class="grid grid-cols-2 gap-2">
-          <button @click="reviewTarget = null" class="rounded-lg bg-slate-100 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">Bekor qilish</button>
-          <button @click="submitReview" :disabled="submittingReview" class="rounded-lg bg-teal-600 py-2 text-sm font-bold text-white transition hover:bg-teal-700 disabled:opacity-60">
+          <button @click="reviewTarget = null" class="rounded-lg cursor-pointer bg-slate-100 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">Bekor qilish</button>
+          <button @click="submitReview" :disabled="submittingReview" class="rounded-lg cursor-pointer bg-teal-600 py-2 text-sm font-bold text-white transition hover:bg-teal-700 disabled:opacity-60">
             {{ submittingReview ? 'Yuborilmoqda...' : 'Yuborish' }}
           </button>
         </div>
