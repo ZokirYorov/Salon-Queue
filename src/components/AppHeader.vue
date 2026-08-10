@@ -101,7 +101,15 @@
          @click="showLogoutConfirm = false"
     >
       <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tizimdan chiqish</h3>
+        <div class="flex items-center justify-between gap-3">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tizimdan chiqish</h3>
+          <button
+              @click="showLogoutConfirm = false"
+              class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700 "
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
         <p class="text-sm text-slate-500 dark:text-slate-400">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
         <div class="grid grid-cols-2 gap-2">
           <button

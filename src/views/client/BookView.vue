@@ -42,21 +42,21 @@
           </div>
         </div>
         <p v-if="business.description" class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2">{{ business.description }}</p>
-        <div class="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
+        <div class="mt-4 grid grid-cols-2 gap-3 text-gray-600 dark:text-slate-400 text-xs sm:grid-cols-4">
           <div class="border-l-2 border-teal-500 pl-3">
-            <p class="font-semibold text-slate-400">Reyting</p>
+            <p class="font-semibold">Reyting</p>
             <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount > 0 ? businessAvgRating.toFixed(1) : 'Yangi' }}</p>
           </div>
           <div class="border-l-2 border-amber-400 pl-3">
-            <p class="font-semibold text-slate-400">Sharhlar</p>
+            <p class="font-semibold">Sharhlar</p>
             <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount }} ta</p>
           </div>
           <div class="border-l-2 border-indigo-400 pl-3">
-            <p class="font-semibold text-slate-400">Bugun</p>
+            <p class="font-semibold">Bugun</p>
             <p class="mt-1 font-black text-slate-900 dark:text-white">{{ todayOpen ? todayHoursLabel : 'Yopiq' }}</p>
           </div>
           <div class="border-l-2 border-slate-300 pl-3 dark:border-slate-600">
-            <p class="font-semibold text-slate-400">Hudud</p>
+            <p class="font-semibold">Hudud</p>
             <p class="mt-1 truncate font-black text-slate-900 dark:text-white">{{ business.city || 'Kiritilmagan' }}</p>
           </div>
         </div>
@@ -148,7 +148,7 @@
           <button
             v-if="businessReviews.length > visibleBusinessReviews.length"
             type="button"
-            class="mt-4 rounded-full border border-slate-200 px-4 py-2 text-xs font-black text-slate-600 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
+            class="mt-4 cursor-pointer rounded-full border border-slate-200 px-4 py-2 text-xs font-black text-slate-600 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
             @click="showAllReviews = true"
           >
             Yana {{ businessReviews.length - visibleBusinessReviews.length }} ta sharhni ko'rsatish
