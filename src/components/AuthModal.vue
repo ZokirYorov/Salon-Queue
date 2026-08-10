@@ -25,6 +25,11 @@
                  class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           <input v-model="loginForm.password" type="password" required autocomplete="current-password" placeholder="Parol"
                  class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <div class="text-right">
+            <button type="button" @click="goToForgotPassword" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+              Parolni unutdingizmi?
+            </button>
+          </div>
           <button type="submit" :disabled="loading" class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-semibold py-2.5 rounded-lg transition">
             {{ loading ? 'Kirilmoqda...' : 'Kirish' }}
           </button>
@@ -62,10 +67,12 @@
 
 <script setup lang="ts">
 import { reactive, ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useAuthModal } from '@/composables/useAuthModal';
 import { splitFullName } from '@/utils/names';
 
+const router = useRouter();
 const authStore = useAuthStore();
 const { isOpen, mode, anchor, close, handleSuccess } = useAuthModal();
 
@@ -111,6 +118,11 @@ function onKeydown(e: KeyboardEvent) {
 }
 onMounted(() => document.addEventListener('keydown', onKeydown));
 onUnmounted(() => document.removeEventListener('keydown', onKeydown));
+
+function goToForgotPassword() {
+  close();
+  router.push({ name: 'ForgotPassword' });
+}
 
 async function handleLogin() {
   error.value = '';

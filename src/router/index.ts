@@ -42,6 +42,11 @@ const routes: Array<RouteRecordRaw> = [
         name: "Register",
         component: () => import('@/views/Register.vue'),
     },
+    {
+        path: "/forgot-password",
+        name: "ForgotPassword",
+        component: () => import('@/views/ForgotPassword.vue'),
+    },
 
     { path: '/', redirect: '/businesses' },
     { path: '/:pathMatch(.*)*', redirect: '/businesses' },
@@ -75,7 +80,7 @@ router.beforeEach((to, _, next) => {
         return next({ name: 'Login' })
     }
 
-    if ((to.name === 'Login' || to.name === 'Register') && isAuthenticated) {
+    if ((to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword') && isAuthenticated) {
         return next({ name: 'Dashboard' })
     }
     next()
