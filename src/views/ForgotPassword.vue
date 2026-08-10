@@ -30,6 +30,7 @@
             type="text"
             autocomplete="username"
             required
+            :disabled="loading"
             class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
             placeholder="Login"
           />
@@ -55,6 +56,9 @@
             autocomplete="one-time-code"
             required
             maxlength="6"
+            pattern="[0-9]{6}"
+            :disabled="loading"
+            @input="normalizeCode"
             class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
             placeholder="6 xonali kod"
           />
@@ -62,28 +66,44 @@
 
         <div>
           <label for="new-password" class="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1.5">Yangi parol</label>
-          <input
-            id="new-password"
-            v-model="form.newPassword"
-            type="password"
-            autocomplete="new-password"
-            required
-            class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
-            placeholder="Kamida 4 belgi"
-          />
+          <div class="relative">
+            <input
+              id="new-password"
+              v-model="form.newPassword"
+              :type="showNewPassword ? 'text' : 'password'"
+              autocomplete="new-password"
+              required
+              minlength="4"
+              :disabled="loading"
+              class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+              placeholder="Kamida 4 belgi"
+            />
+            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 transition" :aria-label="showNewPassword ? 'Parolni yashirish' : 'Parolni ko\'rsatish'" @click="showNewPassword = !showNewPassword">
+              <svg v-if="showNewPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58M9.88 4.24A10.44 10.44 0 0112 4c5 0 9 4 10 8a11.79 11.79 0 01-3.22 5.05M6.1 6.1A11.82 11.82 0 002 12c1 4 5 8 10 8a10.58 10.58 0 005.9-1.86" /></svg>
+              <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" stroke-width="2" /></svg>
+            </button>
+          </div>
         </div>
 
         <div>
           <label for="confirm-password" class="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1.5">Parolni tasdiqlang</label>
-          <input
-            id="confirm-password"
-            v-model="form.confirmPassword"
-            type="password"
-            autocomplete="new-password"
-            required
-            class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
-            placeholder="Yangi parolni qayta kiriting"
-          />
+          <div class="relative">
+            <input
+              id="confirm-password"
+              v-model="form.confirmPassword"
+              :type="showConfirmPassword ? 'text' : 'password'"
+              autocomplete="new-password"
+              required
+              minlength="4"
+              :disabled="loading"
+              class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+              placeholder="Yangi parolni qayta kiriting"
+            />
+            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 transition" :aria-label="showConfirmPassword ? 'Parolni yashirish' : 'Parolni ko\'rsatish'" @click="showConfirmPassword = !showConfirmPassword">
+              <svg v-if="showConfirmPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58M9.88 4.24A10.44 10.44 0 0112 4c5 0 9 4 10 8a11.79 11.79 0 01-3.22 5.05M6.1 6.1A11.82 11.82 0 002 12c1 4 5 8 10 8a10.58 10.58 0 005.9-1.86" /></svg>
+              <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" stroke-width="2" /></svg>
+            </button>
+          </div>
         </div>
 
         <button
@@ -94,9 +114,14 @@
           {{ loading ? 'Saqlanmoqda...' : 'Parolni almashtirish' }}
         </button>
 
-        <button type="button" class="w-full text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500" @click="step = 'request'">
-          Loginni o'zgartirish
-        </button>
+        <div class="grid gap-2 sm:grid-cols-2">
+          <button type="button" :disabled="loading" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 disabled:opacity-60" @click="changeLogin">
+            Loginni o'zgartirish
+          </button>
+          <button type="button" :disabled="loading" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 disabled:opacity-60" @click="sendCode">
+            Kodni qayta yuborish
+          </button>
+        </div>
       </form>
 
       <p class="mt-6 text-center text-sm text-gray-600 dark:text-slate-400">
@@ -119,6 +144,8 @@ const step = ref<'request' | 'confirm'>('request');
 const loading = ref(false);
 const error = ref('');
 const message = ref('');
+const showNewPassword = ref(false);
+const showConfirmPassword = ref(false);
 const form = reactive({
   login: '',
   code: '',
@@ -137,7 +164,8 @@ async function sendCode() {
 
   loading.value = true;
   try {
-    await authApi.requestPasswordReset({ login: form.login.trim() });
+    form.login = form.login.trim();
+    await authApi.requestPasswordReset({ login: form.login });
     message.value = "Agar login mavjud bo'lsa, emailga kod yuborildi.";
     step.value = 'confirm';
   } catch (e: any) {
@@ -145,6 +173,21 @@ async function sendCode() {
   } finally {
     loading.value = false;
   }
+}
+
+function normalizeCode() {
+  form.code = form.code.replace(/\D/g, '').slice(0, 6);
+}
+
+function changeLogin() {
+  error.value = '';
+  message.value = '';
+  form.code = '';
+  form.newPassword = '';
+  form.confirmPassword = '';
+  showNewPassword.value = false;
+  showConfirmPassword.value = false;
+  step.value = 'request';
 }
 
 async function resetPassword() {
@@ -171,6 +214,9 @@ async function resetPassword() {
       code: form.code.trim(),
       newPassword: form.newPassword,
     });
+    form.code = '';
+    form.newPassword = '';
+    form.confirmPassword = '';
     router.push({ name: 'Login', query: { reset: 'success' } });
   } catch (e: any) {
     error.value = e?.response?.data?.message || "Kod noto'g'ri yoki muddati o'tgan";
