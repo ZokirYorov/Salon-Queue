@@ -66,6 +66,20 @@ export interface Business {
   updatedAt: string
 }
 
+export interface PublicBusinessSummary {
+  id: string
+  name: string
+  description: string | null
+  addressLine: string | null
+  city: string | null
+  contactPhone: string | null
+  category: BusinessCategory
+  imageUrl: string | null
+  serviceCount: number
+  avgRating: number
+  reviewCount: number
+}
+
 export interface Page<T> {
   content: T[]
   totalElements: number
@@ -133,6 +147,14 @@ export interface Booking {
   customerNote: string
   createdAt: string
   updatedAt: string
+}
+
+export interface BookingAvailability {
+  id: string
+  staffId: string | null
+  startAt: string
+  endAt: string
+  status: BookingStatus
 }
 
 export interface BookingCreateRequest {

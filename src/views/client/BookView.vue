@@ -400,7 +400,7 @@
   <div
       v-if="openModal === true"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 transition-opacity w-full h-full"
-      @click="openModal = false"
+      @click.self="openModal = false"
   >
     <div
         class=" bg-white dark:bg-gray-800 p-6 rounded-2xl flex flex-col justify-between gap-4 relative"
@@ -664,12 +664,20 @@ async function loadStaffRatings() {
 }
 
 async function loadDayBookings() {
-  // Band vaqtlarni faqat tizimga kirgan foydalanuvchi uchun so'raymiz — GET /bookings
-  // autentifikatsiya talab qiladi, mehmon uchun bu so'rov baribir 401 bilan tugaydi.
-  if (!form.date || !authStore.user) return;
+  if (!form.date) return;
   try {
-    const { data } = await bookingsApi.getAll({ businessId, date: form.date, size: 200 });
-    dayBookings.value = data.content;
+    const { data } = await bookingsApi.availability({ businessId, date: form.date });
+    dayBookings.value = data.map((booking) => ({
+      ...booking,
+      customerId: null,
+      guestName: null,
+      guestPhone: null,
+      businessId,
+      offeredServiceId: '',
+      customerNote: '',
+      createdAt: booking.startAt,
+      updatedAt: booking.endAt,
+    }));
   } catch {
     dayBookings.value = [];
   }
@@ -704,7 +712,7 @@ watch(availableStarts, () => {
   }
 });
 
-// Mehmon tizimga kirgandan so'ng (masalan bron oynasidan), band vaqtlarni endi ko'ra oladi
+// Login/registerdan keyin band vaqtlarni yangilab olamiz.
 watch(() => authStore.user, (user) => {
   if (user) loadDayBookings();
 });
@@ -737,8 +745,7 @@ async function submit() {
   submitting.value = true;
   submitError.value = '';
   try {
-    // Mehmon holida band vaqtlar ko'rinmagani uchun, haqiqiy yuborishdan oldin
-    // eng so'nggi bandlikni qayta tekshiramiz — shu orqali dublikat bron oldi olinadi.
+    // Yuborishdan oldin eng so'nggi bandlikni qayta tekshiramiz.
     await loadDayBookings();
     if (isSlotDisabled(form.startMinutes)) {
       submitError.value = "Bu vaqt endi band. Iltimos, boshqa vaqt tanlang.";
