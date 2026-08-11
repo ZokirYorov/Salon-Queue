@@ -155,23 +155,23 @@
       <div v-else class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <RouterLink
           v-for="card in filteredCards"
-          :key="card.business.id"
-          :to="`/business/${card.business.id}`"
+          :key="card.id"
+          :to="`/business/${card.id}`"
           class="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900 dark:hover:border-teal-500"
         >
           <div class="relative h-44 w-full overflow-hidden bg-slate-900 flex-shrink-0">
             <img
-              v-if="card.image"
-              :src="getAvatarUrl(card.image)"
-              :alt="card.business.name"
+              v-if="card.imageUrl"
+              :src="getAvatarUrl(card.imageUrl)"
+              :alt="card.name"
               class="h-full w-full object-cover object-center opacity-95 transition duration-500 group-hover:scale-105"
             />
             <div v-else class="h-full w-full bg-[linear-gradient(135deg,#0f766e,#f59e0b)]" />
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent" />
             <div class="absolute bottom-4 left-4 right-4">
               <div class="flex items-end justify-between gap-3">
-                <div v-if="!card.image" class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white text-lg font-black text-teal-700 shadow-lg">
-                  {{ card.business.name.charAt(0).toUpperCase() }}
+                <div v-if="!card.imageUrl" class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white text-lg font-black text-teal-700 shadow-lg">
+                  {{ card.name.charAt(0).toUpperCase() }}
                 </div>
                 <div v-if="card.avgRating > 0" class="rounded-full bg-white/95 px-3 py-1.5 text-sm font-black text-slate-950 shadow-sm">
                   ★ {{ card.avgRating.toFixed(1) }}
@@ -180,7 +180,7 @@
             </div>
             <div class="absolute left-3 top-3 flex flex-wrap gap-2">
               <span class="inline-flex items-center rounded-2xl bg-white/95 px-3 py-1.5 text-xs font-black text-slate-900 shadow-sm backdrop-blur-md">
-                {{ categoryLabel(card.business.category) }}
+                {{ categoryLabel(card.category) }}
               </span>
             </div>
             <div class="absolute right-3 top-3">
@@ -194,15 +194,15 @@
           <div class="p-5 flex-1 flex flex-col">
             <div class="mb-2 flex items-start justify-between gap-2">
               <h3 class="line-clamp-1 text-lg font-black text-slate-950 transition-colors group-hover:text-teal-700 dark:text-white dark:group-hover:text-teal-300">
-                {{ card.business.name }}
+                {{ card.name }}
               </h3>
             </div>
             <div class="mb-4 flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-slate-400">
               <svg class="h-4 w-4 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
-              <span class="truncate">{{ [card.business.city, card.business.addressLine].filter(Boolean).join(', ') || 'Manzil kiritilmagan' }}</span>
+              <span class="truncate">{{ [card.city, card.addressLine].filter(Boolean).join(', ') || 'Manzil kiritilmagan' }}</span>
             </div>
             <p class="mb-4 line-clamp-2 min-h-10 text-sm leading-5 text-slate-500 dark:text-slate-400">
-              {{ card.business.description || 'Xizmatlar, ustalar va bo\'sh vaqtlarni ko\'rib, o\'zingizga qulay navbatni tanlang.' }}
+              {{ card.description || 'Xizmatlar, ustalar va bo\'sh vaqtlarni ko\'rib, o\'zingizga qulay navbatni tanlang.' }}
             </p>
 
             <div class="mt-auto grid grid-cols-2 gap-2 border-t border-slate-200 pt-4 text-xs dark:border-slate-700">
@@ -243,22 +243,12 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import { businessesApi } from '@/api/businesses';
-import { servicesApi } from '@/api/services';
-import { reviewsApi } from '@/api/reviews';
 // import { mediaUrl } from '@/utils/media';
 import { apiErrorMessage } from '@/utils/apiError';
 import AppHeader from '@/components/AppHeader.vue';
-import type { Business, BusinessCategory } from '@/types/api';
+import type { BusinessCategory, PublicBusinessSummary } from '@/types/api';
 
-interface BusinessCard {
-  business: Business;
-  image: string | null;
-  avgRating: number;
-  reviewCount: number;
-  serviceCount: number;
-}
-
-const cards = ref<BusinessCard[]>([]);
+const cards = ref<PublicBusinessSummary[]>([]);
 const cities = ref<string[]>([]);
 const searchQuery = ref('');
 const categoryFilter = ref<BusinessCategory | ''>('');
@@ -337,7 +327,7 @@ async function loadBusinesses() {
   loading.value = true;
   error.value = '';
   try {
-    const { data } = await businessesApi.getAll({
+    const { data } = await businessesApi.getPublic({
       page: page.value,
       size: 12,
       q: searchQuery.value.trim() || undefined,
@@ -345,26 +335,8 @@ async function loadBusinesses() {
       category: categoryFilter.value || undefined,
       sort: sortParam.value,
     });
-    const list = data.content.filter((b) => b.accessAllowed);
     totalPages.value = data.totalPages;
-
-    cards.value = await Promise.all(
-      list.map(async (business): Promise<BusinessCard> => {
-        const [svcRes, revRes] = await Promise.allSettled([
-          servicesApi.getAll(business.id),
-          reviewsApi.getAll({ businessId: business.id }),
-        ]);
-        const services = svcRes.status === 'fulfilled' ? svcRes.value.data.filter((s) => s.active) : [];
-        const reviews = revRes.status === 'fulfilled' ? revRes.value.data : [];
-        return {
-          business,
-          image: services.find((s) => s.imageUrl)?.imageUrl ?? null,
-          avgRating: reviews.length ? reviews.reduce((sum, r) => sum + r.stars, 0) / reviews.length : 0,
-          reviewCount: reviews.length,
-          serviceCount: services.length,
-        };
-      })
-    );
+    cards.value = data.content;
   } catch (e) {
     error.value = apiErrorMessage(e, "Xizmat ko'rsatuvchilar ro'yxatini yuklab bo'lmadi");
   } finally {
@@ -374,7 +346,7 @@ async function loadBusinesses() {
 
 async function loadCities() {
   try {
-    const { data } = await businessesApi.getCities();
+    const { data } = await businessesApi.getPublicCities();
     cities.value = data;
   } catch (e) {
     console.warn(apiErrorMessage(e, "Shaharlar ro'yxatini yuklab bo'lmadi"));
