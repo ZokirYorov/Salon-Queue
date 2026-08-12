@@ -182,20 +182,27 @@
             <p class="truncate text-xs font-semibold text-slate-400">{{ reviewTarget.staffName || 'Usta tanlanmagan' }}</p>
           </div>
         </div>
-        <div>
-          <div class="flex gap-1">
+        <div class="flex flex-col items-center justify-center gap-3">
+          <div class="flex w-65 items-center gap-10">
             <button
               v-for="n in 5"
               :key="n"
               type="button"
+              :title="starItems(n)"
               @click="reviewForm.stars = n"
-              class="text-3xl transition hover:scale-110"
+              class="text-2xl cursor-pointer transition hover:scale-110"
               :class="n <= reviewForm.stars ? 'text-amber-400' : 'text-slate-200 dark:text-slate-600'"
             >
               ★
             </button>
           </div>
-          <p class="mt-1 text-xs font-semibold text-slate-400">1-2 yomon, 3 o'rtacha, 4 yaxshi, 5 a'lo</p>
+          <div class="flex items-center justify-center text-xs gap-5 pr-4 text-gray-600">
+            <span>Yomon</span>
+            <span>Qoniqarsiz</span>
+            <span>O'rtacha</span>
+            <span>Yaxshi</span>
+            <span>A'lo</span>
+          </div>
         </div>
         <label class="block">
           <span class="mb-1 block text-xs font-bold text-slate-700 dark:text-slate-200">Xizmat haqida fikringiz (ixtiyoriy)</span>
@@ -248,6 +255,19 @@ const upcoming = computed(() => bookings.value.filter((b) => !PAST_STATUSES.incl
 const completed = computed(() => bookings.value.filter((b) => b.status === 'COMPLETED'));
 const cancelled = computed(() => bookings.value.filter((b) => CANCELLED_STATUSES.includes(b.status)));
 const nextBooking = computed(() => [...upcoming.value].sort((a, b) => a.startAt.localeCompare(b.startAt))[0] ?? null);
+
+const starTitles = [
+  '',
+  'Yomon',
+  'Qoniqarsiz',
+  "O'rtacha",
+  'Yaxshi',
+  "A'lo"
+]
+
+const starItems = (star: number): string => {
+  return starTitles[star] ?? ''
+}
 
 const summaryCards = computed(() => [
   { key: 'all' as const, label: 'Jami', count: bookings.value.length },
