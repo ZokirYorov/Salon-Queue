@@ -66,7 +66,7 @@ router.beforeEach((to, _, next) => {
         const isValid = checkToken();
         if (!isValid) {
             if (!sessionExpiredShown) {
-                Toast.info('Tizimga qayta kiring !')
+                Toast.info('Sessiya tugadi, tizimga qayta kiring!')
                 sessionExpiredShown = true;
             }
             authStore.logout();

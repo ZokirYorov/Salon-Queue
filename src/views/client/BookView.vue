@@ -33,7 +33,7 @@
         <div class="flex items-start justify-between gap-2">
           <div class="min-w-0">
             <h2 class="text-sm font-bold text-slate-900 dark:text-white">Tashkilot haqida</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ business.addressLine || business.city }}</p>
+            <p class="text-xs text-slate-900 dark:text-slate-300 truncate">Manzil: {{ business.addressLine || business.city }}</p>
           </div>
           <div v-if="businessReviewCount > 0" class="flex-shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 rounded-full px-2.5 py-1">
             <span class="text-amber-500 text-sm">⭐</span>
@@ -416,7 +416,12 @@
         <p class="text-blue-800 dark:text-blue-400 text-sm font-semibold">Unda qaytadan tanlashga harakat qilish mumkin !</p>
       </div>
       <div class="flex items-center gap-2 justify-center">
-        <button class="text-red-600 bg-red-100 hover:bg-red-200 hover:text-red-700 cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold" @click="openModal = false">Yo'q</button>
+        <button
+            class="text-red-600 bg-red-100 hover:bg-red-200 hover:text-red-700 cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
+            @click="openModal = false"
+        >
+          Yo'q
+        </button>
         <button
             class="bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
             @click="formCleaned"
@@ -479,6 +484,7 @@ const formCleaned = () => {
   form.staffId = '';
   form.startMinutes = null;
   form.customerNote = '';
+  openModal.value = false;
 }
 
 

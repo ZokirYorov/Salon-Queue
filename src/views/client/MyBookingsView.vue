@@ -50,7 +50,16 @@
             <div class="min-w-0">
               <p class="text-xs font-black uppercase tracking-wide text-teal-700 dark:text-teal-300">Eng yaqin navbat</p>
               <h3 class="mt-1 truncate text-lg font-black text-slate-700 dark:text-white">{{ nextBooking.offeredServiceName || 'Xizmat' }}</h3>
-              <p class="mt-1 truncate text-sm font-semibold text-slate-500 dark:text-slate-300">{{ nextBooking.businessName }} · {{ nextBooking.staffName || 'Usta tanlanmagan' }}</p>
+              <p class="flex flex-col mt-1 truncate text-sm font-semibold text-slate-500 dark:text-slate-300">
+                <span>
+                <Building2 class="w-4 h-4 inline mr-1.5" />
+                {{ nextBooking.businessName }}
+              </span>
+                <span class="flex items-center">
+                <User class="w-3 h-3 inline mr-1.5" />-
+                {{ nextBooking.staffName || 'Usta tanlanmagan' }}
+              </span>
+              </p>
               <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">
                 <i class="fa-regular fa-calendar-check"></i>
                 {{ formatDateTime(nextBooking.startAt) }} - {{ formatTime(nextBooking.endAt) }}
@@ -96,17 +105,36 @@
         <div
           v-for="b in filteredBookings"
           :key="b.id"
-          :class="['flex flex-col gap-3 rounded-2xl border border-l-4 border-slate-200 bg-white p-4 transition hover:border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600 sm:flex-row sm:items-center', statusBorderClass(b.status)]"
+          :class="[
+              'flex flex-col gap-3 rounded-2xl border border-l-4 border-slate-200 bg-white p-4 transition dark:border-slate-700 dark:bg-slate-800 sm:flex-row sm:items-center',
+              statusBorderClass(b.status)
+           ]"
         >
           <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-sm font-black text-slate-500 dark:bg-slate-700 dark:text-slate-300">
             {{ bookingInitial(b) }}
           </div>
           <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center gap-2">
-              <h4 class="truncate text-sm font-black text-slate-900 dark:text-white">{{ b.offeredServiceName || 'Xizmat' }}</h4>
-              <span class="rounded-full px-2.5 py-1 text-xs font-bold" :class="statusClass(b.status)">{{ statusLabel(b.status) }}</span>
+              <h4
+                  class="truncate text-sm font-black text-slate-900 dark:text-white"
+              >
+                {{ b.offeredServiceName || 'Xizmat' }}
+              </h4>
+              <span
+                  class="rounded-full px-2.5 py-1 text-xs font-bold"
+                  :class="statusClass(b.status)">{{ statusLabel(b.status) }}
+              </span>
             </div>
-            <p class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ b.businessName }} · {{ b.staffName || 'Usta tanlanmagan' }}</p>
+            <p class="flex flex-col mt-1 truncate text-xs text-slate-500 dark:text-slate-200">
+              <span>
+                <Building2 class="w-4 h-4 inline mr-1.5" />
+                {{ b.businessName }}
+              </span>
+              <span class="flex items-center">
+                <User class="w-3 h-3 inline mr-1.5" />-
+                {{ b.staffName || 'Usta tanlanmagan' }}
+              </span>
+            </p>
             <p class="mt-1 flex items-center gap-1 text-xs text-slate-400">
               <i class="fa-regular fa-calendar-check"></i>
               {{ bookingTimeRange(b) }}
@@ -230,6 +258,7 @@ import { useAuthStore } from '@/stores/auth';
 import type { Booking, BookingStatus } from '@/types/api';
 import { statusLabel, statusClass, statusBorderClass } from '@/utils/format';
 import { apiErrorMessage } from '@/utils/apiError';
+import { Building2, User } from 'lucide-vue-next';
 
 type BookingFilter = 'all' | 'upcoming' | 'completed' | 'cancelled';
 
@@ -280,7 +309,7 @@ const filterTabs = [
   { key: 'all' as const, label: 'Hammasi' },
   { key: 'upcoming' as const, label: 'Kelayotgan' },
   { key: 'completed' as const, label: 'Bajarilgan' },
-  { key: 'cancelled' as const, label: 'Bekor qilingan' },
+  { key: 'cancelled' as const, label: 'Bekor qilingan / Kelmadi' },
 ];
 
 const filteredBookings = computed(() => {
@@ -305,7 +334,7 @@ function bookingTimeRange(booking: Booking): string {
 }
 
 function bookingInitial(booking: Booking): string {
-  return (booking.offeredServiceName || booking.businessName || 'N').trim().charAt(0).toUpperCase();
+  return (booking.businessName || 'N').trim().charAt(0).toUpperCase();
 }
 
 function canCancel(status: string): boolean {

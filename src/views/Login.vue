@@ -20,18 +20,18 @@
           Parol almashtirildi. Yangi parol bilan tizimga kiring.
         </p>
         <p v-if="error" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2">{{ error }}</p>
-        <div class="rounded-md shadow-sm -space-y-px">
+        <div class="rounded-md shadow-sm flex flex-col gap-2">
           <div>
             <label for="login" class="sr-only">Login</label>
             <input id="login" name="login" type="text" autocomplete="username" required
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
                    placeholder="Login" v-model="login">
           </div>
           <div>
             <label for="password" class="sr-only">Parol</label>
             <div class="relative">
               <input id="password" name="password" :type="showPassword ? 'text' : 'password'" autocomplete="current-password" required
-                     class="appearance-none relative block w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                     class="appearance-none relative block w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
                      placeholder="Parol" v-model="password">
               <button
                 type="button"
@@ -86,7 +86,7 @@ const handleLogin = async () => {
   try {
     await authStore.login({ login: login.value.trim(), password: password.value });
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/businesses';
-    router.push(redirect);
+    await router.push(redirect);
   } catch (e: any) {
     error.value = e?.response?.data?.message || 'Login yoki parol noto\'g\'ri';
   } finally {
