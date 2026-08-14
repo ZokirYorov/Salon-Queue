@@ -41,8 +41,8 @@ const STATUS_BORDER_CLASSES: Record<string, string> = {
   CONFIRMED: 'border-l-blue-500 dark:border-l-amber-100',
   IN_PROGRESS: 'border-l-indigo-400 dark:border-l-indigo-500 hover:border-indigo-400 dark:hover:border-indigo-500',
   COMPLETED: 'border-l-emerald-500 dark:border-l-emerald-500 hover:border-emerald-500 dark:hover:border-emerald-500',
-  CANCELLED_BY_CUSTOMER: 'border-l-red-300 dark:border-l-red-400 hover:border-red-300 dark:hover:border-red-300',
-  CANCELLED_BY_BUSINESS: 'border-l-red-400 dark:border-l-red-500 hover:border-red-400 dark:hover:border-red-400',
+  CANCELLED_BY_CUSTOMER: 'border-l-red-300 dark:border-l-red-400 hover:border-red-300 dark:hover:border-red-400',
+  CANCELLED_BY_BUSINESS: 'border-l-red-400 dark:border-l-red-500 hover:border-red-400 dark:hover:border-red-500',
   NO_SHOW: 'border-l-slate-400 dark:border-l-slate-500/40 hover:border-slate-500 dark:hover:border-slate-400',
 }
 

@@ -3,13 +3,24 @@
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h2 class="text-xl font-black text-slate-900 dark:text-white">Mening navbatlarim</h2>
-        <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Bronlaringiz, statuslar va sharhlar shu yerda</p>
+        <p
+            class="text-sm font-semibold text-slate-500 dark:text-slate-400"
+        >
+          Bronlaringiz, statuslar va sharhlar shu yerda
+        </p>
       </div>
       <RouterLink to="/businesses" class="w-fit rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-black text-white transition hover:bg-teal-700">+ Yangi navbat</RouterLink>
     </div>
 
-    <div v-if="loading" class="space-y-3">
-      <div v-for="i in 3" :key="i" class="flex animate-pulse items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+    <div
+        v-if="loading"
+        class="space-y-3"
+    >
+      <div
+          v-for="i in 3"
+          :key="i"
+          class="flex animate-pulse items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800"
+      >
         <div class="h-12 w-12 flex-shrink-0 rounded-2xl bg-slate-100 dark:bg-slate-700" />
         <div class="flex-1 space-y-2">
           <div class="h-3.5 w-1/3 rounded bg-slate-100 dark:bg-slate-700" />
@@ -18,12 +29,21 @@
       </div>
     </div>
 
-    <div v-else-if="bookings.length === 0" class="rounded-3xl border border-dashed border-slate-200 bg-white py-16 text-center dark:border-slate-700 dark:bg-slate-800">
+    <div
+        v-else-if="bookings.length === 0"
+        class="rounded-3xl border border-dashed border-slate-200 bg-white py-16 text-center dark:border-slate-700 dark:bg-slate-800"
+    >
       <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-500/10">
-        <svg class="h-7 w-7 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+        <svg class="h-7 w-7 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
       </div>
       <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Hali navbatlaringiz yo'q</p>
-      <RouterLink to="/businesses" class="mt-3 inline-block text-sm font-black text-teal-600 transition hover:underline dark:text-teal-300">Navbat olish</RouterLink>
+      <RouterLink
+          to="/businesses"
+          class="mt-3 inline-block text-sm font-black text-teal-600 transition hover:underline dark:text-teal-300"
+      >
+        Navbat olish
+      </RouterLink>
     </div>
 
     <template v-else>
@@ -32,25 +52,40 @@
           v-for="card in summaryCards"
           :key="card.key"
           type="button"
-          @click="activeFilter = card.key"
-          class="rounded-2xl border p-4 text-left transition"
-          :class="activeFilter === card.key ? 'border-teal-400 bg-teal-50 dark:border-teal-500/60 dark:bg-teal-500/10' : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600'"
+          class="rounded-2xl border p-4 text-left transition border-slate-200 bg-white hover:border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600"
         >
           <p class="text-xs font-bold text-slate-400">{{ card.label }}</p>
-          <p class="mt-1 text-2xl font-black text-slate-900 dark:text-white">{{ card.count }}</p>
+          <p
+              class="mt-1 text-2xl font-black text-slate-900 dark:text-white"
+          >
+            {{ card.count }}
+          </p>
         </button>
       </div>
 
-      <section v-if="nextBooking" class="rounded-3xl border border-teal-200 bg-teal-50 p-5 dark:border-teal-500/30 dark:bg-teal-500/10">
+      <section
+          v-if="nextBooking"
+          class="rounded-3xl border border-teal-200 bg-teal-50 p-5 dark:border-teal-500/30 dark:bg-teal-500/10"
+      >
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div class="flex min-w-0 items-center gap-4">
             <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-teal-600 text-lg font-black text-white">
               {{ bookingInitial(nextBooking) }}
             </div>
             <div class="min-w-0">
-              <p class="text-xs font-black uppercase tracking-wide text-teal-700 dark:text-teal-300">Eng yaqin navbat</p>
-              <h3 class="mt-1 truncate text-lg font-black text-slate-700 dark:text-white">{{ nextBooking.offeredServiceName || 'Xizmat' }}</h3>
-              <p class="flex flex-col mt-1 truncate text-sm font-semibold text-slate-500 dark:text-slate-300">
+              <p
+                  class="text-xs font-black uppercase tracking-wide text-teal-700 dark:text-teal-300"
+              >
+                Eng yaqin navbat
+              </p>
+              <h3
+                  class="mt-1 truncate text-lg font-black text-slate-700 dark:text-white"
+              >
+                {{ nextBooking.offeredServiceName || 'Xizmat' }}
+              </h3>
+              <p
+                  class="flex flex-col mt-1 truncate text-sm font-semibold text-slate-500 dark:text-slate-300"
+              >
                 <span>
                 <Building2 class="w-4 h-4 inline mr-1.5" />
                 {{ nextBooking.businessName }}
@@ -67,7 +102,12 @@
             </div>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <span class="rounded-full px-3 py-1.5 text-xs font-black" :class="statusClass(nextBooking.status)">{{ statusLabel(nextBooking.status) }}</span>
+            <span
+                class="rounded-full px-3 py-1.5 text-xs font-black"
+                :class="statusClass(nextBooking.status)"
+            >
+              {{ statusLabel(nextBooking.status) }}
+            </span>
             <RouterLink
                 :to="`/business/${nextBooking.businessId}`"
                 class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-200 dark:hover:border-teal-400 dark:hover:text-teal-300"
@@ -91,16 +131,25 @@
           :key="tab.key"
           type="button"
           @click="activeFilter = tab.key"
-          class="whitespace-nowrap cursor-pointer rounded-full px-4 py-2 text-xs font-black transition"
-          :class="activeFilter === tab.key ? 'bg-teal-600 text-white' : 'bg-gray-200 text-slate-500 hover:text-indigo-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-gray-700 dark:hover:text-white'"
+          class="whitespace-nowrap cursor-pointer rounded-full px-4 py-2 border text-xs font-black transition"
+          :class="activeFilter === tab.key
+          ? 'bg-teal-600 border-teal-600 text-white'
+          : 'hover:border-teal-600 bg-white dark:border-gray-600 border-gray-200 text-slate-500 hover:text-teal-600 dark:bg-slate-800 dark:text-slate-300  dark:hover:text-teal-400'"
         >
           {{ tab.label }}
         </button>
       </div>
 
       <section class="space-y-3">
-        <div v-if="filteredBookings.length === 0" class="rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-800">
-          <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Bu filter bo'yicha navbat topilmadi.</p>
+        <div
+            v-if="filteredBookings.length === 0"
+            class="rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-800"
+        >
+          <p
+              class="text-sm font-semibold text-slate-500 dark:text-slate-400"
+          >
+            Bu filter bo'yicha navbat topilmadi.
+          </p>
         </div>
         <div
           v-for="b in filteredBookings"
@@ -110,7 +159,9 @@
               statusBorderClass(b.status)
            ]"
         >
-          <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-sm font-black text-slate-500 dark:bg-slate-700 dark:text-slate-300">
+          <div
+              class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-sm font-black text-slate-500 dark:bg-slate-700 dark:text-slate-300"
+          >
             {{ bookingInitial(b) }}
           </div>
           <div class="min-w-0 flex-1">
@@ -122,7 +173,9 @@
               </h4>
               <span
                   class="rounded-full px-2.5 py-1 text-xs font-bold"
-                  :class="statusClass(b.status)">{{ statusLabel(b.status) }}
+                  :class="statusClass(b.status)"
+              >
+                {{ statusLabel(b.status) }}
               </span>
             </div>
             <p class="flex flex-col mt-1 truncate text-xs text-slate-500 dark:text-slate-200">
@@ -166,10 +219,18 @@
       </section>
     </template>
 
-    <div v-if="cancelTarget" @click.self="cancelTarget = null" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
+    <div
+        v-if="cancelTarget"
+        @click.self="cancelTarget = null"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
+    >
       <div class="w-full max-w-sm space-y-4 rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-800">
         <div class="flex items-center justify-between gap-3">
-          <h3 class="text-lg font-black text-slate-700 dark:text-white">Navbatni bekor qilish</h3>
+          <h3
+              class="text-lg font-black text-slate-700 dark:text-white"
+          >
+            Navbatni bekor qilish
+          </h3>
           <button
               @click="cancelTarget = null"
               class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
@@ -179,19 +240,35 @@
         </div>
 
         <p class="text-sm text-slate-500 dark:text-slate-400">
-          <strong>{{ cancelTarget.offeredServiceName || 'Xizmat' }}</strong> - {{ formatDateTime(cancelTarget.startAt) }} uchun navbatni bekor qilishni tasdiqlaysizmi?
+          <strong>{{ cancelTarget.offeredServiceName || 'Xizmat' }}</strong>
+          - {{ formatDateTime(cancelTarget.startAt) }} uchun navbatni bekor qilishni tasdiqlaysizmi?
         </p>
         <div class="grid grid-cols-2 gap-2">
-          <button @click="cancelTarget = null" class="rounded-lg cursor-pointer bg-slate-100 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">Yo'q</button>
-          <button @click="confirmCancel" :disabled="cancelling" class="rounded-lg cursor-pointer bg-red-600 py-2 text-sm font-bold text-white transition hover:bg-red-700 disabled:opacity-60">
+          <button
+              @click="cancelTarget = null"
+              class="rounded-lg cursor-pointer bg-slate-100 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+          >
+            Yo'q
+          </button>
+          <button
+              @click="confirmCancel"
+              :disabled="cancelling"
+              class="rounded-lg cursor-pointer bg-red-600 py-2 text-sm font-bold text-white transition hover:bg-red-700 disabled:opacity-60"
+          >
             {{ cancelling ? 'Bekor qilinmoqda...' : 'Ha, bekor qilish' }}
           </button>
         </div>
       </div>
     </div>
 
-    <div v-if="reviewTarget" @click.self="reviewTarget = null" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-      <div class="w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-800">
+    <div
+        v-if="reviewTarget"
+        @click.self="reviewTarget = null"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
+    >
+      <div
+          class="w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-800"
+      >
         <div class="flex items-center justify-between gap-3">
           <h3 class="text-lg font-black text-slate-700 dark:text-white">Sharh qoldirish</h3>
           <button
@@ -206,25 +283,43 @@
             {{ bookingInitial(reviewTarget) }}
           </div>
           <div class="min-w-0">
-            <p class="truncate text-sm font-black text-slate-900 dark:text-white">{{ reviewTarget.businessName }}</p>
-            <p class="truncate text-xs font-semibold text-slate-400">{{ reviewTarget.staffName || 'Usta tanlanmagan' }}</p>
+            <p
+                class="truncate mb-1 text-sm font-black text-slate-900 dark:text-white"
+            >
+              <span class="flex items-center gap-2">
+                <Building2 class="w-4 h-4"/>
+                {{ reviewTarget.businessName }}
+              </span>
+            </p>
+            <p
+                class="truncate text-xs font-semibold text-slate-400"
+            >
+              <span class="flex items-center gap-2">
+                <User class="w-4 h-4"/>
+                {{ reviewTarget.staffName || 'Usta tanlanmagan' }}
+              </span>
+            </p>
           </div>
         </div>
-        <div class="flex flex-col items-center justify-center gap-3">
-          <div class="flex w-65 items-center gap-10">
+        <div
+            class="flex flex-col items-center border-b border-gray-200 dark:border-gray-500 justify-center gap-2"
+        >
+          <div class="grid w-75 grid-cols-5 text-center">
             <button
               v-for="n in 5"
               :key="n"
               type="button"
-              :title="starItems(n)"
-              @click="reviewForm.stars = n"
+              :title="starLabels(n)"
+              @click="setRating(n)"
               class="text-2xl cursor-pointer transition hover:scale-110"
-              :class="n <= reviewForm.stars ? 'text-amber-400' : 'text-slate-200 dark:text-slate-600'"
+              :class="n <= reviewForm.stars
+              ? 'text-amber-400'
+              : 'text-slate-200 dark:text-slate-600'"
             >
               ★
             </button>
           </div>
-          <div class="flex items-center justify-center text-xs gap-5 pr-4 text-gray-600">
+          <div class="w-75 grid grid-cols-5 pb-4 text-center text-xs text-slate-400">
             <span>Yomon</span>
             <span>Qoniqarsiz</span>
             <span>O'rtacha</span>
@@ -233,13 +328,36 @@
           </div>
         </div>
         <label class="block">
-          <span class="mb-1 block text-xs font-bold text-slate-700 dark:text-slate-200">Xizmat haqida fikringiz (ixtiyoriy)</span>
-          <textarea v-model="reviewForm.comment" rows="3" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-white" placeholder="Fikringiz..." />
+          <span
+              class="mb-2 block text-sm font-bold text-slate-700 dark:text-slate-200"
+          >
+            Xizmat haqida fikringiz (ixtiyoriy)
+          </span>
+          <textarea
+              v-model="reviewForm.comment"
+              rows="3"
+              class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-white"
+              placeholder="Fikringiz..."
+          />
         </label>
-        <p v-if="reviewError" class="text-sm text-red-600 dark:text-red-400">{{ reviewError }}</p>
+        <p
+            v-if="reviewError"
+            class="text-sm text-red-600 dark:text-red-400"
+        >
+          {{ reviewError }}
+        </p>
         <div class="grid grid-cols-2 gap-2">
-          <button @click="reviewTarget = null" class="rounded-lg cursor-pointer bg-slate-100 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">Bekor qilish</button>
-          <button @click="submitReview" :disabled="submittingReview" class="rounded-lg cursor-pointer bg-teal-600 py-2 text-sm font-bold text-white transition hover:bg-teal-700 disabled:opacity-60">
+          <button
+              @click="reviewTarget = null"
+              class="rounded-lg cursor-pointer bg-slate-100 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+          >
+            Bekor qilish
+          </button>
+          <button
+              @click="submitReview"
+              :disabled="submittingReview"
+              class="rounded-lg cursor-pointer bg-teal-600 py-2 text-sm font-bold text-white transition hover:bg-teal-700 disabled:opacity-60"
+          >
             {{ submittingReview ? 'Yuborilmoqda...' : 'Yuborish' }}
           </button>
         </div>
@@ -249,7 +367,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { bookingsApi } from '@/api/bookings';
@@ -270,7 +388,10 @@ const reviewedBookingIds = ref<Set<string>>(new Set());
 const activeFilter = ref<BookingFilter>('all');
 
 const reviewTarget = ref<Booking | null>(null);
-const reviewForm = reactive({ stars: 5, comment: '' });
+const reviewForm = ref({
+  stars: 5,
+  comment: ''
+});
 const reviewError = ref('');
 const submittingReview = ref(false);
 
@@ -294,8 +415,12 @@ const starTitles = [
   "A'lo"
 ]
 
-const starItems = (star: number): string => {
+const starLabels = (star: number): string => {
   return starTitles[star] ?? ''
+}
+
+const setRating = (star: number) => {
+  reviewForm.value.stars = star;
 }
 
 const summaryCards = computed(() => [
@@ -369,8 +494,8 @@ async function confirmCancel() {
 
 function openReview(b: Booking) {
   reviewTarget.value = b;
-  reviewForm.stars = 5;
-  reviewForm.comment = '';
+  reviewForm.value.stars = 5;
+  reviewForm.value.comment = '';
   reviewError.value = '';
 }
 
@@ -379,7 +504,11 @@ async function submitReview() {
   submittingReview.value = true;
   reviewError.value = '';
   try {
-    await reviewsApi.create({ bookingId: reviewTarget.value.id, stars: reviewForm.stars, comment: reviewForm.comment.trim() || undefined });
+    await reviewsApi.create({
+      bookingId: reviewTarget.value.id,
+      stars: reviewForm.value.stars,
+      comment: reviewForm.value.comment.trim() || undefined
+    });
     reviewedBookingIds.value.add(reviewTarget.value.id);
     reviewTarget.value = null;
     toast.success('Sharh yuborildi, rahmat!');

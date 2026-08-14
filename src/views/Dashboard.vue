@@ -21,19 +21,24 @@
             <div class="mt-8 grid gap-3 rounded-3xl border border-slate-200 bg-white/95 p-3 shadow-[0_18px_55px_rgba(15,23,42,0.12)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 md:grid-cols-[1.35fr_0.95fr_0.95fr_auto]">
               <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
-                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
                   Qidiruv
                 </span>
                 <input
                   v-model="searchQuery"
-                  type="text"
+                  type="search"
                   placeholder="Xizmat, biznes yoki manzil"
                   class="w-full bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none dark:text-white"
                 />
               </label>
-              <div class="relative rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80" v-click-outside="() => (cityMenuOpen = false)">
+              <div
+                  class="relative rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80"
+                  v-click-outside="() => (cityMenuOpen = false)"
+              >
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
-                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" />
+                  </svg>
                   Hudud
                 </span>
                 <button
@@ -42,7 +47,12 @@
                   class="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold text-slate-900 focus:outline-none dark:text-white"
                 >
                   <span class="truncate">{{ cityFilter || 'Barcha shaharlar' }}</span>
-                  <svg class="h-4 w-4 shrink-0 text-slate-400 transition" :class="cityMenuOpen && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                  <svg
+                      class="h-4 w-4 shrink-0 text-slate-400 transition"
+                      :class="cityMenuOpen &&
+                      'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"
+                  />
+                  </svg>
                 </button>
                 <div
                   v-if="cityMenuOpen"
@@ -66,9 +76,13 @@
                   </button>
                 </div>
               </div>
-              <div class="relative rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80" v-click-outside="() => (sortMenuOpen = false)">
+              <div
+                  class="relative rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80"
+                  v-click-outside="() => (sortMenuOpen = false)"
+              >
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
-                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" /></svg>
+                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
+                  </svg>
                   Tartib
                 </span>
                 <button
@@ -77,7 +91,12 @@
                   class="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold text-slate-900 focus:outline-none dark:text-white"
                 >
                   <span class="truncate">{{ sortLabel }}</span>
-                  <svg class="h-4 w-4 shrink-0 text-slate-400 transition" :class="sortMenuOpen && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                  <svg
+                      class="h-4 w-4 shrink-0 text-slate-400 transition"
+                      :class="sortMenuOpen &&
+                       'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"
+                  />
+                  </svg>
                 </button>
                 <div
                   v-if="sortMenuOpen"
@@ -110,7 +129,9 @@
                 type="button"
                 @click="setCategory(cat.value)"
                 class="inline-flex cursor-pointer items-center gap-2 rounded-2xl border px-3.5 py-2 text-sm font-bold transition"
-                :class="categoryFilter === cat.value ? 'border-teal-600 bg-teal-600 text-white shadow-sm' : 'border-slate-200 bg-white/80 text-slate-700 hover:border-teal-300 hover:text-teal-700 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-teal-500'"
+                :class="categoryFilter === cat.value ?
+                 'border-teal-600 bg-teal-600 text-white shadow-sm' :
+                  'border-gray-200 bg-white/80 text-slate-500 hover:border-teal-600 hover:text-teal-600 dark:border-gray-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-teal-500'"
               >
                 {{ cat.label }}
               </button>
@@ -122,8 +143,14 @@
       <section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
       <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 class="text-2xl font-black text-slate-950 dark:text-white">Tavsiya etilganlar</h2>
-          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ filteredCards.length }} ta natija</p>
+          <h2
+              class="text-2xl font-black text-slate-950 dark:text-white"
+          >
+            Tavsiya etilganlar
+          </h2>
+          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            {{ filteredCards.length }} ta natija
+          </p>
         </div>
         <button
           v-if="hasActiveFilters"
@@ -135,8 +162,15 @@
         </button>
       </div>
 
-      <div v-if="loading" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div v-for="i in 6" :key="i" class="overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900 animate-pulse">
+      <div
+          v-if="loading"
+          class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+      >
+        <div
+            v-for="i in 6"
+            :key="i"
+            class="overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900 animate-pulse"
+        >
           <div class="h-48 bg-slate-100 dark:bg-slate-800" />
           <div class="p-5 space-y-2.5">
             <div class="h-4 bg-slate-100 dark:bg-slate-700 rounded w-2/3" />
@@ -145,11 +179,28 @@
           </div>
         </div>
       </div>
-      <div v-else-if="error" class="text-center py-20 text-red-500">{{ error }}</div>
-      <div v-else-if="filteredCards.length === 0" class="text-center py-20 bg-white dark:bg-slate-900 rounded-[24px] border border-dashed border-slate-200 dark:border-slate-700">
-        <svg class="mx-auto h-10 w-10 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <p class="mt-3 text-sm font-bold text-slate-900 dark:text-white">Hech qanday xizmat ko'rsatuvchi topilmadi</p>
-        <p class="mt-1 text-xs text-slate-400">Qidiruv parametrlarini o'zgartirib ko'ring</p>
+      <div
+          v-else-if="error"
+          class="text-center py-20 text-red-500"
+      >
+        {{ error }}
+      </div>
+      <div
+          v-else-if="filteredCards.length === 0"
+          class="text-center py-20 bg-white dark:bg-slate-900 rounded-[24px] border border-dashed border-slate-200 dark:border-slate-700"
+      >
+        <svg class="mx-auto h-10 w-10 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p
+            class="mt-3 text-sm font-bold text-slate-900 dark:text-white"
+        >
+          Hech qanday xizmat ko'rsatuvchi topilmadi
+        </p>
+        <p
+            class="mt-1 text-xs text-slate-400"
+        >
+          Qidiruv parametrlarini o'zgartirib ko'ring
+        </p>
       </div>
 
       <div v-else class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -166,20 +217,32 @@
               :alt="card.name"
               class="h-full w-full object-cover object-center opacity-95 transition duration-500 group-hover:scale-105"
             />
-            <div v-else class="h-full w-full bg-[linear-gradient(135deg,#0f766e,#f59e0b)]" />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent" />
+            <div
+                v-else
+                class="h-full w-full bg-[linear-gradient(135deg,#0f766e,#f59e0b)]"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent"
+            />
             <div class="absolute bottom-4 left-4 right-4">
               <div class="flex items-end justify-between gap-3">
-                <div v-if="!card.imageUrl" class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white text-lg font-black text-teal-700 shadow-lg">
+                <div
+                    v-if="!card.imageUrl"
+                    class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white text-lg font-black text-teal-700 shadow-lg"
+                >
                   {{ card.name.charAt(0).toUpperCase() }}
                 </div>
-                <div v-if="card.avgRating > 0" class="rounded-full bg-white/95 px-3 py-1.5 text-sm font-black text-slate-950 shadow-sm">
+                <div
+                    v-if="card.avgRating > 0"
+                    class="rounded-full bg-white/95 px-3 py-1.5 text-sm font-black text-slate-950 shadow-sm"
+                >
                   ★ {{ card.avgRating.toFixed(1) }}
                 </div>
               </div>
             </div>
             <div class="absolute left-3 top-3 flex flex-wrap gap-2">
-              <span class="inline-flex items-center rounded-2xl bg-white/95 px-3 py-1.5 text-xs font-black text-slate-900 shadow-sm backdrop-blur-md">
+              <span
+                  class="inline-flex items-center rounded-2xl bg-white/95 px-3 py-1.5 text-xs font-black text-slate-900 shadow-sm backdrop-blur-md"
+              >
                 {{ categoryLabel(card.category) }}
               </span>
             </div>
@@ -198,24 +261,35 @@
               </h3>
             </div>
             <div class="mb-4 flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-slate-400">
-              <svg class="h-4 w-4 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
-              <span class="truncate">{{ [card.city, card.addressLine].filter(Boolean).join(', ') || 'Manzil kiritilmagan' }}</span>
+              <svg class="h-4 w-4 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" />
+              </svg>
+              <span class="truncate">
+                {{ [card.city, card.addressLine].filter(Boolean).join(', ') || 'Manzil kiritilmagan' }}
+              </span>
             </div>
-            <p class="mb-4 line-clamp-2 min-h-10 text-sm leading-5 text-slate-500 dark:text-slate-400">
+            <p
+                class="mb-4 line-clamp-2 min-h-10 text-sm leading-5 text-slate-500 dark:text-slate-400"
+            >
               {{ card.description || 'Xizmatlar, ustalar va bo\'sh vaqtlarni ko\'rib, o\'zingizga qulay navbatni tanlang.' }}
             </p>
 
             <div class="mt-auto grid grid-cols-2 gap-2 border-t border-slate-200 pt-4 text-xs dark:border-slate-700">
-              <span class="rounded-2xl bg-slate-50 px-3 py-2 font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+              <span
+                  class="rounded-2xl bg-slate-50 px-3 py-2 font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+              >
                 {{ card.serviceCount }} xizmat
               </span>
-              <span class="rounded-2xl bg-slate-50 px-3 py-2 font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+              <span
+                  class="rounded-2xl bg-slate-50 px-3 py-2 font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+              >
                 {{ card.reviewCount > 0 ? `${card.reviewCount} sharh` : 'Yangi' }}
               </span>
             </div>
             <div class="mt-3 flex items-center justify-between gap-3">
               <span class="text-xs font-semibold text-slate-400">Sahifaga kirib vaqt tanlang</span>
-              <span class="rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-black text-white transition-colors duration-200 group-hover:bg-teal-600 dark:bg-white dark:text-slate-950 dark:group-hover:bg-teal-400">
+              <span
+                  class="rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-black text-white transition-colors duration-200 group-hover:bg-teal-600 dark:bg-white dark:text-slate-950 dark:group-hover:bg-teal-400"
+              >
                 Navbat olish
               </span>
             </div>
@@ -223,13 +297,18 @@
         </RouterLink>
       </div>
 
-      <div v-if="totalPages > 1" class="flex justify-center gap-2 pt-4">
+      <div
+          v-if="totalPages > 1"
+          class="flex justify-center gap-2 pt-4"
+      >
         <button
           v-for="p in totalPages"
           :key="p"
           @click="page = p - 1"
           class="w-8 h-8 rounded-lg text-xs font-semibold transition"
-          :class="page === p - 1 ? 'bg-teal-600 text-white' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'"
+          :class="page === p - 1
+          ? 'bg-teal-600 text-white'
+          : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'"
         >
           {{ p }}
         </button>
