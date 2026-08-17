@@ -464,7 +464,7 @@ const BASE_URL = import.meta.env.VITE_BASE_API as string;
 
 const getAvatarUrl = (url: string | undefined): string => {
   if (!url) return "";
-  if (url.startsWith("http")) return url;
+  if (url.startsWith("https")) return url;
   return `${BASE_URL}${url}`;
 };
 
