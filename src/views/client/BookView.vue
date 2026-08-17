@@ -16,7 +16,7 @@
       <!-- Business info -->
       <div v-if="!loadingServices && business" class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mb-5">
         <div class="h-40 bg-slate-950 relative">
-          <img v-if="businessImage" :src="getAvatarUrl(businessImage)" :alt="business.name" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+          <img v-if="businessImage" :src="getAvatarUrl(businessImage)" :alt="getAvatarUrl(businessImage)" class="absolute inset-0 w-full h-full object-cover opacity-80" />
           <div v-else class="absolute inset-0 bg-[linear-gradient(135deg,#0f766e,#f59e0b)]" />
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-slate-950/10" />
           <div class="absolute left-4 right-4 bottom-4 flex flex-wrap items-end justify-between gap-3">
@@ -210,7 +210,7 @@
               >
                 <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-700 flex-shrink-0 flex items-center justify-center">
                   <img v-if="svc.imageUrl" :src="getAvatarUrl(svc.imageUrl)" :alt="svc.name" class="w-full h-full object-cover" />
-                  <span v-else class="text-indigo-400 text-lg font-bold">{{ (svc.name || 'x').charAt(0).toUpperCase() }}</span>
+                  <span v-else class="text-indigo-400 text-lg font-bold">{{ svc.name.charAt(0).toUpperCase() }}</span>
                 </div>
                 <div class="min-w-0">
                   <div class="text-sm font-semibold text-slate-900 dark:text-white truncate">{{ svc.name }}</div>
@@ -540,8 +540,8 @@ function toggleReviewExpanded(id: string) {
   expandedReviewIds.value = new Set(expandedReviewIds.value);
 }
 
-function reviewInitial(review?: Review) {
-  return (review?.customerName || 'Mijoz')?.trim().charAt(0)?.toUpperCase();
+function reviewInitial(review: Review) {
+  return (review.customerName || 'Mijoz').trim().charAt(0).toUpperCase();
 }
 
 function isLongReview(comment?: string | null) {
