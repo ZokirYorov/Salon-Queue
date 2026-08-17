@@ -367,7 +367,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import {ref, computed, onMounted, reactive} from 'vue';
 import { RouterLink } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { bookingsApi } from '@/api/bookings';
@@ -388,7 +388,7 @@ const reviewedBookingIds = ref<Set<string>>(new Set());
 const activeFilter = ref<BookingFilter>('all');
 
 const reviewTarget = ref<Booking | null>(null);
-const reviewForm = ref({
+const reviewForm = reactive({
   stars: 5,
   comment: ''
 });
@@ -420,7 +420,7 @@ const starLabels = (star: number): string => {
 }
 
 const setRating = (star: number) => {
-  reviewForm.value.stars = star;
+  reviewForm.stars = star;
 }
 
 const summaryCards = computed(() => [
@@ -494,8 +494,8 @@ async function confirmCancel() {
 
 function openReview(b: Booking) {
   reviewTarget.value = b;
-  reviewForm.value.stars = 5;
-  reviewForm.value.comment = '';
+  reviewForm.stars = 5;
+  reviewForm.comment = '';
   reviewError.value = '';
 }
 
@@ -506,8 +506,8 @@ async function submitReview() {
   try {
     await reviewsApi.create({
       bookingId: reviewTarget.value.id,
-      stars: reviewForm.value.stars,
-      comment: reviewForm.value.comment.trim() || undefined
+      stars: reviewForm.stars,
+      comment: reviewForm.comment.trim() || undefined
     });
     reviewedBookingIds.value.add(reviewTarget.value.id);
     reviewTarget.value = null;
