@@ -2,7 +2,10 @@
   <div class="min-h-screen bg-slate-50/50 dark:bg-slate-900 transition-colors">
     <AppHeader />
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6" :class="selectedService ? 'pb-28' : 'pb-6'">
+    <main
+        class="max-w-6xl mx-auto px-4 sm:px-6 py-6"
+        :class="selectedService ? 'pb-28' : 'pb-6'"
+    >
       <button
           type="button"
           @click="router.back()"
@@ -14,17 +17,32 @@
       <p v-if="loadError" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2 mb-6">{{ loadError }}</p>
 
       <!-- Business info -->
-      <div v-if="!loadingServices && business" class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mb-5">
+      <div
+          v-if="!loadingServices && business"
+          class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mb-5"
+      >
         <div class="h-40 bg-slate-950 relative">
-          <img v-if="businessImage" :src="getAvatarUrl(businessImage)" :alt="getAvatarUrl(businessImage)" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+          <img
+              v-if="businessImage"
+              :src="getAvatarUrl(businessImage)"
+              :alt="business.name"
+              class="absolute inset-0 w-full h-full object-cover opacity-80"
+          />
           <div v-else class="absolute inset-0 bg-[linear-gradient(135deg,#0f766e,#f59e0b)]" />
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-slate-950/10" />
           <div class="absolute left-4 right-4 bottom-4 flex flex-wrap items-end justify-between gap-3">
             <div class="min-w-0">
-              <span class="inline-flex rounded-full bg-white/95 px-3 py-1 text-xs font-black text-slate-900 mb-2">{{ categoryLabel(business.category) }}</span>
+              <span
+                  class="inline-flex rounded-full bg-white/95 px-3 py-1 text-xs font-black text-slate-900 mb-2"
+              >
+                {{ categoryLabel(business.category) }}
+              </span>
               <h1 class="text-2xl sm:text-3xl font-black text-white truncate">{{ business.name }}</h1>
             </div>
-            <span class="rounded-full px-3 py-1.5 text-xs font-black shadow-sm" :class="todayOpen ? 'bg-teal-500 text-white' : 'bg-amber-400 text-slate-950'">
+            <span
+                class="rounded-full px-3 py-1.5 text-xs font-black shadow-sm"
+                :class="todayOpen ? 'bg-teal-500 text-white' : 'bg-amber-400 text-slate-950'"
+            >
               {{ todayOpen ? `Bugun ${todayHoursLabel}` : 'Bugun yopiq' }}
             </span>
           </div>
@@ -35,13 +53,21 @@
             <h2 class="text-sm font-bold text-slate-900 dark:text-white">Tashkilot haqida</h2>
             <p class="text-xs text-slate-900 dark:text-slate-300 truncate">Manzil: {{ business.addressLine || business.city }}</p>
           </div>
-          <div v-if="businessReviewCount > 0" class="flex-shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 rounded-full px-2.5 py-1">
+          <div
+              v-if="businessReviewCount > 0"
+              class="flex-shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 rounded-full px-2.5 py-1"
+          >
             <span class="text-amber-500 text-sm">⭐</span>
             <span class="text-xs font-bold text-slate-800 dark:text-white">{{ businessAvgRating.toFixed(1) }}</span>
             <span class="text-xs text-slate-500 dark:text-slate-400">({{ businessReviewCount }})</span>
           </div>
         </div>
-        <p v-if="business.description" class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2">{{ business.description }}</p>
+        <p
+            v-if="business.description"
+            class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2"
+        >
+          {{ business.description }}
+        </p>
         <div class="mt-4 grid grid-cols-2 gap-3 text-gray-600 dark:text-slate-400 text-xs sm:grid-cols-4">
           <div class="border-l-2 border-teal-500 pl-3">
             <p class="font-semibold">Reyting</p>
@@ -61,7 +87,11 @@
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
-          <a v-if="business.contactPhone" :href="`tel:${business.contactPhone}`" class="inline-flex items-center gap-1.5 rounded-full bg-teal-600 px-3 py-2 font-black text-white transition hover:bg-teal-700">
+          <a
+              v-if="business.contactPhone"
+              :href="`tel:${business.contactPhone}`"
+              class="inline-flex items-center gap-1.5 rounded-full bg-teal-600 px-3 py-2 font-black text-white transition hover:bg-teal-700"
+          >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
             Qo'ng'iroq qilish
           </a>
@@ -75,7 +105,12 @@
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
             Yo'nalish
           </a>
-          <span v-if="business.contactPhone" class="font-semibold text-slate-400">{{ business.contactPhone }}</span>
+          <span
+              v-if="business.contactPhone"
+              class="font-semibold text-slate-400"
+          >
+            {{ business.contactPhone }}
+          </span>
           <span class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-medium">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <template v-if="todayHours && !todayHours.closed && todayHours.opensAt && todayHours.closesAt">
@@ -88,7 +123,10 @@
       </div>
 
       <!-- Reviews -->
-      <div v-if="!loadingServices" class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 sm:p-5 mb-4">
+      <div
+          v-if="!loadingServices"
+          class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 sm:p-5 mb-4"
+      >
         <button
             type="button"
             @click="reviewsOpen = !reviewsOpen"
@@ -218,8 +256,18 @@
                 </div>
               </button>
             </div>
-            <p v-if="!loadingServices && services.length === 0" class="text-sm text-slate-400 mt-2">Bu xizmat ko'rsatuvchida hali xizmatlar mavjud emas.</p>
-            <p v-if="selectedService?.description" class="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">{{ selectedService.description }}</p>
+            <p
+                v-if="!loadingServices && services.length === 0"
+                class="text-sm text-slate-400 mt-2"
+            >
+              Bu xizmat ko'rsatuvchida hali xizmatlar mavjud emas.
+            </p>
+            <p
+                v-if="selectedService?.description"
+                class="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed"
+            >
+              {{ selectedService.description }}
+            </p>
           </div>
         </div>
 
@@ -238,14 +286,22 @@
               <button
                 type="button"
                 @click="form.date = todayIso()"
-                :class="['px-3 py-1.5 cursor-pointer rounded-lg text-xs font-semibold border transition', form.date === todayIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
+                :class="['px-3 py-1.5 cursor-pointer rounded-lg text-xs font-semibold border transition',
+                form.date === todayIso()
+                ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700'
+                : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'
+                ]"
               >
                 Bugun
               </button>
               <button
                 type="button"
                 @click="form.date = tomorrowIso()"
-                :class="['px-3 py-1.5 cursor-pointer rounded-lg text-xs font-semibold border transition', form.date === tomorrowIso() ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50']"
+                :class="['px-3 py-1.5 cursor-pointer rounded-lg text-xs font-semibold border transition',
+                 form.date === tomorrowIso()
+                 ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700'
+                 : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'
+                 ]"
               >
                 Ertaga
               </button>
