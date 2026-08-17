@@ -142,7 +142,11 @@
                 {{ expandedReviewIds.has(r.id) ? 'Kamroq ko\'rsatish' : 'Ko\'proq ko\'rsatish' }}
               </button>
             </template>
-            <p class="mt-3 border-t border-slate-200 pt-3 text-[11px] font-semibold text-slate-400 dark:border-slate-700">{{ formatDate(r.createdAt) }}</p>
+            <p
+                class="mt-3 border-t border-slate-200 pt-3 text-[11px] font-semibold text-slate-400 dark:border-slate-700"
+            >
+              {{ formatDate(r.createdAt) }}
+            </p>
           </div>
           </div>
           <button

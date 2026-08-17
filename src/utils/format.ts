@@ -5,7 +5,7 @@ export function formatPrice(price: number): string {
 export function formatDate(dateStr: string): string {
   if (!dateStr) return ''
   const date = new Date(dateStr)
-  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours().toString()}:${date.getMinutes().toString().padStart(2, '0')}`
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -38,7 +38,7 @@ export function statusClass(status: string): string {
 
 const STATUS_BORDER_CLASSES: Record<string, string> = {
   PENDING: 'border-l-amber-400 dark:border-l-amber-500 hover:border-amber-400 dark:hover:border-amber-500',
-  CONFIRMED: 'border-l-blue-500 dark:border-l-amber-100',
+  CONFIRMED: 'border-l-blue-500 dark:border-l-blue-400 hover:border-blue-500 dark:hover:border-blue-400',
   IN_PROGRESS: 'border-l-indigo-400 dark:border-l-indigo-500 hover:border-indigo-400 dark:hover:border-indigo-500',
   COMPLETED: 'border-l-emerald-500 dark:border-l-emerald-500 hover:border-emerald-500 dark:hover:border-emerald-500',
   CANCELLED_BY_CUSTOMER: 'border-l-red-300 dark:border-l-red-400 hover:border-red-300 dark:hover:border-red-400',

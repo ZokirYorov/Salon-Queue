@@ -72,9 +72,13 @@ const viewMonth = ref(selectedDate.value.getMonth());
 const viewYear = ref(selectedDate.value.getFullYear());
 const minDate = computed(() => (props.min ? parseIso(props.min) : null));
 
-const monthLabel = computed(() =>
-  new Date(viewYear.value, viewMonth.value, 1).toLocaleDateString('uz-UZ', { month: 'long', year: 'numeric' })
-);
+const monthLabel = computed(() => {
+  const d = selectedDate.value;
+  const day = d.getDate().toString().padStart(2, '0');
+  const month = (d.getMonth() + 1).toString().padStart(2, '0');
+  const year = d.getFullYear().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+});
 
 const daysInMonth = computed(() => new Date(viewYear.value, viewMonth.value + 1, 0).getDate());
 const leadingBlanks = computed(() => new Date(viewYear.value, viewMonth.value, 1).getDay());
