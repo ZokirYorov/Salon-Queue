@@ -210,7 +210,7 @@
               >
                 <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-700 flex-shrink-0 flex items-center justify-center">
                   <img v-if="svc.imageUrl" :src="getAvatarUrl(svc.imageUrl)" :alt="svc.name" class="w-full h-full object-cover" />
-                  <span v-else class="text-indigo-400 text-lg font-bold">{{ svc.name.charAt(0).toUpperCase() }}</span>
+                  <span v-else class="text-indigo-400 text-lg font-bold">{{ svc.name?.charAt(0).toUpperCase() || '?' }}</span>
                 </div>
                 <div class="min-w-0">
                   <div class="text-sm font-semibold text-slate-900 dark:text-white truncate">{{ svc.name }}</div>
@@ -540,8 +540,8 @@ function toggleReviewExpanded(id: string) {
   expandedReviewIds.value = new Set(expandedReviewIds.value);
 }
 
-function reviewInitial(review: Review) {
-  return (review.customerName || 'Mijoz').trim().charAt(0).toUpperCase();
+function reviewInitial(review?: Review) {
+  return (review?.customerName || 'Mijoz').trim().charAt(0)?.toUpperCase();
 }
 
 function isLongReview(comment?: string | null) {
