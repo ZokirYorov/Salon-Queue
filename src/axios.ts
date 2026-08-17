@@ -3,7 +3,8 @@ import axios from "axios";
 const axiosInstance = axios.create({
     // Proxy ishlashi uchun baseURL to'liq manzil bo'lmasligi kerak.
     // Barcha so'rovlar /api/v1/... dan boshlanadi va vite proxy'si buni to'g'ri manzilga yo'naltiradi.
-    baseURL: `${import.meta.env.VITE_BASE_API}/api/v1`,
+    // baseURL: `${import.meta.env.VITE_BASE_API}/api/v1`,
+    baseURL: import.meta.env.VITE_BASE_API,
     headers: {
         "Content-Type": "application/json"
     }
