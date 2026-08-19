@@ -235,7 +235,7 @@
                     v-if="card.avgRating > 0"
                     class="rounded-full bg-white/95 px-3 py-1.5 text-sm font-black text-slate-950 shadow-sm"
                 >
-                  ★ {{ card.avgRating.toFixed(1) }}
+                  <span class="text-yellow-500">★</span> {{ card.avgRating.toFixed(1) }}
                 </div>
               </div>
             </div>
@@ -247,8 +247,8 @@
               </span>
             </div>
             <div class="absolute right-3 top-3">
-              <span class="inline-flex items-center gap-1 rounded-2xl bg-emerald-500/95 px-3 py-1.5 text-xs font-black text-white shadow-sm backdrop-blur-md">
-                <span class="h-1.5 w-1.5 rounded-full bg-white" />
+              <span class="inline-flex items-center gap-1 rounded-2xl transition-all duration-200 bg-white px-3 py-1.5 text-xs font-black text-slate-900 shadow-sm backdrop-blur-md">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 Faol
               </span>
             </div>

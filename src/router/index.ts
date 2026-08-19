@@ -71,7 +71,7 @@ router.beforeEach((to, _, next) => {
             }
             authStore.logout();
             if (to.name === 'Login' || to.name === 'Register') return next()
-            return next({ name: 'Login' })
+            return next({ name: 'Dashboard' })
         }
         sessionExpiredShown = false;
     }
