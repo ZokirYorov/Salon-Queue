@@ -16,7 +16,6 @@
       </button>
       <p v-if="loadError" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2 mb-6">{{ loadError }}</p>
 
-      <!-- Business info -->
       <div
           v-if="!loadingServices && business"
           class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mb-5"
@@ -122,7 +121,6 @@
       </div>
       </div>
 
-      <!-- Reviews -->
       <div
           v-if="!loadingServices"
           class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 sm:p-5 mb-4"
@@ -198,7 +196,6 @@
         </template>
       </div>
 
-      <!-- Loading skeleton -->
       <div v-if="loadingServices" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 animate-pulse space-y-4">
         <div class="h-3.5 w-32 bg-slate-100 dark:bg-slate-700 rounded" />
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -226,7 +223,6 @@
             </div>
           </div>
         </div>
-        <!-- Step 1: service -->
         <div class="step-row">
           <div class="step-rail">
             <span class="step-num" :class="{ done: step1Done, active: !step1Done }">
@@ -271,7 +267,6 @@
           </div>
         </div>
 
-        <!-- Step 2: date -->
         <div class="step-row" :class="{ 'step-locked': !step2Reachable }">
           <div class="step-rail">
             <span class="step-num" :class="{ done: step2Done, active: step2Reachable && !step2Done }">
@@ -310,7 +305,6 @@
           </div>
         </div>
 
-        <!-- Step 3: staff -->
         <div class="step-row" :class="{ 'step-locked': !step3Reachable }">
           <div class="step-rail">
             <span class="step-num" :class="{ done: step3Done, active: step3Reachable && !step3Done }">
@@ -343,7 +337,6 @@
           </div>
         </div>
 
-        <!-- Step 4: time -->
         <div class="step-row" :class="{ 'step-locked': !step4Reachable }">
           <div class="step-rail">
             <span class="step-num" :class="{ done: step4Done, active: step4Reachable && !step4Done }">
@@ -404,10 +397,34 @@
           </div>
         </div>
 
-        <!-- Step 5: note -->
-        <div class="step-row last" :class="{ 'step-locked': !step5Reachable }">
+        <div class="step-row" :class="{'step-locked': !step5Reachable}">
           <div class="step-rail">
-            <span class="step-num" :class="{ active: step5Reachable }">5</span>
+            <span class="step-num" :class="{ done: step5Done, active: step5Reachable  && !step5Done }">
+              <svg v-if="step5Done" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+              <template v-else>5</template>
+            </span>
+            <span class="step-line" />
+          </div>
+          <div class="step-body">
+            <div class="flex flex-col gap-1 sm:flex-col">
+              <p class="text-sm font-bold text-slate-800 dark:text-white">Telefon raqam</p>
+              <div class="flex flex-col">
+                <label for="phone" class="text-slate-600 text-sm mb-2 font-semibold">Telefon raqamini kiriting</label>
+                <input
+                    id="phone"
+                    v-model="form.guestPhone"
+                    type="number" alt=""
+                    placeholder="+99890 123 45 67"
+                    class="flex px-2 py-1 border border-gray-200 form-control rounded-lg shadow-sm"
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-row last" :class="{ 'step-locked': !step6Reachable }">
+          <div class="step-rail">
+            <span class="step-num" :class="{ active: step6Reachable }">6</span>
           </div>
           <div class="step-body">
             <p class="text-sm font-bold text-slate-800 dark:text-white">Izoh <span class="font-normal text-slate-400">(ixtiyoriy)</span></p>
@@ -418,7 +435,6 @@
       </div>
     </main>
 
-    <!-- Sticky summary bar -->
     <div
       v-if="selectedService"
       class="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]"
@@ -537,6 +553,7 @@ const form = reactive({
   staffId: '',
   startMinutes: null as number | null,
   customerNote: '',
+  guestPhone: ''
 });
 
 const formCleaned = () => {
@@ -544,6 +561,7 @@ const formCleaned = () => {
   form.staffId = '';
   form.startMinutes = null;
   form.customerNote = '';
+  form.guestPhone = '';
   openModal.value = false;
 }
 
@@ -613,8 +631,10 @@ const step2Done = computed(() => step2Reachable.value && !!form.date);
 const step3Reachable = computed(() => step2Done.value);
 const step3Done = computed(() => step3Reachable.value && !!form.staffId);
 const step4Reachable = computed(() => step3Done.value);
-const step4Done = computed(() => step4Reachable.value && form.startMinutes !== null);
+const step4Done = computed(() => step4Reachable.value && !!form.startMinutes);
 const step5Reachable = computed(() => step4Done.value);
+const step5Done = computed(() => step5Reachable && !!form.guestPhone);
+const step6Reachable = computed(() => step5Done.value && form.guestPhone !== null);
 
 const todayHours = computed(() => hours.value.find((h) => h.weekday === weekdayFromDate(todayIso())));
 const dayHours = computed(() => hours.value.find((h) => h.weekday === weekdayFromDate(form.date)));
@@ -784,9 +804,17 @@ watch(() => authStore.user, (user) => {
 });
 
 function selectService(svc: OfferedService) {
-  form.offeredServiceId = svc.id;
-  form.staffId = '';
-  form.startMinutes = null;
+  if (form.offeredServiceId === svc.id) {
+    form.offeredServiceId = '';
+    form.staffId = '';
+    form.startMinutes = null;
+    form.guestPhone = ''
+  } else {
+    form.offeredServiceId = svc.id;
+    form.staffId = '';
+    form.startMinutes = null;
+    form.guestPhone = '';
+  }
 }
 
 const BASE_URL = import.meta.env.VITE_BASE_API as string;
@@ -828,6 +856,7 @@ async function submit() {
       staffId: form.staffId,
       startAt,
       endAt,
+      guestPhone: form.guestPhone,
       customerNote: form.customerNote.trim() || undefined,
     });
     await router.push('/client/my');
