@@ -408,15 +408,26 @@
           <div class="step-body">
             <div class="flex flex-col gap-1 sm:flex-col">
               <p class="text-sm font-bold text-slate-800 dark:text-white">Telefon raqam</p>
-              <div class="flex flex-col">
-                <label for="phone" class="text-slate-600 text-sm mb-2 font-semibold">Telefon raqamini kiriting</label>
-                <input
-                    id="phone"
+              <div class="flex flex-col w-60">
+                <label for="phone" class="text-slate-600 text-sm mb-2 font-semibold">Telefon raqamini (+998 siz) kiriting!</label>
+                <VueTelInput
                     v-model="form.guestPhone"
-                    type="number" alt=""
-                    placeholder="+99890 123 45 67"
-                    class="flex px-2 py-1 border border-gray-200 form-control rounded-lg shadow-sm"
-                >
+                    default-country="UZ"
+                    :dropdown-options="{
+                    disabled: true,
+                    showFlags: false,
+                    showDialCodeInSelection: true
+                  }"
+                    :input-options="{
+                    placeholder: '901234567',
+                    type: 'tel',
+                    autocomplete: 'tel',
+                    maxlength: 9
+                  }"
+                    :valid-characters-only="true"
+                    mode="national"
+                    class="phone-input"
+                />
               </div>
             </div>
           </div>
@@ -525,6 +536,7 @@ import { weekdayFromDate, toMinutes, todayIso, isStaffBusy, generatePossibleStar
 import { formatPrice, formatDate } from '@/utils/format';
 import { firstInitial, personName } from '@/utils/names';
 import { apiErrorMessage } from '@/utils/apiError';
+import { VueTelInput } from 'vue-tel-input'
 // import { mediaUrl } from '@/utils/media';
 import DatePicker from '@/components/DatePicker.vue';
 import AppHeader from '@/components/AppHeader.vue';
@@ -856,7 +868,7 @@ async function submit() {
       staffId: form.staffId,
       startAt,
       endAt,
-      guestPhone: form.guestPhone,
+      guestPhone: form.guestPhone ? `+998${form.guestPhone.replace(/\D/g, '')}` : '',
       customerNote: form.customerNote.trim() || undefined,
     });
     await router.push('/client/my');
@@ -942,5 +954,32 @@ async function submit() {
 }
 :global(.dark) .step-title {
   color: #f1f5f9;
+}
+.phone-input {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.phone-input:focus-within {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 2px rgb(13 148 136 / 0.2);
+}
+
+.phone-input :deep(.vti__input) {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-size: 0.875rem;
+}
+.phone-input :deep(.vti__dropdown-arrow) {
+  display: none;
+}
+.phone-input :deep(.vti__input::placeholder) {
+  color: #94a3b8;
 }
 </style>
