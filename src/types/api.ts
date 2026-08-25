@@ -132,7 +132,8 @@ export type BookingStatus =
 export interface Booking {
   id: string
   customerId: string | null
-  customerName?: string | null
+  customerFirstName?: string | null
+  customerLastName?: string | null
   guestName: string | null
   guestPhone: string | null
   businessId: string
@@ -140,7 +141,8 @@ export interface Booking {
   offeredServiceId: string
   offeredServiceName?: string
   staffId: string | null
-  staffName?: string | null
+  staffFirstName?: string | null
+  staffLastName?: string | null
   startAt: string
   endAt: string
   status: BookingStatus
@@ -206,8 +208,11 @@ export interface Review {
   bookingId: string
   businessId: string | null
   staffId: string | null
-  staffName: string | null
-  customerName?: string | null
+  staffFirstName: string | null
+  staffLastName: string | null
+  customerFirstName?: string | null
+  customerLastName?: string | null
+  guestName?: string | null
   stars: number
   comment: string
   createdAt: string

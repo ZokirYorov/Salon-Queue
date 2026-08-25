@@ -19,10 +19,16 @@
         <p v-if="error" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2">{{ error }}</p>
         <div class="flex flex-col gap-2 rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="fullName" class="sr-only">Ism Familiya</label>
-            <input id="fullName" type="text" required
+            <label for="firstName" class="sr-only">Ism</label>
+            <input id="firstName" type="text" required
                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Ism Familiya" v-model="fullName">
+                   placeholder="Ism" v-model="firstName">
+          </div>
+          <div>
+            <label for="lastName" class="sr-only">Familiya</label>
+            <input id="lastName" type="text"
+                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                   placeholder="Familiya" v-model="lastName">
           </div>
           <div>
             <label for="login" class="sr-only">Login</label>
@@ -65,12 +71,12 @@
 import { ref } from 'vue';
 import { useRouter, useRoute, RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { splitFullName } from '@/utils/names';
 
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
-const fullName = ref('');
+const firstName = ref('');
+const lastName = ref('');
 const login = ref('');
 const phone = ref('');
 const email = ref('');
@@ -82,12 +88,11 @@ const handleRegister = async () => {
   error.value = '';
   loading.value = true;
   try {
-    const { firstName, lastName } = splitFullName(fullName.value);
     await authStore.register({
       login: login.value.trim(),
       password: password.value,
-      firstName,
-      lastName,
+      firstName: firstName.value.trim(),
+      lastName: lastName.value.trim() || undefined,
       email: email.value.trim(),
       phone: phone.value.trim(),
     });

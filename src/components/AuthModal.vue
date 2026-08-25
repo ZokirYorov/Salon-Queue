@@ -48,7 +48,9 @@
         <!-- Register form -->
         <form v-else class="p-5 space-y-3" @submit.prevent="handleRegister">
           <p v-if="error" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2">{{ error }}</p>
-          <input v-model="registerForm.fullName" type="text" required placeholder="Ism Familiya" autofocus
+          <input v-model="registerForm.firstName" type="text" required placeholder="Ism" autofocus
+                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <input v-model="registerForm.lastName" type="text" placeholder="Familiya"
                  class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           <input v-model="registerForm.login" type="text" required placeholder="Login"
                  class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
@@ -82,7 +84,6 @@ import { reactive, ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useAuthModal } from '@/composables/useAuthModal';
-import { splitFullName } from '@/utils/names';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -94,7 +95,7 @@ const showLoginPassword = ref(false);
 const showRegisterPassword = ref(false);
 
 const loginForm = reactive({ login: '', password: '' });
-const registerForm = reactive({ fullName: '', login: '', phone: '', email: '', password: '' });
+const registerForm = reactive({ firstName: '', lastName: '', login: '', phone: '', email: '', password: '' });
 
 // Agar tugma joyi ma'lum bo'lmasa (masalan BookView'dan ochilgan bo'lsa), sarlavha ostiga tushadi
 const panelStyle = computed(() => {
@@ -121,7 +122,8 @@ watch(isOpen, (open) => {
     loginForm.password = '';
     showLoginPassword.value = false;
     showRegisterPassword.value = false;
-    registerForm.fullName = '';
+    registerForm.firstName = '';
+    registerForm.lastName = '';
     registerForm.login = '';
     registerForm.phone = '';
     registerForm.email = '';
@@ -157,12 +159,11 @@ async function handleRegister() {
   error.value = '';
   loading.value = true;
   try {
-    const { firstName, lastName } = splitFullName(registerForm.fullName);
     await authStore.register({
       login: registerForm.login.trim(),
       password: registerForm.password,
-      firstName,
-      lastName,
+      firstName: registerForm.firstName.trim(),
+      lastName: registerForm.lastName.trim() || undefined,
       email: registerForm.email.trim(),
       phone: registerForm.phone.trim(),
     });

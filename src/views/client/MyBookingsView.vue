@@ -92,7 +92,7 @@
               </span>
                 <span class="flex items-center">
                 <User class="w-3 h-3 inline mr-1.5" />-
-                {{ nextBooking.staffName || 'Usta tanlanmagan' }}
+                {{ bookingStaffName(nextBooking) }}
               </span>
               </p>
               <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">
@@ -185,7 +185,7 @@
               </span>
               <span class="flex items-center">
                 <User class="w-3 h-3 inline mr-1.5" />-
-                {{ b.staffName || 'Usta tanlanmagan' }}
+                {{ bookingStaffName(b) }}
               </span>
             </p>
             <p class="mt-1 flex items-center gap-1 text-xs text-slate-400">
@@ -296,7 +296,7 @@
             >
               <span class="flex items-center gap-2">
                 <User class="w-4 h-4"/>
-                {{ reviewTarget.staffName || 'Usta tanlanmagan' }}
+                {{ bookingStaffName(reviewTarget) }}
               </span>
             </p>
           </div>
@@ -377,6 +377,7 @@ import type { Booking, BookingStatus } from '@/types/api';
 import { statusLabel, statusClass, statusBorderClass } from '@/utils/format';
 import { apiErrorMessage } from '@/utils/apiError';
 import { Building2, User } from 'lucide-vue-next';
+import { bookingStaffName } from '@/utils/names';
 
 type BookingFilter = 'all' | 'upcoming' | 'completed' | 'cancelled';
 

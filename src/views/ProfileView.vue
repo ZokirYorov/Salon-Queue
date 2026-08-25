@@ -61,10 +61,17 @@
                 <span class="text-[11px] text-slate-400">Profil</span>
               </div>
               <div>
-                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Ism Familiya</label>
+                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Ism</label>
                 <div class="relative">
                   <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                  <input v-model="form.fullName" type="text" autocomplete="name" placeholder="Masalan: Shaxzod Ruziqulov" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input v-model="form.firstName" type="text" autocomplete="given-name" placeholder="Masalan: Shaxzod" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Familiya</label>
+                <div class="relative">
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                  <input v-model="form.lastName" type="text" autocomplete="family-name" placeholder="Masalan: Ruziqulov" class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
               </div>
               <div>
@@ -145,7 +152,7 @@ import { useToast } from 'vue-toastification';
 import { useAuthStore } from '@/stores/auth';
 import { usersApi } from '@/api/users';
 import { mediaUrl } from '@/utils/media';
-import { firstInitial, personName, splitFullName } from '@/utils/names';
+import { firstInitial, personName } from '@/utils/names';
 import { apiErrorMessage } from '@/utils/apiError';
 import AppHeader from '@/components/AppHeader.vue';
 import type { User } from '@/types/api';
@@ -163,7 +170,7 @@ const showNewPassword = ref(false);
 const showConfirmPassword = ref(false);
 // const businessAppUrl = (import.meta.env.VITE_BUSINESS_APP_URL as string | undefined) || 'http://localhost:5174';
 
-const form = reactive({ fullName: '', email: '', phone: '' });
+const form = reactive({ firstName: '', lastName: '', email: '', phone: '' });
 const passwordForm = reactive({ currentPassword: '', newPassword: '', confirmPassword: '' });
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
@@ -171,7 +178,8 @@ const ALLOWED_AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 function applyProfile(data: User) {
   profile.value = data;
-  form.fullName = personName(data);
+  form.firstName = data.firstName ?? '';
+  form.lastName = data.lastName ?? '';
   form.email = data.email ?? '';
   form.phone = data.phone ?? '';
 }
@@ -224,16 +232,15 @@ async function onAvatarChange(e: Event) {
 
 async function save() {
   if (!authStore.user) return;
-  if (!form.fullName.trim()) {
-    toast.error('Ism familiya kiritilishi shart');
+  if (!form.firstName.trim()) {
+    toast.error('Ism kiritilishi shart');
     return;
   }
   saving.value = true;
   try {
-    const { firstName, lastName } = splitFullName(form.fullName);
     const { data } = await usersApi.update(authStore.user.userId, {
-      firstName: firstName || undefined,
-      lastName,
+      firstName: form.firstName.trim(),
+      lastName: form.lastName.trim() || undefined,
       email: form.email.trim() || undefined,
       phone: form.phone.trim() || undefined,
     });
