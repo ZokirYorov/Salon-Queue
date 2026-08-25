@@ -138,7 +138,7 @@ export interface Booking {
   customerMiddleName?: string | null
   customerPhone?: string | null
   businessId: string
-  avatarUrl: string | null
+  avatarUrl?: string | null
   businessName?: string
   offeredServiceId: string
   offeredServiceName?: string
