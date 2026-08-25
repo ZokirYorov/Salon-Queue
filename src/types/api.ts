@@ -138,6 +138,7 @@ export interface Booking {
   customerMiddleName?: string | null
   customerPhone?: string | null
   businessId: string
+  avatarUrl: string | null
   businessName?: string
   offeredServiceId: string
   offeredServiceName?: string
@@ -167,6 +168,7 @@ export interface BookingCreateRequest {
   customerMiddleName?: string
   customerPhone?: string
   businessId: string
+  avatarUrl?: string
   offeredServiceId: string
   staffId?: string
   startAt: string
