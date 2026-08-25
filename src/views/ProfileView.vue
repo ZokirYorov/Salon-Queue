@@ -50,7 +50,7 @@
               </RouterLink>
               <a
                   class="rounded-xl cursor-pointer bg-teal-600 px-3 py-2 text-xs font-black text-white transition hover:bg-teal-700"
-                  href="https://onetime-managment.netlify.app"
+                  href="https://onetime-managment.netlify.app/register"
               >
                 Biznes yaratish
               </a>
