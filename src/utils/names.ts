@@ -7,7 +7,6 @@ export interface PersonLike {
 export interface BookingNameLike {
   customerFirstName?: string | null
   customerLastName?: string | null
-  guestName?: string | null
   staffFirstName?: string | null
   staffLastName?: string | null
 }
@@ -27,7 +26,7 @@ export function bookingCustomerName(booking: BookingNameLike, fallback = 'Mijoz'
     .filter(Boolean)
     .join(' ')
 
-  return name || booking.guestName || fallback
+  return name || fallback
 }
 
 export function bookingStaffName(booking: BookingNameLike, fallback = 'Usta tanlanmagan') {

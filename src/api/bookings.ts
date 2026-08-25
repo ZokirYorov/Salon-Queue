@@ -2,7 +2,7 @@ import apiClient from '@/axios'
 import type { Booking, BookingAvailability, BookingCreateRequest, BookingUpdateRequest, Page } from '@/types/api'
 
 export const bookingsApi = {
-  getAll: (params?: { customerId?: string; businessId?: string; date?: string; page?: number; size?: number }) =>
+  getAll: (params?: { customerId?: string; customerAccountId?: string; businessId?: string; date?: string; page?: number; size?: number }) =>
     apiClient.get<Page<Booking>>('/bookings', { params }),
 
   availability: (params: { businessId: string; date: string }) =>

@@ -47,78 +47,88 @@
           </div>
         </div>
         <div class="p-4">
-        <div class="flex items-start justify-between gap-2">
-          <div class="min-w-0">
-            <h2 class="text-sm font-bold text-slate-900 dark:text-white">Tashkilot haqida</h2>
-            <p class="text-xs text-slate-900 dark:text-slate-300 truncate">Manzil: {{ business.addressLine || business.city }}</p>
-          </div>
-          <div
-              v-if="businessReviewCount > 0"
-              class="flex-shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 rounded-full px-2.5 py-1"
-          >
-            <span class="text-amber-500 text-sm">⭐</span>
-            <span class="text-xs font-bold text-slate-800 dark:text-white">{{ businessAvgRating.toFixed(1) }}</span>
-            <span class="text-xs text-slate-500 dark:text-slate-400">({{ businessReviewCount }})</span>
+          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+            <div class="min-w-0">
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <h2 class="text-sm font-bold text-slate-900 dark:text-white">Tashkilot haqida</h2>
+                  <p class="text-xs text-slate-900 dark:text-slate-300 truncate">Manzil: {{ business.addressLine || business.city }}</p>
+                </div>
+                <div
+                    v-if="businessReviewCount > 0"
+                    class="flex-shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 rounded-full px-2.5 py-1"
+                >
+                  <span class="text-amber-500 text-sm">⭐</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-white">{{ businessAvgRating.toFixed(1) }}</span>
+                  <span class="text-xs text-slate-500 dark:text-slate-400">({{ businessReviewCount }})</span>
+                </div>
+              </div>
+              <p
+                  v-if="business.description"
+                  class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2"
+              >
+                {{ business.description }}
+              </p>
+              <div class="mt-4 grid grid-cols-2 gap-3 text-gray-600 dark:text-slate-400 text-xs sm:grid-cols-4">
+                <div class="border-l-2 border-teal-500 pl-3">
+                  <p class="font-semibold">Reyting</p>
+                  <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount > 0 ? businessAvgRating.toFixed(1) : 'Yangi' }}</p>
+                </div>
+                <div class="border-l-2 border-amber-400 pl-3">
+                  <p class="font-semibold">Sharhlar</p>
+                  <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount }} ta</p>
+                </div>
+                <div class="border-l-2 border-indigo-400 pl-3">
+                  <p class="font-semibold">Bugun</p>
+                  <p class="mt-1 font-black text-slate-900 dark:text-white">{{ todayOpen ? todayHoursLabel : 'Yopiq' }}</p>
+                </div>
+                <div class="border-l-2 border-slate-300 pl-3 dark:border-slate-600">
+                  <p class="font-semibold">Hudud</p>
+                  <p class="mt-1 truncate font-black text-slate-900 dark:text-white">{{ business.city || 'Kiritilmagan' }}</p>
+                </div>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
+                <a
+                    v-if="business.contactPhone"
+                    :href="`tel:${business.contactPhone}`"
+                    class="inline-flex items-center gap-1.5 rounded-full bg-teal-600 px-3 py-2 font-black text-white transition hover:bg-teal-700"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                  Qo'ng'iroq qilish
+                </a>
+                <a
+                  v-if="directionsUrl"
+                  :href="directionsUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-2 font-black text-slate-600 transition hover:border-indigo-400 hover:text-indigo-600 dark:border-slate-600 dark:text-slate-300 dark:hover:border-indigo-400 dark:hover:text-indigo-300"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
+                  Yo'nalish
+                </a>
+                <span
+                    v-if="business.contactPhone"
+                    class="font-semibold text-slate-400"
+                >
+                  {{ business.contactPhone }}
+                </span>
+                <span class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-medium">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <template v-if="todayHours && !todayHours.closed && todayHours.opensAt && todayHours.closesAt">
+                    Bugun {{ todayHours.opensAt.slice(0, 5) }}–{{ todayHours.closesAt.slice(0, 5) }}
+                  </template>
+                  <template v-else>Bugun yopiq</template>
+                </span>
+              </div>
+            </div>
+            <BusinessMap
+              v-if="business.latitude != null && business.longitude != null"
+              :latitude="business.latitude"
+              :longitude="business.longitude"
+              :title="business.name"
+            />
           </div>
         </div>
-        <p
-            v-if="business.description"
-            class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2"
-        >
-          {{ business.description }}
-        </p>
-        <div class="mt-4 grid grid-cols-2 gap-3 text-gray-600 dark:text-slate-400 text-xs sm:grid-cols-4">
-          <div class="border-l-2 border-teal-500 pl-3">
-            <p class="font-semibold">Reyting</p>
-            <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount > 0 ? businessAvgRating.toFixed(1) : 'Yangi' }}</p>
-          </div>
-          <div class="border-l-2 border-amber-400 pl-3">
-            <p class="font-semibold">Sharhlar</p>
-            <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount }} ta</p>
-          </div>
-          <div class="border-l-2 border-indigo-400 pl-3">
-            <p class="font-semibold">Bugun</p>
-            <p class="mt-1 font-black text-slate-900 dark:text-white">{{ todayOpen ? todayHoursLabel : 'Yopiq' }}</p>
-          </div>
-          <div class="border-l-2 border-slate-300 pl-3 dark:border-slate-600">
-            <p class="font-semibold">Hudud</p>
-            <p class="mt-1 truncate font-black text-slate-900 dark:text-white">{{ business.city || 'Kiritilmagan' }}</p>
-          </div>
-        </div>
-        <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
-          <a
-              v-if="business.contactPhone"
-              :href="`tel:${business.contactPhone}`"
-              class="inline-flex items-center gap-1.5 rounded-full bg-teal-600 px-3 py-2 font-black text-white transition hover:bg-teal-700"
-          >
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-            Qo'ng'iroq qilish
-          </a>
-          <a
-            v-if="business.addressLine"
-            :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${business.addressLine}, ${business.city || ''}`)}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-2 font-black text-slate-600 transition hover:border-indigo-400 hover:text-indigo-600 dark:border-slate-600 dark:text-slate-300 dark:hover:border-indigo-400 dark:hover:text-indigo-300"
-          >
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
-            Yo'nalish
-          </a>
-          <span
-              v-if="business.contactPhone"
-              class="font-semibold text-slate-400"
-          >
-            {{ business.contactPhone }}
-          </span>
-          <span class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-medium">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <template v-if="todayHours && !todayHours.closed && todayHours.opensAt && todayHours.closesAt">
-              Bugun {{ todayHours.opensAt.slice(0, 5) }}–{{ todayHours.closesAt.slice(0, 5) }}
-            </template>
-            <template v-else>Bugun yopiq</template>
-          </span>
-        </div>
-      </div>
       </div>
 
       <div
@@ -156,8 +166,8 @@
               <div class="flex min-w-0 items-center gap-2">
                 <span class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-teal-600 text-xs font-black text-white">{{ reviewInitial(r) }}</span>
                 <div class="min-w-0">
-                  <p class="truncate text-sm font-black text-slate-800 dark:text-white">{{ r.customerName || 'Mijoz' }}</p>
-                  <p v-if="r.staffName" class="truncate text-xs font-semibold text-slate-400">Xodim: {{ r.staffName }}</p>
+                  <p class="truncate text-sm font-black text-slate-800 dark:text-white">{{ reviewCustomerName(r) }}</p>
+                  <p v-if="reviewStaffName(r, '')" class="truncate text-xs font-semibold text-slate-400">Xodim: {{ reviewStaffName(r, '') }}</p>
                 </div>
               </div>
               <span class="text-amber-400 text-xs">{{ '★'.repeat(r.stars) }}{{ '☆'.repeat(5 - r.stars) }}</span>
@@ -397,34 +407,9 @@
           </div>
         </div>
 
-        <div class="step-row" :class="{'step-locked': !step5Reachable}">
+        <div class="step-row last" :class="{ 'step-locked': !step5Reachable }">
           <div class="step-rail">
-            <span class="step-num" :class="{ done: step5Done, active: step5Reachable  && !step5Done }">
-              <svg v-if="step5Done" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
-              <template v-else>5</template>
-            </span>
-            <span class="step-line" />
-          </div>
-          <div class="step-body">
-            <div class="flex flex-col gap-1 sm:flex-col">
-              <p class="text-sm font-bold text-slate-800 dark:text-white">Telefon raqam</p>
-              <div class="flex flex-col">
-                <label for="phone" class="text-slate-600 text-sm mb-2 font-semibold">Telefon raqamini kiriting</label>
-                <input
-                    id="phone"
-                    v-model="form.guestPhone"
-                    type="number" alt=""
-                    placeholder="+99890 123 45 67"
-                    class="flex px-2 py-1 border border-gray-200 form-control rounded-lg shadow-sm"
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-row last" :class="{ 'step-locked': !step6Reachable }">
-          <div class="step-rail">
-            <span class="step-num" :class="{ active: step6Reachable }">6</span>
+            <span class="step-num" :class="{ active: step5Reachable }">5</span>
           </div>
           <div class="step-body">
             <p class="text-sm font-bold text-slate-800 dark:text-white">Izoh <span class="font-normal text-slate-400">(ixtiyoriy)</span></p>
@@ -523,11 +508,12 @@ import { useAuthModal } from '@/composables/useAuthModal';
 import type { Business, OfferedService, StaffMember, BusinessHours, Booking, Review } from '@/types/api';
 import { weekdayFromDate, toMinutes, todayIso, isStaffBusy, generatePossibleStarts, minutesToLabel, dateAndMinutesToIso } from '@/utils/scheduling';
 import { formatPrice, formatDate } from '@/utils/format';
-import { firstInitial, personName } from '@/utils/names';
+import { firstInitial, personName, reviewCustomerName, reviewStaffName } from '@/utils/names';
 import { apiErrorMessage } from '@/utils/apiError';
 // import { mediaUrl } from '@/utils/media';
 import DatePicker from '@/components/DatePicker.vue';
 import AppHeader from '@/components/AppHeader.vue';
+import BusinessMap from '@/components/BusinessMap.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -552,8 +538,7 @@ const form = reactive({
   date: todayIso(),
   staffId: '',
   startMinutes: null as number | null,
-  customerNote: '',
-  guestPhone: ''
+  customerNote: ''
 });
 
 const formCleaned = () => {
@@ -561,7 +546,6 @@ const formCleaned = () => {
   form.staffId = '';
   form.startMinutes = null;
   form.customerNote = '';
-  form.guestPhone = '';
   openModal.value = false;
 }
 
@@ -587,6 +571,14 @@ const reviewsOpen = ref(true);
 const showAllReviews = ref(false);
 const expandedReviewIds = ref<Set<string>>(new Set());
 const visibleBusinessReviews = computed(() => showAllReviews.value ? businessReviews.value : businessReviews.value.slice(0, 3));
+const directionsUrl = computed(() => {
+  if (!business.value) return '';
+  if (business.value.latitude != null && business.value.longitude != null) {
+    return `https://www.google.com/maps/dir/?api=1&destination=${business.value.latitude},${business.value.longitude}`;
+  }
+  const destination = [business.value.addressLine, business.value.city].filter(Boolean).join(', ');
+  return destination ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}` : '';
+});
 
 const categoryOptions: { value: Business['category']; label: string }[] = [
   { value: 'BARBER', label: 'Sartarosh' },
@@ -615,7 +607,7 @@ function toggleReviewExpanded(id: string) {
 }
 
 function reviewInitial(review: Review) {
-  return (review.customerName || 'Mijoz').trim().charAt(0).toUpperCase();
+  return reviewCustomerName(review).trim().charAt(0).toUpperCase();
 }
 
 function isLongReview(comment?: string | null) {
@@ -633,8 +625,6 @@ const step3Done = computed(() => step3Reachable.value && !!form.staffId);
 const step4Reachable = computed(() => step3Done.value);
 const step4Done = computed(() => step4Reachable.value && !!form.startMinutes);
 const step5Reachable = computed(() => step4Done.value);
-const step5Done = computed(() => step5Reachable && !!form.guestPhone);
-const step6Reachable = computed(() => step5Done.value && form.guestPhone !== null);
 
 const todayHours = computed(() => hours.value.find((h) => h.weekday === weekdayFromDate(todayIso())));
 const dayHours = computed(() => hours.value.find((h) => h.weekday === weekdayFromDate(form.date)));
@@ -756,8 +746,6 @@ async function loadDayBookings() {
     dayBookings.value = data.map((booking) => ({
       ...booking,
       customerId: null,
-      guestName: null,
-      guestPhone: null,
       businessId,
       offeredServiceId: '',
       customerNote: '',
@@ -808,12 +796,10 @@ function selectService(svc: OfferedService) {
     form.offeredServiceId = '';
     form.staffId = '';
     form.startMinutes = null;
-    form.guestPhone = ''
   } else {
     form.offeredServiceId = svc.id;
     form.staffId = '';
     form.startMinutes = null;
-    form.guestPhone = '';
   }
 }
 
@@ -850,13 +836,11 @@ async function submit() {
     const startAt = dateAndMinutesToIso(form.date, form.startMinutes);
     const endAt = dateAndMinutesToIso(form.date, form.startMinutes + selectedService.value.durationMinutes);
     await bookingsApi.create({
-      customerId: authStore.user.userId,
       businessId,
       offeredServiceId: form.offeredServiceId,
       staffId: form.staffId,
       startAt,
       endAt,
-      guestPhone: form.guestPhone,
       customerNote: form.customerNote.trim() || undefined,
     });
     await router.push('/client/my');

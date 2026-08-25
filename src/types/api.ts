@@ -132,10 +132,11 @@ export type BookingStatus =
 export interface Booking {
   id: string
   customerId: string | null
+  customerAccountId?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
-  guestName: string | null
-  guestPhone: string | null
+  customerMiddleName?: string | null
+  customerPhone?: string | null
   businessId: string
   businessName?: string
   offeredServiceId: string
@@ -161,8 +162,10 @@ export interface BookingAvailability {
 
 export interface BookingCreateRequest {
   customerId?: string
-  guestName?: string
-  guestPhone?: string
+  customerFirstName?: string
+  customerLastName?: string
+  customerMiddleName?: string
+  customerPhone?: string
   businessId: string
   offeredServiceId: string
   staffId?: string
@@ -212,7 +215,6 @@ export interface Review {
   staffLastName: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
-  guestName?: string | null
   stars: number
   comment: string
   createdAt: string

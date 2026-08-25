@@ -471,7 +471,7 @@ async function loadBookings() {
   if (!authStore.user) return;
   loading.value = true;
   try {
-    const { data } = await bookingsApi.getAll({ customerId: authStore.user.userId, size: 100 });
+    const { data } = await bookingsApi.getAll({ customerAccountId: authStore.user.userId, size: 100 });
     bookings.value = data.content.sort((a, b) => b.startAt.localeCompare(a.startAt));
   } finally {
     loading.value = false;
