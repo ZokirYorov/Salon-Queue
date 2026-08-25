@@ -81,6 +81,7 @@ const loading = ref(false);
 const error = ref('');
 
 const handleLogin = async () => {
+  if (loading.value) return;
   error.value = '';
   loading.value = true;
   try {
@@ -88,7 +89,11 @@ const handleLogin = async () => {
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/businesses';
     await router.push(redirect);
   } catch (e: any) {
-    error.value = e?.response?.data?.message || 'Login yoki parol noto\'g\'ri';
+    if (e?.response?.status === 401) {
+      error.value = 'Login yoki parol noto\'g\'ri';
+    } else {
+      error.value = e?.response?.data?.message || 'Serverga ulanishda xatolik';
+    }
   } finally {
     loading.value = false;
   }

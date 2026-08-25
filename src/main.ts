@@ -1,7 +1,6 @@
 import { createApp} from "vue";
 import { createPinia} from "pinia";
 import './main.css'
-import 'vue-tel-input/vue-tel-input.css'
 import './composables/useTheme'
 import router from "./router";
 import 'vue-toastification/dist/index.css'

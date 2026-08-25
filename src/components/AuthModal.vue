@@ -143,19 +143,25 @@ function goToForgotPassword() {
 }
 
 async function handleLogin() {
+  if (loading.value) return;
   error.value = '';
   loading.value = true;
   try {
     await authStore.login({ login: loginForm.login.trim(), password: loginForm.password });
     handleSuccess();
   } catch (e: any) {
-    error.value = e?.response?.data?.message || "Login yoki parol noto'g'ri";
+    if (e?.response?.status === 401) {
+      error.value = "Login yoki parol noto'g'ri";
+    } else {
+      error.value = e?.response?.data?.message || 'Serverga ulanishda xatolik';
+    }
   } finally {
     loading.value = false;
   }
 }
 
 async function handleRegister() {
+  if (loading.value) return;
   error.value = '';
   loading.value = true;
   try {

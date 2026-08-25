@@ -335,8 +335,7 @@
                 class="flex flex-col cursor-pointer items-center gap-1.5 text-center border rounded-xl px-3 py-3 flex-shrink-0 w-28 transition"
                 :class="form.staffId === s.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
-                <img v-if="form.avatarUrl" :src="getAvatarUrl(form.avatarUrl)" class="w-12 h-12 rounded-full" alt="">
-                <span v-else class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center">
+                <span class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center">
                   {{ firstInitial(s) }}
                 </span>
                 <span class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate w-full">{{ personName(s) }}</span>
@@ -411,43 +410,6 @@
         <div class="step-row last" :class="{ 'step-locked': !step5Reachable }">
           <div class="step-rail">
             <span class="step-num" :class="{ active: step5Reachable }">5</span>
-            <span class="step-num" :class="{ done: step5Done, active: step5Reachable  && !step5Done }">
-              <svg v-if="step5Done" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
-              <template v-else>5</template>
-            </span>
-            <span class="step-line" />
-          </div>
-          <div class="step-body">
-            <div class="flex flex-col gap-1 sm:flex-col">
-              <p class="text-sm font-bold text-slate-800 dark:text-white">Telefon raqam</p>
-              <div class="flex flex-col w-60">
-                <label for="phone" class="text-slate-600 text-sm mb-2 font-semibold">Telefon raqamini (+998 siz) kiriting!</label>
-                <VueTelInput
-                    v-model="form.guestPhone"
-                    default-country="UZ"
-                    :dropdown-options="{
-                    disabled: true,
-                    showFlags: false,
-                    showDialCodeInSelection: true
-                  }"
-                    :input-options="{
-                    placeholder: '901234567',
-                    type: 'tel',
-                    autocomplete: 'tel',
-                    maxlength: 9
-                  }"
-                    :valid-characters-only="true"
-                    mode="national"
-                    class="phone-input"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-row last" :class="{ 'step-locked': !step6Reachable }">
-          <div class="step-rail">
-            <span class="step-num" :class="{ active: step6Reachable }">6</span>
           </div>
           <div class="step-body">
             <p class="text-sm font-bold text-slate-800 dark:text-white">Izoh <span class="font-normal text-slate-400">(ixtiyoriy)</span></p>
@@ -548,7 +510,6 @@ import { weekdayFromDate, toMinutes, todayIso, isStaffBusy, generatePossibleStar
 import { formatPrice, formatDate } from '@/utils/format';
 import { firstInitial, personName, reviewCustomerName, reviewStaffName } from '@/utils/names';
 import { apiErrorMessage } from '@/utils/apiError';
-import { VueTelInput } from 'vue-tel-input'
 // import { mediaUrl } from '@/utils/media';
 import DatePicker from '@/components/DatePicker.vue';
 import AppHeader from '@/components/AppHeader.vue';
@@ -578,9 +539,6 @@ const form = reactive({
   staffId: '',
   startMinutes: null as number | null,
   customerNote: ''
-  customerNote: '',
-  guestPhone: '',
-  avatarUrl: ''
 });
 
 const formCleaned = () => {
@@ -588,8 +546,6 @@ const formCleaned = () => {
   form.staffId = '';
   form.startMinutes = null;
   form.customerNote = '';
-  form.guestPhone = '';
-  form.avatarUrl = '';
   openModal.value = false;
 }
 
@@ -793,7 +749,6 @@ async function loadDayBookings() {
       businessId,
       offeredServiceId: '',
       customerNote: '',
-      avatarUrl: '',
       createdAt: booking.startAt,
       updatedAt: booking.endAt,
     }));
@@ -891,8 +846,6 @@ async function submit() {
       staffId: form.staffId,
       startAt,
       endAt,
-      avatarUrl: form.avatarUrl,
-      guestPhone: form.guestPhone ? `+998${form.guestPhone.replace(/\D/g, '')}` : '',
       customerNote: form.customerNote.trim() || undefined,
     });
     await router.push('/client/my');
