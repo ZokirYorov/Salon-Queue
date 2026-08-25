@@ -325,7 +325,8 @@
                 class="flex flex-col cursor-pointer items-center gap-1.5 text-center border rounded-xl px-3 py-3 flex-shrink-0 w-28 transition"
                 :class="form.staffId === s.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
-                <span class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center">
+                <img v-if="form.avatarUrl" :src="getAvatarUrl(form.avatarUrl)" class="w-12 h-12 rounded-full" alt="">
+                <span v-else class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center">
                   {{ firstInitial(s) }}
                 </span>
                 <span class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate w-full">{{ personName(s) }}</span>
@@ -565,7 +566,8 @@ const form = reactive({
   staffId: '',
   startMinutes: null as number | null,
   customerNote: '',
-  guestPhone: ''
+  guestPhone: '',
+  avatarUrl: ''
 });
 
 const formCleaned = () => {
@@ -574,6 +576,7 @@ const formCleaned = () => {
   form.startMinutes = null;
   form.customerNote = '';
   form.guestPhone = '';
+  form.avatarUrl = '';
   openModal.value = false;
 }
 
@@ -773,6 +776,7 @@ async function loadDayBookings() {
       businessId,
       offeredServiceId: '',
       customerNote: '',
+      avatarUrl: '',
       createdAt: booking.startAt,
       updatedAt: booking.endAt,
     }));
@@ -838,8 +842,13 @@ const getAvatarUrl = (url: string | undefined): string => {
 };
 
 function selectStaff(id: string) {
-  form.staffId = id;
-  form.startMinutes = null;
+  if (form.staffId === id) {
+    form.staffId = '';
+    form.startMinutes = null;
+  } else {
+    form.staffId = id;
+    form.startMinutes = null;
+  }
 }
 
 async function submit() {
@@ -868,6 +877,7 @@ async function submit() {
       staffId: form.staffId,
       startAt,
       endAt,
+      avatarUrl: form.avatarUrl,
       guestPhone: form.guestPhone ? `+998${form.guestPhone.replace(/\D/g, '')}` : '',
       customerNote: form.customerNote.trim() || undefined,
     });
