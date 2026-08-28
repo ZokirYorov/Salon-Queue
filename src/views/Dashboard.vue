@@ -3,7 +3,7 @@
     <AppHeader />
 
     <main>
-      <section class="relative overflow-hidden border-b border-slate-200 bg-[linear-gradient(135deg,#f8fafc_0%,#eefaf7_48%,#fff7ed_100%)] dark:border-slate-800 dark:bg-[linear-gradient(135deg,#020617_0%,#0f2f2c_58%,#1f1607_100%)]">
+      <section class="relative border-b border-slate-200 bg-[linear-gradient(135deg,#f8fafc_0%,#eefaf7_48%,#fff7ed_100%)] dark:border-slate-800 dark:bg-[linear-gradient(135deg,#020617_0%,#0f2f2c_58%,#1f1607_100%)]">
         <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-50 to-transparent dark:from-slate-950" />
         <div class="relative mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-14 lg:py-6">
           <div>
@@ -21,7 +21,10 @@
             <div class="mt-8 grid gap-3 rounded-3xl border border-slate-200 bg-white/95 p-3 shadow-[0_18px_55px_rgba(15,23,42,0.12)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 md:grid-cols-[1.35fr_0.95fr_0.95fr_auto]">
               <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
-                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <svg
+                      class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                   Qidiruv
                 </span>
@@ -37,7 +40,11 @@
                   v-click-outside="() => (cityMenuOpen = false)"
               >
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
-                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" />
+                  <svg
+                      class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" />
+                    <circle cx="12" cy="10" r="2.5" />
                   </svg>
                   Hudud
                 </span>
@@ -50,8 +57,9 @@
                   <svg
                       class="h-4 w-4 shrink-0 text-slate-400 transition"
                       :class="cityMenuOpen &&
-                      'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"
-                  />
+                      'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </button>
                 <div
@@ -81,7 +89,10 @@
                   v-click-outside="() => (sortMenuOpen = false)"
               >
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
-                  <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
+                  <svg
+                      class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
                   </svg>
                   Tartib
                 </span>
@@ -94,8 +105,9 @@
                   <svg
                       class="h-4 w-4 shrink-0 text-slate-400 transition"
                       :class="sortMenuOpen &&
-                       'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"
-                  />
+                       'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </button>
                 <div

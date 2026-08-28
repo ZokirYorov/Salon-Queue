@@ -14,7 +14,12 @@
         <i class="fa-solid fa-arrow-left"></i>
         Orqaga
       </button>
-      <p v-if="loadError" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2 mb-6">{{ loadError }}</p>
+      <p
+          v-if="loadError"
+          class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2 mb-6"
+      >
+        {{ loadError }}
+      </p>
 
       <div
           v-if="!loadingServices && business"
@@ -36,7 +41,11 @@
               >
                 {{ categoryLabel(business.category) }}
               </span>
-              <h1 class="text-2xl sm:text-3xl font-black text-white truncate">{{ business.name }}</h1>
+              <h1
+                  class="text-2xl sm:text-3xl font-black text-white truncate"
+              >
+                {{ business.name }}
+              </h1>
             </div>
             <span
                 class="rounded-full px-3 py-1.5 text-xs font-black shadow-sm"
@@ -51,16 +60,32 @@
             <div class="min-w-0">
               <div class="flex items-start justify-between gap-2">
                 <div class="min-w-0">
-                  <h2 class="text-sm font-bold text-slate-900 dark:text-white">Tashkilot haqida</h2>
-                  <p class="text-xs text-slate-900 dark:text-slate-300 truncate">Manzil: {{ business.addressLine || business.city }}</p>
+                  <h2
+                      class="text-sm font-bold text-slate-900 dark:text-white"
+                  >
+                    Tashkilot haqida
+                  </h2>
+                  <p
+                      class="text-xs text-slate-900 dark:text-slate-300 truncate"
+                  >
+                    Manzil: {{ business.addressLine || business.city }}
+                  </p>
                 </div>
                 <div
                     v-if="businessReviewCount > 0"
                     class="flex-shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 rounded-full px-2.5 py-1"
                 >
                   <span class="text-amber-500 text-sm">⭐</span>
-                  <span class="text-xs font-bold text-slate-800 dark:text-white">{{ businessAvgRating.toFixed(1) }}</span>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">({{ businessReviewCount }})</span>
+                  <span
+                      class="text-xs font-bold text-slate-800 dark:text-white"
+                  >
+                    {{ businessAvgRating.toFixed(1) }}
+                  </span>
+                  <span
+                      class="text-xs text-slate-500 dark:text-slate-400"
+                  >
+                    ({{ businessReviewCount }})
+                  </span>
                 </div>
               </div>
               <p
@@ -72,19 +97,35 @@
               <div class="mt-4 grid grid-cols-2 gap-3 text-gray-600 dark:text-slate-400 text-xs sm:grid-cols-4">
                 <div class="border-l-2 border-teal-500 pl-3">
                   <p class="font-semibold">Reyting</p>
-                  <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount > 0 ? businessAvgRating.toFixed(1) : 'Yangi' }}</p>
+                  <p
+                      class="mt-1 font-black text-slate-900 dark:text-white"
+                  >
+                    {{ businessReviewCount > 0 ? businessAvgRating.toFixed(1) : 'Yangi' }}
+                  </p>
                 </div>
                 <div class="border-l-2 border-amber-400 pl-3">
                   <p class="font-semibold">Sharhlar</p>
-                  <p class="mt-1 font-black text-slate-900 dark:text-white">{{ businessReviewCount }} ta</p>
+                  <p
+                      class="mt-1 font-black text-slate-900 dark:text-white"
+                  >
+                    {{ businessReviewCount }} ta
+                  </p>
                 </div>
                 <div class="border-l-2 border-indigo-400 pl-3">
                   <p class="font-semibold">Bugun</p>
-                  <p class="mt-1 font-black text-slate-900 dark:text-white">{{ todayOpen ? todayHoursLabel : 'Yopiq' }}</p>
+                  <p
+                      class="mt-1 font-black text-slate-900 dark:text-white"
+                  >
+                    {{ todayOpen ? todayHoursLabel : 'Yopiq' }}
+                  </p>
                 </div>
                 <div class="border-l-2 border-slate-300 pl-3 dark:border-slate-600">
                   <p class="font-semibold">Hudud</p>
-                  <p class="mt-1 truncate font-black text-slate-900 dark:text-white">{{ business.city || 'Kiritilmagan' }}</p>
+                  <p
+                      class="mt-1 truncate font-black text-slate-900 dark:text-white"
+                  >
+                    {{ business.city || 'Kiritilmagan' }}
+                  </p>
                 </div>
               </div>
               <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
@@ -93,7 +134,11 @@
                     :href="`tel:${business.contactPhone}`"
                     class="inline-flex items-center gap-1.5 rounded-full bg-teal-600 px-3 py-2 font-black text-white transition hover:bg-teal-700"
                 >
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                  <svg
+                      class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
                   Qo'ng'iroq qilish
                 </a>
                 <a
@@ -103,7 +148,11 @@
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-2 font-black text-slate-600 transition hover:border-indigo-400 hover:text-indigo-600 dark:border-slate-600 dark:text-slate-300 dark:hover:border-indigo-400 dark:hover:text-indigo-300"
                 >
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
+                  <svg
+                      class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
                   Yo'nalish
                 </a>
                 <span
@@ -113,8 +162,14 @@
                   {{ business.contactPhone }}
                 </span>
                 <span class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-medium">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  <template v-if="todayHours && !todayHours.closed && todayHours.opensAt && todayHours.closesAt">
+                  <svg
+                      class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <template
+                      v-if="todayHours && !todayHours.closed && todayHours.opensAt && todayHours.closesAt"
+                  >
                     Bugun {{ todayHours.opensAt.slice(0, 5) }}–{{ todayHours.closesAt.slice(0, 5) }}
                   </template>
                   <template v-else>Bugun yopiq</template>
@@ -148,29 +203,76 @@
             </span>
           </div>
           <div class="flex items-center gap-2">
-            <div v-if="businessReviewCount > 0" class="flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs shadow-sm dark:bg-slate-800">
+            <div
+                v-if="businessReviewCount > 0"
+                class="flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs shadow-sm dark:bg-slate-800"
+            >
               <span class="text-amber-500">⭐</span>
-              <span class="font-bold text-slate-800 dark:text-white">{{ businessAvgRating.toFixed(1) }}</span>
-              <span class="text-slate-400">({{ businessReviewCount }} ta sharh)</span>
+              <span
+                  class="font-bold text-slate-800 dark:text-white"
+              >
+                {{ businessAvgRating.toFixed(1) }}
+              </span>
+              <span
+                  class="text-slate-400"
+              >
+                ({{ businessReviewCount }} ta sharh)
+              </span>
             </div>
-            <svg class="w-4 h-4 text-slate-400 transition-transform" :class="{ 'rotate-180': reviewsOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            <svg
+                class="w-4 h-4 text-slate-400 transition-transform"
+                :class="{ 'rotate-180': reviewsOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
           </div>
         </button>
 
         <template v-if="reviewsOpen">
-          <p v-if="loadingReviews" class="text-sm text-slate-400 mt-3">Yuklanmoqda...</p>
-          <p v-else-if="businessReviews.length === 0" class="text-sm text-slate-400 mt-3">Hozircha sharhlar yo'q. Birinchi bo'lib fikr bildiring!</p>
+          <p
+              v-if="loadingReviews"
+              class="text-sm text-slate-400 mt-3"
+          >
+            Yuklanmoqda...
+          </p>
+          <p
+              v-else-if="businessReviews.length === 0"
+              class="text-sm text-slate-400 mt-3"
+          >
+            Hozircha sharhlar yo'q. Birinchi bo'lib fikr bildiring!
+          </p>
           <div v-else class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
-          <div v-for="r in visibleBusinessReviews" :key="r.id" class="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-teal-300 hover:bg-white dark:border-slate-700 dark:bg-slate-900/30 dark:hover:border-teal-500/50 dark:hover:bg-slate-900/50">
+          <div
+              v-for="r in visibleBusinessReviews"
+              :key="r.id"
+              class="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-teal-300 hover:bg-white dark:border-slate-700 dark:bg-slate-900/30 dark:hover:border-teal-500/50 dark:hover:bg-slate-900/50"
+          >
             <div class="flex items-start justify-between gap-3">
               <div class="flex min-w-0 items-center gap-2">
-                <span class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-teal-600 text-xs font-black text-white">{{ reviewInitial(r) }}</span>
+                <span
+                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-teal-600 text-xs font-black text-white"
+                >
+                  {{ reviewInitial(r) }}
+                </span>
                 <div class="min-w-0">
-                  <p class="truncate text-sm font-black text-slate-800 dark:text-white">{{ reviewCustomerName(r) }}</p>
-                  <p v-if="reviewStaffName(r, '')" class="truncate text-xs font-semibold text-slate-400">Xodim: {{ reviewStaffName(r, '') }}</p>
+                  <p
+                      class="truncate text-sm font-black text-slate-800 dark:text-white"
+                  >
+                    {{ reviewCustomerName(r) }}
+                  </p>
+                  <p
+                      v-if="reviewStaffName(r, '')"
+                      class="truncate text-xs font-semibold text-slate-400"
+                  >
+                    Xodim: {{ reviewStaffName(r, '') }}
+                  </p>
                 </div>
               </div>
-              <span class="text-amber-400 text-xs">{{ '★'.repeat(r.stars) }}{{ '☆'.repeat(5 - r.stars) }}</span>
+              <span
+                  class="text-amber-400 text-xs"
+              >
+                {{ '★'.repeat(r.stars) }}{{ '☆'.repeat(5 - r.stars) }}
+              </span>
             </div>
             <template v-if="r.comment">
               <p
@@ -226,7 +328,11 @@
                 v-for="step in bookingSteps"
                 :key="step.key"
                 class="rounded-full px-3 py-1.5 text-xs font-black"
-                :class="step.done ? 'bg-teal-600 text-white' : step.active ? 'bg-teal-50 text-teal-700 dark:bg-teal-500/10 dark:text-teal-300' : 'bg-white text-slate-400 dark:bg-slate-700 dark:text-slate-400'"
+                :class="step.done
+                ? 'bg-teal-600 text-white'
+                : step.active
+                ? 'bg-teal-50 text-teal-700 dark:bg-teal-500/10 dark:text-teal-300'
+                : 'bg-white text-slate-400 dark:bg-slate-700 dark:text-slate-400'"
               >
                 {{ step.label }}
               </span>
@@ -235,8 +341,16 @@
         </div>
         <div class="step-row">
           <div class="step-rail">
-            <span class="step-num" :class="{ done: step1Done, active: !step1Done }">
-              <svg v-if="step1Done" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+            <span
+                class="step-num"
+                :class="{ done: step1Done, active: !step1Done }"
+            >
+              <svg
+                  v-if="step1Done"
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+              </svg>
               <template v-else>1</template>
             </span>
             <span class="step-line" />
@@ -250,15 +364,35 @@
                 type="button"
                 @click="selectService(svc)"
                 class="flex items-center cursor-pointer gap-3 text-left border rounded-xl p-2.5 transition"
-                :class="form.offeredServiceId === svc.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
+                :class="form.offeredServiceId === svc.id
+                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20'
+                : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
                 <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-700 flex-shrink-0 flex items-center justify-center">
-                  <img v-if="svc.imageUrl" :src="getAvatarUrl(svc.imageUrl)" :alt="svc.name" class="w-full h-full object-cover" />
-                  <span v-else class="text-indigo-400 text-lg font-bold">{{ svc.name.charAt(0).toUpperCase() }}</span>
+                  <img
+                      v-if="svc.imageUrl"
+                      :src="getAvatarUrl(svc.imageUrl)"
+                      :alt="svc.name"
+                      class="w-full h-full object-cover"
+                  />
+                  <span
+                      v-else
+                      class="text-indigo-400 text-lg font-bold"
+                  >
+                    {{ svc.name.charAt(0).toUpperCase() }}
+                  </span>
                 </div>
                 <div class="min-w-0">
-                  <div class="text-sm font-semibold text-slate-900 dark:text-white truncate">{{ svc.name }}</div>
-                  <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ svc.durationMinutes }} daqiqa · {{ formatPrice(svc.basePrice) }}</div>
+                  <div
+                      class="text-sm font-semibold text-slate-900 dark:text-white truncate"
+                  >
+                    {{ svc.name }}
+                  </div>
+                  <div
+                      class="text-xs text-slate-500 dark:text-slate-400 mt-0.5"
+                  >
+                    {{ svc.durationMinutes }} daqiqa · {{ formatPrice(svc.basePrice) }}
+                  </div>
                 </div>
               </button>
             </div>
@@ -279,8 +413,16 @@
 
         <div class="step-row" :class="{ 'step-locked': !step2Reachable }">
           <div class="step-rail">
-            <span class="step-num" :class="{ done: step2Done, active: step2Reachable && !step2Done }">
-              <svg v-if="step2Done" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+            <span
+                class="step-num"
+                :class="{ done: step2Done, active: step2Reachable && !step2Done }"
+            >
+              <svg
+                  v-if="step2Done"
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+              </svg>
               <template v-else>2</template>
             </span>
             <span class="step-line" />
@@ -318,7 +460,12 @@
         <div class="step-row" :class="{ 'step-locked': !step3Reachable }">
           <div class="step-rail">
             <span class="step-num" :class="{ done: step3Done, active: step3Reachable && !step3Done }">
-              <svg v-if="step3Done" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+              <svg
+                  v-if="step3Done"
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+              </svg>
               <template v-else>3</template>
             </span>
             <span class="step-line" />
@@ -350,7 +497,11 @@
         <div class="step-row" :class="{ 'step-locked': !step4Reachable }">
           <div class="step-rail">
             <span class="step-num" :class="{ done: step4Done, active: step4Reachable && !step4Done }">
-              <svg v-if="step4Done" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+              <svg
+                  v-if="step4Done"
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"
+              />
+              </svg>
               <template v-else>4</template>
             </span>
             <span class="step-line" />
@@ -372,9 +523,22 @@
                 {{ showUnavailableSlots ? 'Band vaqtlarni yashirish' : 'Band vaqtlarni ko\'rsatish' }}
               </button>
             </div>
-            <p v-if="dayClosed" class="text-sm text-amber-600 dark:text-amber-400 mt-2">Bu kunda xizmat ko'rsatuvchi yopiq.</p>
-            <p v-else-if="availableStarts.length === 0" class="text-sm text-slate-400 mt-2">Bu xodim uchun bo'sh vaqt topilmadi. Boshqa sana yoki xodimni tanlab ko'ring.</p>
-            <div v-else class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-3">
+            <p
+                v-if="dayClosed"
+                class="text-sm text-amber-600 dark:text-amber-400 mt-2"
+            >
+              Bu kunda xizmat ko'rsatuvchi yopiq.
+            </p>
+            <p
+                v-else-if="availableStarts.length === 0"
+                class="text-sm text-slate-400 mt-2"
+            >
+              Bu xodim uchun bo'sh vaqt topilmadi. Boshqa sana yoki xodimni tanlab ko'ring.
+            </p>
+            <div
+                v-else
+                class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-3"
+            >
               <button
                 v-for="min in availableStarts"
                 :key="min"
@@ -412,9 +576,25 @@
             <span class="step-num" :class="{ active: step5Reachable }">5</span>
           </div>
           <div class="step-body">
-            <p class="text-sm font-bold text-slate-800 dark:text-white">Izoh <span class="font-normal text-slate-400">(ixtiyoriy)</span></p>
-            <textarea v-model="form.customerNote" rows="2" class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 font-bold text-slate-800 dark:text-white dark:placeholder-slate-400 rounded-lg px-3 py-2 text-sm mt-3" placeholder="Qo'shimcha izoh"></textarea>
-            <p v-if="submitError" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2 mt-3">{{ submitError }}</p>
+            <p
+                class="text-sm font-bold text-slate-800 dark:text-white"
+            >
+              Izoh
+              <span class="font-normal text-slate-400">(ixtiyoriy)</span>
+            </p>
+            <textarea
+                v-model="form.customerNote"
+                rows="2"
+                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 font-bold text-slate-800 dark:text-white dark:placeholder-slate-400 rounded-lg px-3 py-2 text-sm mt-3"
+                placeholder="Qo'shimcha izoh">
+
+            </textarea>
+            <p
+                v-if="submitError"
+                class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2 mt-3"
+            >
+              {{ submitError }}
+            </p>
           </div>
         </div>
       </div>
@@ -428,7 +608,11 @@
         <div class="min-w-0 flex-1">
           <p class="text-sm font-semibold text-slate-900 dark:text-white truncate">
             {{ selectedService.name }}
-            <span v-if="selectedStaff" class="text-slate-400 font-normal">· {{ personName(selectedStaff) }}</span>
+            <span
+                v-if="selectedStaff"
+                class="text-slate-400 font-normal"
+            >· {{ personName(selectedStaff) }}
+            </span>
           </p>
           <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
             <template v-if="form.startMinutes !== null">
