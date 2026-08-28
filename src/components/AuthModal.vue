@@ -48,30 +48,77 @@
         <!-- Register form -->
         <form v-else class="p-5 space-y-3" @submit.prevent="handleRegister">
           <p v-if="error" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2">{{ error }}</p>
-          <input v-model="registerForm.firstName" type="text" required placeholder="Ism" autofocus
-                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-          <input v-model="registerForm.lastName" type="text" placeholder="Familiya"
-                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-          <input v-model="registerForm.login" type="text" required placeholder="Login"
-                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-          <input v-model="registerForm.phone" type="text" required placeholder="+998 90 000 00 00"
-                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-          <input v-model="registerForm.email" type="email" required placeholder="Email manzili"
-                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <input v-model="registerForm.firstName"
+                 type="text"
+                 required
+                 placeholder="Ism"
+                 autofocus
+                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <input v-model="registerForm.lastName"
+                 type="text"
+                 placeholder="Familiya"
+                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <input v-model="registerForm.login"
+                 type="text"
+                 required
+                 placeholder="Login"
+                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <input v-model="displayPhone"
+                 inputmode="numeric"
+                 type="tel"
+                 maxlength="17"
+                 required
+                 placeholder="+998 90 000 00 00"
+                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                 @input="onPhoneInput"
+                 @keydown="onPhoneKeydown"
+          />
+          <input v-model="registerForm.email"
+                 type="email"
+                 required
+                 placeholder="Email manzili"
+                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
           <div class="relative">
-            <input v-model="registerForm.password" :type="showRegisterPassword ? 'text' : 'password'" required placeholder="Parol (kamida 4 belgi)"
-                   class="w-full px-4 py-2.5 pr-11 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition" :aria-label="showRegisterPassword ? 'Parolni yashirish' : 'Parolni ko\'rsatish'" @click="showRegisterPassword = !showRegisterPassword">
+            <input v-model="registerForm.password"
+                   :type="showRegisterPassword
+                   ? 'text'
+                   : 'password'"
+                   required
+                   placeholder="Parol (kamida 4 belgi)"
+                   class="w-full px-4 py-2.5 pr-11 border border-gray-300 dark:border-slate-500 dark:bg-slate-900/60 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <button
+                type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition"
+                :aria-label="showRegisterPassword
+                ? 'Parolni yashirish'
+                : 'Parolni ko\'rsatish'"
+                @click="showRegisterPassword = !showRegisterPassword"
+            >
               <svg v-if="showRegisterPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58M9.88 4.24A10.44 10.44 0 0112 4c5 0 9 4 10 8a11.79 11.79 0 01-3.22 5.05M6.1 6.1A11.82 11.82 0 002 12c1 4 5 8 10 8a10.58 10.58 0 005.9-1.86" /></svg>
               <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" stroke-width="2" /></svg>
             </button>
           </div>
-          <button type="submit" :disabled="loading" class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-semibold py-2.5 rounded-lg transition">
+          <button
+              type="submit"
+              :disabled="loading"
+              class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-semibold py-2.5 rounded-lg transition"
+          >
             {{ loading ? 'Yaratilmoqda...' : "Ro'yxatdan o'tish" }}
           </button>
           <p class="text-center text-xs text-slate-500 dark:text-slate-400">
             Hisobingiz bormi?
-            <button type="button" @click="mode = 'login'" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Tizimga kiring</button>
+            <button
+                type="button"
+                @click="mode = 'login'"
+                class="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+            >
+              Tizimga kiring
+            </button>
           </p>
         </form>
       </div>
@@ -94,8 +141,63 @@ const error = ref('');
 const showLoginPassword = ref(false);
 const showRegisterPassword = ref(false);
 
-const loginForm = reactive({ login: '', password: '' });
-const registerForm = reactive({ firstName: '', lastName: '', login: '', phone: '', email: '', password: '' });
+const digits = ref('')
+
+// Foydalanuvchiga ko'rinadigan, formatlangan qiymat: +998 90 123 45 67
+const displayPhone = computed({
+  get(): string {
+    let result = '+998';
+    const d = digits.value;
+    if (d.length > 0) result += ' ' + d.slice(0, 2);
+    if (d.length > 2) result += ' ' + d.slice(2, 5);
+    if (d.length > 5) result += ' ' + d.slice(5, 7);
+    if (d.length > 7) result += ' ' + d.slice(7, 9);
+    return result;
+  },
+  set(val: string) {
+    let raw = val.replace(/\D/g, '');
+    if (raw.startsWith('998')) raw = raw.slice(3);
+    digits.value = raw.slice(0, 9);
+  },
+});
+
+const phone = computed(() => `+998${digits.value}`);
+const isPhoneComplete = computed(() => digits.value.length === 9);
+
+function onPhoneInput(e: Event) {
+  const input = e.target as HTMLInputElement
+  // Faqat raqamlarni ajratib olamiz, "998" prefiksini (agar kiritilgan bo'lsa) olib tashlaymiz
+  let raw = input.value.replace(/\D/g, '')
+  if (raw.startsWith('998')) raw = raw.slice(3)
+  digits.value = raw.slice(0, 9)
+  // Kursorni oxiriga qo'yish uchun keyingi tikda qayta render bo'ladi
+  input.value = displayPhone.value
+}
+
+function onPhoneKeydown(e: KeyboardEvent) {
+  // Backspace bosilganda, agar oxirgi belgi bo'shliq bo'lsa, undan oldingi raqamni ham o'chirish
+  if (e.key === 'Backspace' && digits.value.length > 0) {
+    const cursorAtEnd = (e.target as HTMLInputElement).selectionStart === displayPhone.value.length
+    if (cursorAtEnd) {
+      e.preventDefault()
+      digits.value = digits.value.slice(0, -1)
+    }
+  }
+}
+
+const loginForm = reactive({
+  login: '',
+  password: ''
+});
+const registerForm = reactive({
+  firstName: '',
+  lastName: '',
+  login: '',
+  email: '',
+  password: ''
+});
+
+defineExpose({phone});
 
 // Agar tugma joyi ma'lum bo'lmasa (masalan BookView'dan ochilgan bo'lsa), sarlavha ostiga tushadi
 const panelStyle = computed(() => {
@@ -125,9 +227,9 @@ watch(isOpen, (open) => {
     registerForm.firstName = '';
     registerForm.lastName = '';
     registerForm.login = '';
-    registerForm.phone = '';
     registerForm.email = '';
     registerForm.password = '';
+    digits.value = '';
   }
 });
 
@@ -163,6 +265,11 @@ async function handleLogin() {
 async function handleRegister() {
   if (loading.value) return;
   error.value = '';
+  if (!isPhoneComplete.value) {
+    error.value = "Telefon raqamni to'liq kiriting";
+    loading.value = false;
+    return;
+  }
   loading.value = true;
   try {
     await authStore.register({
@@ -171,7 +278,7 @@ async function handleRegister() {
       firstName: registerForm.firstName.trim(),
       lastName: registerForm.lastName.trim() || undefined,
       email: registerForm.email.trim(),
-      phone: registerForm.phone.trim(),
+      phone: phone.value,
     });
     handleSuccess();
   } catch (e: any) {
