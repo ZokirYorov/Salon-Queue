@@ -47,7 +47,7 @@
             :class="isActive('/profile') ? 'bg-teal-100 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 hover:bg-teal-200 dark:hover:bg-teal-500/30' : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'"
           >
             <span class="w-7 h-7 rounded-full bg-teal-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
-              <img v-if="mediaUrl(authStore.user?.avatarUrl)" :src="mediaUrl(authStore.user?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
+              <img v-if="authStore.user?.avatarUrl" :src="getAvatarUrl(authStore.user?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
               <template v-else>{{ firstInitial(authStore.user) }}</template>
             </span>
             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
@@ -59,7 +59,7 @@
           >
             <div class="flex items-center gap-3 px-4 py-3 border-b border-slate-100 dark:border-slate-700">
               <span class="w-9 h-9 rounded-full bg-teal-500 text-white text-sm font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
-                <img v-if="mediaUrl(authStore.user?.avatarUrl)" :src="mediaUrl(authStore.user?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
+                <img v-if="authStore.user?.avatarUrl" :src="getAvatarUrl(authStore.user?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
                 <template v-else>{{ firstInitial(authStore.user) }}</template>
               </span>
               <div class="min-w-0">
@@ -169,6 +169,14 @@ function logout() {
   authStore.logout();
   router.push('/businesses');
 }
+
+const BASE_URL = import.meta.env.VITE_BASE_API as string;
+
+const getAvatarUrl = (url: string | undefined): string => {
+  if (!url) return "";
+  if (url.startsWith("https")) return url;
+  return `${BASE_URL}${url}`;
+};
 
 // function openBusinessApp() {
   // dropdownOpen.value = false;

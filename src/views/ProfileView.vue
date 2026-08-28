@@ -29,7 +29,7 @@
           <div class="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 border-b border-slate-200 dark:border-slate-700">
             <div class="relative w-16 h-16 flex-shrink-0">
               <div class="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center text-white text-2xl font-bold ring-4 ring-teal-50 dark:ring-slate-700">
-                <img v-if="mediaUrl(profile?.avatarUrl)" :src="mediaUrl(profile?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
+                <img v-if="profile?.avatarUrl" :src="getAvatarUrl(profile?.avatarUrl)!" class="w-full h-full object-cover" alt="avatar" />
                 <span v-else>{{ firstInitial(profile || authStore.user) }}</span>
               </div>
               <label
@@ -292,4 +292,13 @@ async function changePassword() {
     passwordSaving.value = false;
   }
 }
+
+const BASE_URL = import.meta.env.VITE_BASE_API as string;
+
+const getAvatarUrl = (url: string | undefined): string => {
+  if (!url) return "";
+  if (url.startsWith("https")) return url;
+  return `${BASE_URL}${url}`;
+};
+
 </script>
