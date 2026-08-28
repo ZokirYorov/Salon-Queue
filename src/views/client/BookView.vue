@@ -181,6 +181,7 @@
               :latitude="business.latitude"
               :longitude="business.longitude"
               :title="business.name"
+              class="z-10"
             />
           </div>
         </div>
