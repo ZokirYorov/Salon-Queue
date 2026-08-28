@@ -158,7 +158,7 @@
           @click="clearFilters"
           class="self-start rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-teal-300 hover:text-teal-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
         >
-          Filtrlarni tozalash
+          Filterlarni tozalash
         </button>
       </div>
 
