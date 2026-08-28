@@ -7,6 +7,19 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+
+// Leaflet default marker iconlarini production build uchun aniq ko'rsatamiz
+delete (L.Icon.Default.prototype as any)._getIconUrl
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+})
+
 const props = defineProps<{
   latitude: number
   longitude: number
@@ -23,34 +36,52 @@ function point(): L.LatLngExpression {
 
 function updateMarker() {
   if (!map) return
+
   if (!marker) {
     marker = L.marker(point()).addTo(map)
   } else {
     marker.setLatLng(point())
   }
-  if (props.title) marker.bindPopup(props.title)
+
+  if (props.title) {
+    marker.bindPopup(props.title)
+  }
+
   map.setView(point(), 15)
 }
 
 onMounted(() => {
   if (!mapEl.value) return
+
   map = L.map(mapEl.value, {
     center: point(),
     zoom: 15,
     dragging: true,
     scrollWheelZoom: false,
   })
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
-  }).addTo(map)
+
+  L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution: '&copy; OpenStreetMap contributors',
+      }
+  ).addTo(map)
+
   updateMarker()
-  setTimeout(() => map?.invalidateSize(), 0)
+
+  setTimeout(() => {
+    map?.invalidateSize()
+  }, 0)
 })
 
-watch(() => [props.latitude, props.longitude, props.title], updateMarker)
+watch(
+    () => [props.latitude, props.longitude, props.title],
+    updateMarker
+)
 
 onBeforeUnmount(() => {
   map?.remove()
   map = null
+  marker = null
 })
 </script>
