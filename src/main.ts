@@ -11,6 +11,11 @@ import clickOutside from "./directives/clickOutside";
 import App from "./App.vue";
 import axios from "axios";
 axios.defaults.baseURL="";
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({
+    immediate: true,
+})
 
 const pinia = createPinia()
 
