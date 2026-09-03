@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
                 manifest: {
                     id: '/',
                     name: 'OnTime Navbat Paneli',
-                    short_name: 'OnTime',
+                    short_name: 'OnTime.Navbat',
                     description: 'Biznes uchun navbat va jadval boshqaruvi',
 
                     theme_color: '#2563eb',
