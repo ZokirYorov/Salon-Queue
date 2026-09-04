@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors">
-    <RouterLink to="/businesses" class="mb-6 text-xl font-black tracking-tight text-slate-900 dark:text-white">
-      Nav<span class="text-indigo-600 dark:text-indigo-400">bat</span>
+  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-50 to-orange-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors">
+    <RouterLink to="/businesses" class="mb-6">
+      <AppLogo size="lg" />
     </RouterLink>
 
     <div class="max-w-md w-full bg-white dark:bg-slate-800 p-8 sm:p-10 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700">
@@ -31,7 +31,7 @@
             autocomplete="username"
             required
             :disabled="loading"
-            class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm transition-all"
             placeholder="Login"
           />
         </div>
@@ -39,7 +39,7 @@
         <button
           type="submit"
           :disabled="loading"
-          class="w-full flex justify-center py-3 px-4 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all disabled:opacity-60"
+          class="w-full flex justify-center py-3 px-4 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all disabled:opacity-60"
         >
           {{ loading ? 'Yuborilmoqda...' : 'Kod yuborish' }}
         </button>
@@ -59,7 +59,7 @@
             pattern="[0-9]{6}"
             :disabled="loading"
             @input="normalizeCode"
-            class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm transition-all"
             placeholder="6 xonali kod"
           />
         </div>
@@ -75,7 +75,7 @@
               required
               minlength="4"
               :disabled="loading"
-              class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+              class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm transition-all"
               placeholder="Kamida 4 belgi"
             />
             <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 transition" :aria-label="showNewPassword ? 'Parolni yashirish' : 'Parolni ko\'rsatish'" @click="showNewPassword = !showNewPassword">
@@ -96,7 +96,7 @@
               required
               minlength="4"
               :disabled="loading"
-              class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+              class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm transition-all"
               placeholder="Yangi parolni qayta kiriting"
             />
             <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 transition" :aria-label="showConfirmPassword ? 'Parolni yashirish' : 'Parolni ko\'rsatish'" @click="showConfirmPassword = !showConfirmPassword">
@@ -109,16 +109,16 @@
         <button
           type="submit"
           :disabled="loading"
-          class="w-full cursor-pointer flex justify-center py-3 px-4 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all disabled:opacity-60"
+          class="w-full cursor-pointer flex justify-center py-3 px-4 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all disabled:opacity-60"
         >
           {{ loading ? 'Saqlanmoqda...' : 'Parolni almashtirish' }}
         </button>
 
         <div class="grid gap-2 sm:grid-cols-2">
-          <button type="button" :disabled="loading" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 disabled:opacity-60" @click="changeLogin">
+          <button type="button" :disabled="loading" class="text-sm font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500 disabled:opacity-60" @click="changeLogin">
             Loginni o'zgartirish
           </button>
-          <button type="button" :disabled="loading" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 disabled:opacity-60" @click="sendCode">
+          <button type="button" :disabled="loading" class="text-sm font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500 disabled:opacity-60" @click="sendCode">
             Kodni qayta yuborish
           </button>
         </div>
@@ -126,7 +126,7 @@
 
       <p class="mt-6 text-center text-sm text-gray-600 dark:text-slate-400">
         Parol esingizdami?
-        <RouterLink :to="{ name: 'Login' }" class="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">
+        <RouterLink :to="{ name: 'Login' }" class="font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500">
           Tizimga kiring
         </RouterLink>
       </p>
@@ -138,6 +138,7 @@
 import { reactive, ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import { authApi } from '@/api/auth';
+import AppLogo from '@/components/AppLogo.vue';
 
 const router = useRouter();
 const step = ref<'request' | 'confirm'>('request');

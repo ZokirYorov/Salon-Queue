@@ -105,6 +105,7 @@ export interface StaffMember {
   linkedUserId: string | null
   firstName: string
   lastName: string | null
+  avatarUrl?: string | null
   serviceIds: string[]
   active: boolean
 }

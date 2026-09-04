@@ -16,12 +16,13 @@ export default defineConfig(({ mode }) => {
 
                 manifest: {
                     id: '/',
-                    name: 'OnTime Navbat Paneli',
+                    name: 'OnTime Navbat',
                     short_name: 'Navbat',
-                    description: 'Biznes uchun navbat va jadval boshqaruvi',
+                    description: 'Mijozlar uchun salon navbati va bron qilish ilovasi',
+                    lang: 'uz',
 
-                    theme_color: '#2563eb',
-                    background_color: '#f8fafc',
+                    theme_color: '#0d9488',
+                    background_color: '#f0fdfa',
 
                     display: 'standalone',
 
@@ -30,13 +31,13 @@ export default defineConfig(({ mode }) => {
 
                     icons: [
                         {
-                            src: '/ontime-icon-192.png',
+                            src: '/ontime-navbat-icon-192.png',
                             sizes: '192x192',
                             type: 'image/png',
                             purpose: 'any'
                         },
                         {
-                            src: '/ontime-icon-512.png',
+                            src: '/ontime-navbat-icon-512.png',
                             sizes: '512x512',
                             type: 'image/png',
                             purpose: 'any maskable'
@@ -44,7 +45,7 @@ export default defineConfig(({ mode }) => {
                     ]
                 },
                 devOptions: {
-                    enabled: false
+                    enabled: true
                 }
             })
         ],

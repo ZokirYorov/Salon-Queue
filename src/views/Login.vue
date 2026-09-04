@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors">
-    <RouterLink to="/businesses" class="mb-6 text-xl font-black tracking-tight text-slate-900 dark:text-white">
-      Nav<span class="text-indigo-600 dark:text-indigo-400">bat</span>
+  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-50 to-orange-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors">
+    <RouterLink to="/businesses" class="mb-6">
+      <AppLogo size="lg" />
     </RouterLink>
     <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-800 p-10 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700">
       <div>
@@ -10,7 +10,7 @@
         </h2>
         <p class="mt-4 text-center text-base text-gray-600 dark:text-slate-400">
           Hisobingiz yo'qmi?
-          <RouterLink :to="{ name: 'Register', query: route.query }" class="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors duration-200">
+          <RouterLink :to="{ name: 'Register', query: route.query }" class="font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500 transition-colors duration-200">
             Ro'yxatdan o'ting
           </RouterLink>
         </p>
@@ -24,14 +24,14 @@
           <div>
             <label for="login" class="sr-only">Login</label>
             <input id="login" name="login" type="text" autocomplete="username" required
-                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
                    placeholder="Login" v-model="login">
           </div>
           <div>
             <label for="password" class="sr-only">Parol</label>
             <div class="relative">
               <input id="password" name="password" :type="showPassword ? 'text' : 'password'" autocomplete="current-password" required
-                     class="appearance-none relative block w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                     class="appearance-none relative block w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
                      placeholder="Parol" v-model="password">
               <button
                 type="button"
@@ -51,13 +51,13 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <RouterLink :to="{ name: 'ForgotPassword' }" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors">
+          <RouterLink :to="{ name: 'ForgotPassword' }" class="text-sm font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500 transition-colors">
             Parolni unutdingizmi?
           </RouterLink>
         </div>
         <div>
           <button type="submit" :disabled="loading"
-                  class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 disabled:opacity-60">
+                  class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-300 disabled:opacity-60">
             {{ loading ? 'Kirilmoqda...' : 'Kirish' }}
           </button>
         </div>
@@ -70,6 +70,7 @@
 import { ref } from 'vue';
 import { useRouter, useRoute, RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import AppLogo from '@/components/AppLogo.vue';
 
 const router = useRouter();
 const route = useRoute();

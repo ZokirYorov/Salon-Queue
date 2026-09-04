@@ -483,8 +483,14 @@
                 class="flex flex-col cursor-pointer items-center gap-1.5 text-center border rounded-xl px-3 py-3 flex-shrink-0 w-28 transition"
                 :class="form.staffId === s.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
-                <span class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center">
-                  {{ firstInitial(s) }}
+                <span class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center overflow-hidden">
+                  <img
+                    v-if="s.avatarUrl"
+                    :src="getAvatarUrl(s.avatarUrl)"
+                    :alt="personName(s)"
+                    class="w-full h-full object-cover"
+                  />
+                  <template v-else>{{ firstInitial(s) }}</template>
                 </span>
                 <span class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate w-full">{{ personName(s) }}</span>
                 <span v-if="staffRatings[s.id]" class="text-[11px] text-amber-500 font-semibold flex items-center gap-0.5">

@@ -1,8 +1,8 @@
 <template>
   <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 transition-colors">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <RouterLink to="/businesses" class="text-lg font-black tracking-tight text-slate-900 dark:text-white">
-        Nav<span class="text-teal-600 dark:text-teal-400">bat</span>
+      <RouterLink to="/businesses" aria-label="Navbat bosh sahifa">
+        <AppLogo size="sm" />
       </RouterLink>
       <div class="flex items-center gap-3">
         <RouterLink
@@ -192,6 +192,7 @@ import { firstInitial, personName } from '@/utils/names';
 import {usePwaInstall} from "@/composables/usePwaInstall";
 import { useToast } from 'vue-toastification';
 import { Download } from 'lucide-vue-next'
+import AppLogo from '@/components/AppLogo.vue'
 
 
 const toast = useToast();
