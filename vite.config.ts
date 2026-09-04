@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
                     id: '/',
                     name: 'OnTime Navbat',
                     short_name: 'Navbat',
-                    description: 'Mijozlar uchun salon navbati va bron qilish ilovasi',
+                    description: 'Mijozlar uchun navbat va bron qilish ilovasi',
                     lang: 'uz',
 
                     theme_color: '#0d9488',
