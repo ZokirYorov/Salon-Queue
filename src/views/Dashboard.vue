@@ -5,21 +5,21 @@
     <main>
       <section class="relative border-b border-slate-200 bg-[linear-gradient(135deg,#f8fafc_0%,#eefaf7_48%,#fff7ed_100%)] dark:border-slate-800 dark:bg-[linear-gradient(135deg,#020617_0%,#0f2f2c_58%,#1f1607_100%)]">
         <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-50 to-transparent dark:from-slate-950" />
-        <div class="relative mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-14 lg:py-6">
+        <div class="relative mx-auto max-w-6xl px-4 py-4 sm:px-6 sm:py-14 lg:py-6">
           <div>
-            <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-teal-800 shadow-sm dark:border-teal-700 dark:bg-slate-900/70 dark:text-teal-200">
+            <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-teal-800 shadow-sm dark:border-teal-700 dark:bg-slate-900/70 dark:text-teal-200 sm:mb-5">
               <span class="h-2 w-2 rounded-full bg-teal-500" />
               Tezkor qidiruv, aniq navbat
             </div>
-            <h1 class="max-w-3xl text-4xl font-black leading-tight tracking-normal text-slate-950 dark:text-white sm:text-5xl lg:text-[58px]">
+            <h1 class="hidden max-w-3xl text-4xl font-black leading-tight tracking-normal text-slate-950 dark:text-white sm:block sm:text-5xl lg:text-[58px]">
               Kerakli xizmatni toping, vaqtni o'zingiz tanlang
             </h1>
-            <p class="mt-5 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:text-lg">
+            <p class="mt-5 hidden max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:block sm:text-lg">
               Sartaroshdan tibbiyotgacha: yaqin xizmat ko'rsatuvchilar, reytinglar va band qilish jarayoni bitta sahifada.
             </p>
 
-            <div class="mt-8 grid gap-3 rounded-3xl border border-slate-200 bg-white/95 p-3 shadow-[0_18px_55px_rgba(15,23,42,0.12)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 md:grid-cols-[1.35fr_0.95fr_0.95fr_auto]">
-              <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
+            <div class="mt-3 grid grid-cols-2 gap-2 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_18px_55px_rgba(15,23,42,0.12)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 sm:mt-8 sm:gap-3 sm:rounded-3xl sm:p-3 md:grid-cols-[1.35fr_0.95fr_0.95fr_auto]">
+              <label class="col-span-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-800/80 sm:rounded-2xl sm:px-4 sm:py-3 md:col-span-1">
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
                   <svg
                       class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -36,7 +36,7 @@
                 />
               </label>
               <div
-                  class="relative rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80"
+                  class="relative rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-800/80 sm:rounded-2xl sm:px-4 sm:py-3"
                   v-click-outside="() => (cityMenuOpen = false)"
               >
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
@@ -85,7 +85,7 @@
                 </div>
               </div>
               <div
-                  class="relative rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80"
+                  class="relative rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-800/80 sm:rounded-2xl sm:px-4 sm:py-3"
                   v-click-outside="() => (sortMenuOpen = false)"
               >
                 <span class="mb-1 flex items-center gap-2 text-xs font-semibold text-slate-400">
@@ -128,19 +128,19 @@
               <button
                 type="button"
                 @click="runSearch"
-                class="inline-flex min-h-14 cursor-pointer items-center justify-center rounded-2xl bg-teal-600 px-7 text-sm font-black text-white transition hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400"
+                class="col-span-2 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl bg-teal-600 px-5 text-sm font-black text-white transition hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400 sm:min-h-14 sm:rounded-2xl sm:px-7 md:col-span-1"
               >
                 Qidirish
               </button>
             </div>
 
-            <div class="mt-5 flex flex-wrap items-center gap-2">
+            <div class="-mx-4 mt-4 flex flex-nowrap gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-5 sm:flex-wrap sm:px-0">
               <button
                 v-for="cat in categoryOptions"
                 :key="cat.value"
                 type="button"
                 @click="setCategory(cat.value)"
-                class="inline-flex cursor-pointer items-center gap-2 rounded-2xl border px-3.5 py-2 text-sm font-bold transition"
+                class="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-bold transition sm:rounded-2xl sm:px-3.5 sm:py-2 sm:text-sm"
                 :class="categoryFilter === cat.value ?
                  'border-teal-600 bg-teal-600 text-white shadow-sm' :
                   'border-gray-200 bg-white/80 text-slate-500 hover:border-teal-600 hover:text-teal-600 dark:border-gray-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-teal-500'"
