@@ -172,7 +172,11 @@
                   >
                     Bugun {{ todayHours.opensAt.slice(0, 5) }}–{{ todayHours.closesAt.slice(0, 5) }}
                   </template>
-                  <template v-else>Bugun yopiq</template>
+                  <template
+                      v-else
+                  >
+                    Bugun yopiq
+                  </template>
                 </span>
               </div>
             </div>
@@ -309,7 +313,10 @@
         </template>
       </div>
 
-      <div v-if="loadingServices" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 animate-pulse space-y-4">
+      <div
+          v-if="loadingServices"
+          class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 animate-pulse space-y-4"
+      >
         <div class="h-3.5 w-32 bg-slate-100 dark:bg-slate-700 rounded" />
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div class="h-16 bg-slate-100 dark:bg-slate-700 rounded-xl" />
@@ -458,9 +465,15 @@
           </div>
         </div>
 
-        <div class="step-row" :class="{ 'step-locked': !step3Reachable }">
+        <div
+            class="step-row"
+            :class="{ 'step-locked': !step3Reachable }"
+        >
           <div class="step-rail">
-            <span class="step-num" :class="{ done: step3Done, active: step3Reachable && !step3Done }">
+            <span
+                class="step-num"
+                :class="{ done: step3Done, active: step3Reachable && !step3Done }"
+            >
               <svg
                   v-if="step3Done"
                   class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -473,7 +486,12 @@
           </div>
           <div class="step-body">
             <p class="text-sm font-bold text-slate-800 dark:text-white">Xodimni tanlang</p>
-            <div v-if="filteredStaff.length === 0" class="text-sm text-slate-400 mt-2">Bu xizmat uchun faol xodim topilmadi.</div>
+            <div
+                v-if="filteredStaff.length === 0"
+                class="text-sm text-slate-400 mt-2"
+            >
+              Bu xizmat uchun faol xodim topilmadi.
+            </div>
             <div class="flex gap-3 mt-3 flex-wrap pb-1 -mx-1 px-1">
               <button
                 v-for="s in filteredStaff"
@@ -481,7 +499,9 @@
                 type="button"
                 @click="selectStaff(s.id)"
                 class="flex flex-col cursor-pointer items-center gap-1.5 text-center border rounded-xl px-3 py-3 flex-shrink-0 w-28 transition"
-                :class="form.staffId === s.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
+                :class="form.staffId === s.id
+                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20'
+                : 'border-slate-200 dark:border-slate-600 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
               >
                 <span class="w-10 h-10 rounded-full bg-indigo-500 text-white text-sm font-bold flex items-center justify-center overflow-hidden">
                   <img
@@ -492,8 +512,15 @@
                   />
                   <template v-else>{{ firstInitial(s) }}</template>
                 </span>
-                <span class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate w-full">{{ personName(s) }}</span>
-                <span v-if="staffRatings[s.id]" class="text-[11px] text-amber-500 font-semibold flex items-center gap-0.5">
+                <span
+                    class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate w-full"
+                >
+                  {{ personName(s) }}
+                </span>
+                <span
+                    v-if="staffRatings[s.id]"
+                    class="text-[11px] text-amber-500 font-semibold flex items-center gap-0.5"
+                >
                   ⭐ {{ staffRatings[s.id].toFixed(1) }}
                 </span>
               </button>
@@ -501,13 +528,19 @@
           </div>
         </div>
 
-        <div class="step-row" :class="{ 'step-locked': !step4Reachable }">
+        <div
+            class="step-row"
+            :class="{ 'step-locked': !step4Reachable }"
+        >
           <div class="step-rail">
-            <span class="step-num" :class="{ done: step4Done, active: step4Reachable && !step4Done }">
+            <span
+                class="step-num"
+                :class="{ done: step4Done, active: step4Reachable && !step4Done }"
+            >
               <svg
                   v-if="step4Done"
-                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"
-              />
+                  class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
               </svg>
               <template v-else>4</template>
             </span>
@@ -517,7 +550,10 @@
             <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p class="text-sm font-bold text-slate-800 dark:text-white">Vaqtni tanlang</p>
-                <p v-if="dayHoursLabel" class="mt-1 text-xs font-semibold text-slate-400">
+                <p
+                    v-if="dayHoursLabel"
+                    class="mt-1 text-xs font-semibold text-slate-400"
+                >
                   {{ dayHoursLabel }} · {{ availableStarts.length }} ta bo'sh vaqt
                 </p>
               </div>
@@ -560,8 +596,13 @@
                 {{ minutesToLabel(min) }}
               </button>
             </div>
-            <div v-if="showUnavailableSlots && unavailableStarts.length > 0" class="mt-4">
-              <p class="text-xs font-black uppercase tracking-wide text-slate-400">Band yoki o'tib ketgan vaqtlar</p>
+            <div
+                v-if="showUnavailableSlots && unavailableStarts.length > 0"
+                class="mt-4"
+            >
+              <p class="text-xs font-black uppercase tracking-wide text-slate-400">
+                Band yoki o'tib ketgan vaqtlar
+              </p>
               <div class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-2">
                 <button
                   v-for="min in unavailableStarts"
@@ -578,7 +619,10 @@
           </div>
         </div>
 
-        <div class="step-row last" :class="{ 'step-locked': !step5Reachable }">
+        <div
+            class="step-row last"
+            :class="{ 'step-locked': !step5Reachable }"
+        >
           <div class="step-rail">
             <span class="step-num" :class="{ active: step5Reachable }">5</span>
           </div>

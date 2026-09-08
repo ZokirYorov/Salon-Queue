@@ -1,7 +1,12 @@
 <template>
-  <header class="relative bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 transition-colors">
+  <header
+      class="relative bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 transition-colors"
+  >
     <div class="max-w-6xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-      <RouterLink to="/businesses" aria-label="Navbat bosh sahifa">
+      <RouterLink
+          to="/businesses"
+          aria-label="Navbat bosh sahifa"
+      >
         <AppLogo size="sm" />
       </RouterLink>
       <div class="flex items-center gap-1 sm:gap-3">
@@ -26,13 +31,35 @@
           Yordam
         </RouterLink>
 
-        <div v-if="authStore.user" class="relative sm:hidden">
-          <button @click="mobileNavOpen = !mobileNavOpen" aria-label="Navigatsiya" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">
+        <div
+            v-if="authStore.user"
+            class="relative sm:hidden"
+        >
+          <button
+              @click="mobileNavOpen = !mobileNavOpen"
+              aria-label="Navigatsiya"
+              class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+          >
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
-          <div v-if="mobileNavOpen" class="absolute right-0 top-full mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-800">
-            <RouterLink to="/client/my" class="block px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200" @click="mobileNavOpen = false">Navbatlarim</RouterLink>
-            <RouterLink to="/client/support" class="block px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200" @click="mobileNavOpen = false">Yordam</RouterLink>
+          <div
+              v-if="mobileNavOpen"
+              class="absolute right-0 top-full mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-800"
+          >
+            <RouterLink
+                to="/client/my"
+                class="block px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200"
+                @click="mobileNavOpen = false"
+            >
+              Navbatlarim
+            </RouterLink>
+            <RouterLink
+                to="/client/support"
+                class="block px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200"
+                @click="mobileNavOpen = false"
+            >
+              Yordam
+            </RouterLink>
           </div>
         </div>
 
@@ -71,11 +98,17 @@
         </template>
 
         <!-- Profile dropdown -->
-        <div v-else class="relative" v-click-outside="() => (dropdownOpen = false)">
+        <div
+            v-else
+            class="relative"
+            v-click-outside="() => (dropdownOpen = false)"
+        >
           <button
             @click="dropdownOpen = !dropdownOpen"
             class="flex items-center cursor-pointer gap-1 text-sm font-semibold rounded-lg px-1 py-1.5 transition sm:gap-2 sm:px-2"
-            :class="isActive('/profile') ? 'bg-teal-100 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 hover:bg-teal-200 dark:hover:bg-teal-500/30' : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'"
+            :class="isActive('/profile')
+            ? 'bg-teal-100 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 hover:bg-teal-200 dark:hover:bg-teal-500/30'
+            : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'"
           >
             <span class="w-7 h-7 rounded-full bg-teal-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 overflow-hidden">
               <img
@@ -150,7 +183,8 @@
 <!--              Biznes yaratish-->
 <!--            </button>-->
             <button
-              @click="dropdownOpen = false; showLogoutConfirm = true"
+              @click="dropdownOpen = false;
+              showLogoutConfirm = true"
               class="w-full flex items-center cursor-pointer gap-2 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
             >
               <svg
