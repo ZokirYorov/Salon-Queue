@@ -91,8 +91,14 @@
                 {{ nextBooking.businessName }}
               </span>
                 <span class="flex items-center">
-                <User class="w-3 h-3 inline mr-1.5" />-
-                {{ bookingStaffName(nextBooking) }}
+                  <img
+                      v-if="nextBooking.avatarUrl"
+                      :src="getAvatarUrl(nextBooking?.avatarUrl)"
+                      class="w-6 h-6"
+                      alt=""
+                  >
+                  <User v-else class="w-3 h-3 inline mr-1.5" />-
+                {{ nextBooking.staffLastName }} {{nextBooking.staffFirstName}}
               </span>
               </p>
               <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">
@@ -155,7 +161,7 @@
           v-for="b in filteredBookings"
           :key="b.id"
           :class="[
-              'flex flex-col gap-3 rounded-2xl border border-l-4 border-slate-200 bg-white p-4 transition dark:border-slate-700 dark:bg-slate-800 sm:flex-row sm:items-center',
+              'flex flex-col gap-3 rounded-2xl border border-l-4 border-slate-200 bg-white p-3 transition dark:border-slate-700 dark:bg-slate-800 sm:flex-row sm:items-center',
               statusBorderClass(b.status)
            ]"
         >
@@ -164,7 +170,7 @@
           >
             {{ bookingInitial(b) }}
           </div>
-          <div class="min-w-0 flex-1">
+          <div class="min-w-0 flex-1 flex flex-col gap-2">
             <div class="flex flex-wrap items-center gap-2">
               <h4
                   class="truncate text-sm font-black text-slate-900 dark:text-white"
@@ -178,14 +184,20 @@
                 {{ statusLabel(b.status) }}
               </span>
             </div>
-            <p class="flex flex-col mt-1 truncate text-xs text-slate-500 dark:text-slate-200">
+            <p class="flex flex-col gap-1 mt-1 truncate text-xs text-slate-500 dark:text-slate-200">
               <span>
                 <Building2 class="w-4 h-4 inline mr-1.5" />
                 {{ b.businessName }}
               </span>
               <span class="flex items-center">
-                <User class="w-3 h-3 inline mr-1.5" />-
-                {{ bookingStaffName(b) }}
+                <img
+                    v-if="b.avatarUrl"
+                    :src="getAvatarUrl(b.avatarUrl)"
+                    class="w-6 h-6"
+                    alt=""
+                >
+                <User v-else class="w-4 h-4 inline mr-1.5" />-
+                {{ b.staffLastName }} {{b.staffFirstName}}
               </span>
             </p>
             <p class="mt-1 flex items-center gap-1 text-xs text-slate-400">
@@ -444,6 +456,15 @@ const filteredBookings = computed(() => {
   if (activeFilter.value === 'cancelled') return cancelled.value;
   return bookings.value;
 });
+
+const BASE_URL = (import.meta.env.VITE_BASE_API as string)
+    .replace(/\/api\/v1\/?$/, '');
+
+const getAvatarUrl = (url: string | undefined): string => {
+  if (!url) return "";
+  if (url.startsWith("https") || url.startsWith("http")) return url;
+  return `${BASE_URL}${url}`;
+};
 
 function formatDateTime(iso: string): string {
   const d = new Date(iso);
