@@ -353,7 +353,7 @@ const page = ref(0);
 const totalPages = ref(1);
 
 const categoryOptions: { value: BusinessCategory; label: string }[] = [
-  { value: 'BARBER', label: 'Sartarosh' },
+  { value: 'BARBER', label: 'Sartaroshlik' },
   { value: 'BEAUTY', label: "Go'zallik" },
   { value: 'MEDICAL', label: 'Tibbiyot' },
   { value: 'REPAIR', label: "Ta'mirlash" },
