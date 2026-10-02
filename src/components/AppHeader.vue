@@ -93,7 +93,7 @@
           </button>
           <button
             @click="openAuth($event, 'register')"
-            class="text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white px-3.5 py-1.5 rounded-lg transition"
+            class="text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white px-3 py-1 rounded-lg transition"
           >
             {{ t('header.signUp') }}
           </button>

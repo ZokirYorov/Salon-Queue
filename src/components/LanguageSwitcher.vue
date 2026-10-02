@@ -13,7 +13,7 @@
 
     <div
       v-if="open"
-      class="absolute right-0 top-full z-50 mt-2 w-40 rounded-xl border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-800"
+      class="absolute right-0 top-full z-50 mt-2 w-36 rounded-xl border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-800"
     >
       <button
         v-for="loc in SUPPORTED_LOCALES"

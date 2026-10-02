@@ -60,6 +60,9 @@ onMounted(() => {
     scrollWheelZoom: false,
   })
 
+  // Pastki burchakdagi bayroq va "Leaflet" yozuvini olib tashlaymiz
+  map.attributionControl.setPrefix(false)
+
   L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
