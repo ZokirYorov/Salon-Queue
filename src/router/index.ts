@@ -25,6 +25,7 @@ const routes: Array<RouteRecordRaw> = [
         children: [
             { path: '', redirect: { name: 'my-bookings' } },
             { path: 'my', name: 'my-bookings', component: () => import('@/views/client/MyBookingsView.vue') },
+            { path: 'calendar', name: 'client-calendar', component: () => import('@/views/client/CalendarView.vue') },
             { path: 'support', name: 'client-support', component: () => import('@/views/client/SupportView.vue') },
         ],
     },

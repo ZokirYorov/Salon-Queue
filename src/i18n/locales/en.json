@@ -47,7 +47,8 @@
     "installFailed": "Could not install the app",
     "logout": "Log out",
     "logoutConfirm": "Are you sure you want to log out?",
-    "logoutButton": "Log out"
+    "logoutButton": "Log out",
+    "calendar": "Calendar"
   },
   "auth": {
     "loginTitle": "Sign in",
@@ -314,5 +315,16 @@
     "loadError": "Could not load request history",
     "botError": "Could not open the Telegram bot",
     "ticketError": "Could not load request details"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "subtitle": "Your bookings by day",
+    "today": "Today",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "more": "+{n} more",
+    "bookingsCount": "{n} booking | {n} bookings",
+    "empty": "No bookings on this day",
+    "loadError": "Could not load bookings"
   }
 }

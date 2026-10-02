@@ -47,7 +47,8 @@
     "installFailed": "Ilovani yuklab bo'lmadi",
     "logout": "Tizimdan chiqish",
     "logoutConfirm": "Haqiqatan ham tizimdan chiqmoqchimisiz?",
-    "logoutButton": "Chiqish"
+    "logoutButton": "Chiqish",
+    "calendar": "Taqvim"
   },
   "auth": {
     "loginTitle": "Tizimga kirish",
@@ -314,5 +315,16 @@
     "loadError": "Murojaatlar tarixini yuklab bo'lmadi",
     "botError": "Telegram botni ochib bo'lmadi",
     "ticketError": "Murojaat tafsilotini yuklab bo'lmadi"
+  },
+  "calendar": {
+    "title": "Taqvim",
+    "subtitle": "Navbatlaringiz kunlar bo'yicha",
+    "today": "Bugun",
+    "prevMonth": "Oldingi oy",
+    "nextMonth": "Keyingi oy",
+    "more": "+{n} ta yana",
+    "bookingsCount": "{n} ta navbat",
+    "empty": "Bu kunda navbat yo'q",
+    "loadError": "Navbatlarni yuklab bo'lmadi"
   }
 }

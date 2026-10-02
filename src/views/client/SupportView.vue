@@ -120,7 +120,7 @@
             v-for="ticket in tickets"
             :key="ticket.id"
             @click="openTicket(ticket.id)"
-            class="group flex w-full items-center gap-3 rounded-2xl border border-transparent bg-slate-50 p-4 text-left transition hover:border-teal-200 hover:bg-teal-50/50 dark:bg-slate-700/40 dark:hover:border-teal-500/30 dark:hover:bg-teal-500/10"
+            class="group cursor-pointer flex w-full items-center gap-3 rounded-2xl border border-transparent bg-slate-50 p-4 text-left transition hover:border-teal-200 hover:bg-teal-50/50 dark:bg-slate-700/40 dark:hover:border-teal-500/30 dark:hover:bg-teal-500/10"
         >
           <div class="h-9 w-1 shrink-0 rounded-full bg-teal-500/70" />
           <div class="min-w-0 flex-1">
@@ -142,9 +142,12 @@
       </div>
       <div
           v-if="selected"
-          class="mt-5 rounded-2xl border border-teal-100 bg-teal-50/40 p-4 dark:border-teal-500/20 dark:bg-teal-500/5"
+          ref="conversationEl"
+          class="mt-5 flex h-[calc(100dvh-4.5rem)] scroll-mt-[4.5rem] flex-col overflow-hidden rounded-2xl border border-teal-100 bg-teal-50/40 dark:border-teal-500/20 dark:bg-teal-500/5 sm:h-[calc(100dvh-5.5rem)] sm:scroll-mt-[5.5rem]"
       >
-        <div class="flex items-center justify-between gap-3">
+        <div
+            class="flex shrink-0 items-center justify-between gap-3 border-b border-teal-100 px-4 py-3 dark:border-teal-500/20"
+        >
           <div class="min-w-0">
             <p class="text-xs font-bold uppercase tracking-wide text-teal-600">
               {{ t('support.conversation') }}
@@ -154,22 +157,25 @@
             </h3>
           </div>
           <button
-              @click="selected=null"
-              class="rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:bg-white dark:hover:bg-slate-700"
+              @click="selected = null"
+              class="shrink-0 cursor-pointer rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:bg-white dark:hover:bg-slate-700"
           >
             {{ t('common.close') }}
           </button>
         </div>
-        <div class="mt-4 max-h-80 space-y-2 overflow-y-auto pr-1">
+        <div
+            ref="messagesEl"
+            class="flex-1 space-y-2 overflow-y-auto overscroll-contain p-4"
+        >
           <div
-              v-for="message in selected.messages"
+              v-for="message in selected?.messages"
               :key="message.id"
-              :class="['rounded-2xl p-3 text-sm shadow-sm',
+              :class="['w-fit max-w-[85%] rounded-2xl p-3 text-sm shadow-sm sm:max-w-[75%]',
                message.sender === 'OPERATOR'
-               ? 'mr-8 bg-white text-slate-800 dark:bg-slate-700 dark:text-white'
-               : 'ml-8 bg-teal-600 text-white']"
+               ? 'mr-auto bg-white text-slate-800 dark:bg-slate-700 dark:text-white'
+               : 'ml-auto bg-teal-600 text-white']"
           >
-            <p>{{ message.content }}</p>
+            <p class="whitespace-pre-wrap break-words">{{ message.content }}</p>
             <p class="mt-1 text-[11px] opacity-60">
               {{ message.sender === 'OPERATOR' ? t('support.operator') : t('support.you') }} · {{ date(message.createdAt) }}
             </p>
@@ -181,7 +187,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { ArrowUpRight, CircleHelp, ExternalLink, History, MessageCircle, RefreshCw, Send } from 'lucide-vue-next'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
@@ -194,6 +200,8 @@ const openingBot = ref(false)
 const loading = ref(false)
 const tickets = ref<SupportTicket[]>([])
 const selected = ref<SupportTicket | null>(null)
+const conversationEl = ref<HTMLElement | null>(null)
+const messagesEl = ref<HTMLElement | null>(null)
 
 const statusClass: Record<SupportStatus, string> = {
   NEW: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
@@ -232,6 +240,10 @@ async function openTelegram() {
 async function openTicket(id: string) {
   try {
     selected.value = (await supportApi.mineGet(id)).data
+    await nextTick()
+    // Yozishmalar bloki ekranga to'liq sig'adi: unga scroll qilamiz va oxirgi xabarni ko'rsatamiz
+    conversationEl.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    messagesEl.value?.scrollTo({ top: messagesEl.value.scrollHeight })
   }
   catch {
     toast.error(t('support.ticketError'))
