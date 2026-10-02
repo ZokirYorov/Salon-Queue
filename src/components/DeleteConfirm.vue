@@ -6,22 +6,20 @@
     <button
         @click="handleConfirm"
         class="bg-red-600 hover:bg-red-700 cursor-pointer text-white px-4 py-2 rounded-md font-medium">
-      Ha, o'chirish
-      <!--      {{t('actions.confirmDelete')}}-->
+      {{ t('common.yesDelete') }}
     </button>
     <button
         @click="emit('update:show', false)"
         class="bg-gray-300 hover:bg-gray-400 cursor-pointer text-gray-800 px-4 py-2 rounded-md font-medium"
     >
-      Bekor qilish
-<!--      {{t('actions.cancel')}}-->
+      {{ t('common.cancel') }}
     </button>
   </div>
 </template>
 <script setup lang="ts">
-// import  {useI18n} from "vue-i18n";
+import { useI18n } from "vue-i18n";
 
-// const { t } = useI18n()
+const { t } = useI18n()
 defineProps<{
   title: string
   show: boolean

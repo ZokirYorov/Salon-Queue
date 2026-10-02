@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { checkToken } from "@/helpers/checkToken";
 import { useToast } from 'vue-toastification';
+import { t } from '@/i18n';
 
 const Toast = useToast();
 
@@ -67,7 +68,7 @@ router.beforeEach((to, _, next) => {
         const isValid = checkToken();
         if (!isValid) {
             if (!sessionExpiredShown) {
-                Toast.info('Sessiya tugadi, tizimga qayta kiring!')
+                Toast.info(t('auth.sessionExpired'))
                 sessionExpiredShown = true;
             }
             authStore.logout();

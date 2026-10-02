@@ -5,7 +5,7 @@
     <div class="max-w-6xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
       <RouterLink
           to="/businesses"
-          aria-label="Navbat bosh sahifa"
+          :aria-label="t('header.home')"
       >
         <AppLogo size="sm" />
       </RouterLink>
@@ -18,7 +18,7 @@
           ? 'text-teal-600 dark:text-teal-400 font-semibold'
           : 'text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400'"
         >
-          Navbatlarim
+          {{ t('header.myBookings') }}
         </RouterLink>
         <RouterLink
           v-if="authStore.user"
@@ -28,7 +28,7 @@
           ? 'text-teal-600 dark:text-teal-400 font-semibold'
           : 'text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400'"
         >
-          Yordam
+          {{ t('header.help') }}
         </RouterLink>
 
         <div
@@ -37,7 +37,7 @@
         >
           <button
               @click="mobileNavOpen = !mobileNavOpen"
-              aria-label="Navigatsiya"
+              :aria-label="t('header.navigation')"
               class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
@@ -51,22 +51,24 @@
                 class="block px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200"
                 @click="mobileNavOpen = false"
             >
-              Navbatlarim
+              {{ t('header.myBookings') }}
             </RouterLink>
             <RouterLink
                 to="/client/support"
                 class="block px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200"
                 @click="mobileNavOpen = false"
             >
-              Yordam
+              {{ t('header.help') }}
             </RouterLink>
           </div>
         </div>
 
+        <LanguageSwitcher />
+
         <button
           @click="toggleTheme"
           class="w-9 h-9 rounded-lg cursor-pointer flex items-center justify-center text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex-shrink-0"
-          :title="theme === 'dark' ? 'Yorug\' rejimga o\'tish' : 'Tungi rejimga o\'tish'"
+          :title="theme === 'dark' ? t('header.toLight') : t('header.toDark')"
         >
           <svg
               v-if="theme === 'dark'"
@@ -87,13 +89,13 @@
             @click="openAuth($event, 'login')"
             class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition"
           >
-            Kirish
+            {{ t('header.signIn') }}
           </button>
           <button
             @click="openAuth($event, 'register')"
             class="text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white px-3.5 py-1.5 rounded-lg transition"
           >
-            Ro'yxatdan o'tish
+            {{ t('header.signUp') }}
           </button>
         </template>
 
@@ -160,7 +162,7 @@
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              Profilim
+              {{ t('header.profile') }}
             </RouterLink>
             <button
                 v-if="canInstall"
@@ -173,7 +175,7 @@
                 @click="handleInstall"
             >
               <Download class="w-4 h-4" />
-              {{ isInstalling ? 'Yuklanmoqda' : 'Ilovani yuklash' }}
+              {{ isInstalling ? t('header.installing') : t('header.installApp') }}
             </button>
 <!--            <button-->
 <!--              @click="openBusinessApp"-->
@@ -192,7 +194,7 @@
               >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
-              Tizimdan chiqish
+              {{ t('header.logout') }}
             </button>
           </div>
         </div>
@@ -207,7 +209,7 @@
     >
       <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
         <div class="flex items-center justify-between gap-3">
-          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tizimdan chiqish</h3>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ t('header.logout') }}</h3>
           <button
               @click="showLogoutConfirm = false"
               class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700 "
@@ -215,19 +217,19 @@
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-        <p class="text-sm text-slate-500 dark:text-slate-400">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">{{ t('header.logoutConfirm') }}</p>
         <div class="grid grid-cols-2 gap-2">
           <button
               @click="showLogoutConfirm = false"
               class="text-sm cursor-pointer font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg py-2 transition"
           >
-            Bekor qilish
+            {{ t('common.cancel') }}
           </button>
           <button
               @click="logout"
               class="text-sm cursor-pointer font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg py-2 transition"
           >
-            Chiqish
+            {{ t('header.logoutButton') }}
           </button>
         </div>
       </div>
@@ -247,7 +249,10 @@ import {usePwaInstall} from "@/composables/usePwaInstall";
 import { useToast } from 'vue-toastification';
 import { Download } from 'lucide-vue-next'
 import AppLogo from '@/components/AppLogo.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n();
 
 const toast = useToast();
 const route = useRoute();
@@ -282,12 +287,12 @@ const handleInstall = async () => {
     const installed = await install()
 
     if (installed) {
-      toast.success('Ilova yuklandi')
+      toast.success(t('header.installed'))
     } else {
-      toast.info('Yuklash bekor qilindi')
+      toast.info(t('header.installCancelled'))
     }
   } catch {
-    toast.error('Ilovani yuklab bo‘lmadi')
+    toast.error(t('header.installFailed'))
   } finally {
     isInstalling.value = false
   }

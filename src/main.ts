@@ -3,6 +3,7 @@ import { createPinia} from "pinia";
 import './main.css'
 import './composables/useTheme'
 import router from "./router";
+import i18n from "./i18n";
 import 'vue-toastification/dist/index.css'
 import { VueDatePicker } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -23,6 +24,7 @@ createApp(App)
     .use(Toast, {
         timeout: 1800
     })
+    .use(i18n)
     .use(router)
     .component('VueDatePicker',VueDatePicker)
     .use(pinia)

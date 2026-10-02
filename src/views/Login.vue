@@ -1,42 +1,45 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-50 to-orange-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors">
+  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-50 to-orange-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors relative">
+    <div class="absolute right-4 top-4">
+      <LanguageSwitcher />
+    </div>
     <RouterLink to="/businesses" class="mb-6">
       <AppLogo size="lg" />
     </RouterLink>
     <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-800 p-10 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700">
       <div>
         <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900 dark:text-white">
-          Tizimga kirish
+          {{ t('auth.loginTitle') }}
         </h2>
         <p class="mt-4 text-center text-base text-gray-600 dark:text-slate-400">
-          Hisobingiz yo'qmi?
+          {{ t('auth.noAccount') }}
           <RouterLink :to="{ name: 'Register', query: route.query }" class="font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500 transition-colors duration-200">
-            Ro'yxatdan o'ting
+            {{ t('auth.registerLink') }}
           </RouterLink>
         </p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
         <p v-if="route.query.reset === 'success'" class="text-sm text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 rounded-md px-3 py-2">
-          Parol almashtirildi. Yangi parol bilan tizimga kiring.
+          {{ t('auth.resetSuccess') }}
         </p>
         <p v-if="error" class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-md px-3 py-2">{{ error }}</p>
         <div class="rounded-md shadow-sm flex flex-col gap-2">
           <div>
-            <label for="login" class="sr-only">Login</label>
+            <label for="login" class="sr-only">{{ t('common.login') }}</label>
             <input id="login" name="login" type="text" autocomplete="username" required
                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Login" v-model="login">
+                   :placeholder="t('common.login')" v-model="login">
           </div>
           <div>
-            <label for="password" class="sr-only">Parol</label>
+            <label for="password" class="sr-only">{{ t('common.password') }}</label>
             <div class="relative">
               <input id="password" name="password" :type="showPassword ? 'text' : 'password'" autocomplete="current-password" required
                      class="appearance-none relative block w-full px-4 py-3 pr-12 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
-                     placeholder="Parol" v-model="password">
+                     :placeholder="t('common.password')" v-model="password">
               <button
                 type="button"
                 class="absolute right-3 top-1/2 -translate-y-1/2 z-20 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 transition"
-                :aria-label="showPassword ? 'Parolni yashirish' : 'Parolni ko\'rsatish'"
+                :aria-label="showPassword ? t('common.hidePassword') : t('common.showPassword')"
                 @click="showPassword = !showPassword"
               >
                 <svg v-if="showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,13 +55,13 @@
         </div>
         <div class="flex justify-end">
           <RouterLink :to="{ name: 'ForgotPassword' }" class="text-sm font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500 transition-colors">
-            Parolni unutdingizmi?
+            {{ t('auth.forgotPassword') }}
           </RouterLink>
         </div>
         <div>
           <button type="submit" :disabled="loading"
                   class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-300 disabled:opacity-60">
-            {{ loading ? 'Kirilmoqda...' : 'Kirish' }}
+            {{ loading ? t('auth.signingIn') : t('auth.signIn') }}
           </button>
         </div>
       </form>
@@ -71,7 +74,10 @@ import { ref } from 'vue';
 import { useRouter, useRoute, RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import AppLogo from '@/components/AppLogo.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
@@ -91,9 +97,9 @@ const handleLogin = async () => {
     await router.push(redirect);
   } catch (e: any) {
     if (e?.response?.status === 401) {
-      error.value = 'Login yoki parol noto\'g\'ri';
+      error.value = t('auth.invalidCredentials');
     } else {
-      error.value = e?.response?.data?.message || 'Serverga ulanishda xatolik';
+      error.value = e?.response?.data?.message || t('auth.serverError');
     }
   } finally {
     loading.value = false;

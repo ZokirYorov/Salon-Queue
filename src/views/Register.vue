@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-50 to-orange-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-50 to-orange-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div class="absolute right-4 top-4">
+      <LanguageSwitcher />
+    </div>
     <RouterLink
         to="/businesses"
         class="mb-6"
@@ -9,15 +12,15 @@
     <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-800 p-10 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700">
       <div>
         <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900 dark:text-white">
-          Ro'yxatdan o'tish
+          {{ t('auth.registerTitle') }}
         </h2>
         <p class="mt-4 text-center text-base text-gray-600 dark:text-slate-400">
-          Hisobingiz bormi?
+          {{ t('auth.haveAccount') }}
           <RouterLink
               :to="{ name: 'Login', query: route.query }"
               class="font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500 transition-colors duration-200"
           >
-            Tizimga kiring
+            {{ t('auth.loginLink') }}
           </RouterLink>
         </p>
       </div>
@@ -33,36 +36,36 @@
         </p>
         <div class="flex flex-col gap-2 rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="firstName" class="sr-only">Ism</label>
+            <label for="firstName" class="sr-only">{{ t('common.firstName') }}</label>
             <input v-model="firstName"
                    id="firstName"
                    type="text"
                    required
                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Ism"
+                   :placeholder="t('common.firstName')"
             >
           </div>
           <div>
-            <label for="lastName" class="sr-only">Familiya</label>
+            <label for="lastName" class="sr-only">{{ t('common.lastName') }}</label>
             <input v-model="lastName"
                    id="lastName"
                    type="text"
                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Familiya"
+                   :placeholder="t('common.lastName')"
             >
           </div>
           <div>
-            <label for="login" class="sr-only">Login</label>
+            <label for="login" class="sr-only">{{ t('common.login') }}</label>
             <input v-model="login"
                    id="login"
                    type="text"
                    required
                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Login"
+                   :placeholder="t('common.login')"
             >
           </div>
           <div>
-            <label for="phone" class="sr-only">Telefon</label>
+            <label for="phone" class="sr-only">{{ t('common.phone') }}</label>
             <input
                 id="phone"
                 :value="displayPhone"
@@ -76,23 +79,23 @@
             >
           </div>
           <div>
-            <label for="email-address" class="sr-only">Email manzili</label>
+            <label for="email-address" class="sr-only">{{ t('common.emailAddress') }}</label>
             <input v-model="email"
                    id="email-address"
                    type="email"
                    required
                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Email manzili"
+                   :placeholder="t('common.emailAddress')"
             >
           </div>
           <div>
-            <label for="password" class="sr-only">Parol</label>
+            <label for="password" class="sr-only">{{ t('common.password') }}</label>
             <input v-model="password"
                    id="password"
                    type="password"
                    required
                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 placeholder-gray-500 dark:placeholder-slate-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm transition-all duration-200"
-                   placeholder="Parol"
+                   :placeholder="t('common.password')"
             >
           </div>
         </div>
@@ -102,7 +105,7 @@
                   :disabled="loading"
                   class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-300 disabled:opacity-60"
           >
-            {{ loading ? 'Yaratilmoqda...' : "Ro'yxatdan o'tish" }}
+            {{ loading ? t('auth.creating') : t('auth.signUp') }}
           </button>
         </div>
       </form>
@@ -115,7 +118,10 @@ import {computed, ref} from 'vue';
 import { useRouter, useRoute, RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import AppLogo from '@/components/AppLogo.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
@@ -181,7 +187,7 @@ const handleRegister = async () => {
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/businesses';
     await router.push(redirect);
   } catch (e: any) {
-    error.value = e?.response?.data?.message || "Ro'yxatdan o'tishda xatolik yuz berdi";
+    error.value = e?.response?.data?.message || t('auth.registerError');
   } finally {
     loading.value = false;
   }

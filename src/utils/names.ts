@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+
 export interface PersonLike {
   firstName?: string | null
   lastName?: string | null
@@ -20,7 +22,7 @@ export function personName(person?: PersonLike | null) {
   return name || person?.login || ''
 }
 
-export function bookingCustomerName(booking: BookingNameLike, fallback = 'Mijoz') {
+export function bookingCustomerName(booking: BookingNameLike, fallback = t('names.customer')) {
   const name = [booking.customerFirstName, booking.customerLastName]
     .map((part) => part?.trim())
     .filter(Boolean)
@@ -29,7 +31,7 @@ export function bookingCustomerName(booking: BookingNameLike, fallback = 'Mijoz'
   return name || fallback
 }
 
-export function bookingStaffName(booking: BookingNameLike, fallback = 'Usta tanlanmagan') {
+export function bookingStaffName(booking: BookingNameLike, fallback = t('names.noStaff')) {
   const name = [booking.staffFirstName, booking.staffLastName]
     .map((part) => part?.trim())
     .filter(Boolean)
@@ -38,11 +40,11 @@ export function bookingStaffName(booking: BookingNameLike, fallback = 'Usta tanl
   return name || fallback
 }
 
-export function reviewCustomerName(review: BookingNameLike, fallback = 'Mijoz') {
+export function reviewCustomerName(review: BookingNameLike, fallback = t('names.customer')) {
   return bookingCustomerName(review, fallback)
 }
 
-export function reviewStaffName(review: BookingNameLike, fallback = 'Usta tanlanmagan') {
+export function reviewStaffName(review: BookingNameLike, fallback = t('names.noStaff')) {
   return bookingStaffName(review, fallback)
 }
 

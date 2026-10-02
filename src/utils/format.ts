@@ -1,21 +1,13 @@
+import i18n, { t, dateLocale } from '@/i18n'
+
 export function formatPrice(price: number): string {
-  return price.toLocaleString('uz-UZ') + " so'm"
+  return price.toLocaleString(dateLocale()) + ' ' + t('common.currency')
 }
 
 export function formatDate(dateStr: string): string {
   if (!dateStr) return ''
   const date = new Date(dateStr)
   return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours().toString()}:${date.getMinutes().toString().padStart(2, '0')}`
-}
-
-const STATUS_LABELS: Record<string, string> = {
-  PENDING: 'Kutilmoqda',
-  CONFIRMED: 'Tasdiqlandi',
-  IN_PROGRESS: 'Jarayonda',
-  COMPLETED: 'Bajarildi',
-  CANCELLED_BY_CUSTOMER: 'Bekor qilindi',
-  CANCELLED_BY_BUSINESS: 'Biznes tomonidan bekor qilindi',
-  NO_SHOW: 'Kelmadi',
 }
 
 const STATUS_CLASSES: Record<string, string> = {
@@ -29,7 +21,8 @@ const STATUS_CLASSES: Record<string, string> = {
 }
 
 export function statusLabel(status: string): string {
-  return STATUS_LABELS[status] ?? status
+  const key = `status.${status}`
+  return i18n.global.te(key) ? t(key) : status
 }
 
 export function statusClass(status: string): string {

@@ -35,9 +35,6 @@
 <script setup lang="ts">
 import {computed} from "vue";
 import { VueDatePicker } from '@vuepic/vue-datepicker';
-// import  {useI18n} from "vue-i18n";
-
-// const  {t} = useI18n();
 
 const props = defineProps<{
   modelValue: Date | string | null | undefined;

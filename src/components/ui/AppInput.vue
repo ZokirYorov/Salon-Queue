@@ -52,10 +52,10 @@
 
 <script setup lang="ts">
 import {computed, ref, watch} from "vue";
-// import {useI18n} from "vue-i18n";
+import {useI18n} from "vue-i18n";
 
 const model = defineModel<string | null | number>();
-// const { t } = useI18n();
+const { t } = useI18n();
 interface IProps {
   id?: string;
   name?: string;
@@ -92,7 +92,7 @@ const validate = () => {
   model.value = trimmedValue;
 
   if (props.required && !trimmedValue) {
-    errorMessage.value = props.errorText || "Maydonni to'ldiring";
+    errorMessage.value = props.errorText || t('common.fillField');
     showError.value = true;
     return false;
   }

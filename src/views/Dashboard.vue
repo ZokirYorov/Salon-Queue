@@ -9,13 +9,13 @@
           <div>
             <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-teal-800 shadow-sm dark:border-teal-700 dark:bg-slate-900/70 dark:text-teal-200 sm:mb-5">
               <span class="h-2 w-2 rounded-full bg-teal-500" />
-              Tezkor qidiruv, aniq navbat
+              {{ t('dashboard.badge') }}
             </div>
             <h1 class="hidden max-w-3xl text-4xl font-black leading-tight tracking-normal text-slate-950 dark:text-white sm:block sm:text-5xl lg:text-[58px]">
-              Kerakli xizmatni toping, vaqtni o'zingiz tanlang
+              {{ t('dashboard.title') }}
             </h1>
             <p class="mt-5 hidden max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:block sm:text-lg">
-              Sartaroshdan tibbiyotgacha: yaqin xizmat ko'rsatuvchilar, reytinglar va band qilish jarayoni bitta sahifada.
+              {{ t('dashboard.subtitle') }}
             </p>
 
             <div class="mt-3 grid grid-cols-2 gap-2 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_18px_55px_rgba(15,23,42,0.12)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 sm:mt-8 sm:gap-3 sm:rounded-3xl sm:p-3 md:grid-cols-[1.35fr_0.95fr_0.95fr_auto]">
@@ -26,12 +26,12 @@
                   >
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                  Qidiruv
+                  {{ t('dashboard.search') }}
                 </span>
                 <input
                   v-model="searchQuery"
                   type="search"
-                  placeholder="Xizmat, biznes yoki manzil"
+                  :placeholder="t('dashboard.searchPlaceholder')"
                   class="w-full bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none dark:text-white"
                 />
               </label>
@@ -46,14 +46,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" />
                     <circle cx="12" cy="10" r="2.5" />
                   </svg>
-                  Hudud
+                  {{ t('dashboard.region') }}
                 </span>
                 <button
                   type="button"
                   @click="cityMenuOpen = !cityMenuOpen"
                   class="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold text-slate-900 focus:outline-none dark:text-white"
                 >
-                  <span class="truncate">{{ cityFilter || 'Barcha shaharlar' }}</span>
+                  <span class="truncate">{{ cityFilter || t('dashboard.allCities') }}</span>
                   <svg
                       class="h-4 w-4 shrink-0 text-slate-400 transition"
                       :class="cityMenuOpen &&
@@ -71,7 +71,7 @@
                     @click="selectCity('')"
                     :class="dropdownItemClass(cityFilter === '')"
                   >
-                    Barcha shaharlar
+                    {{ t('dashboard.allCities') }}
                   </button>
                   <button
                     v-for="c in availableCities"
@@ -94,7 +94,7 @@
                   >
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
                   </svg>
-                  Tartib
+                  {{ t('dashboard.sort') }}
                 </span>
                 <button
                   type="button"
@@ -130,7 +130,7 @@
                 @click="runSearch"
                 class="col-span-2 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl bg-teal-600 px-5 text-sm font-black text-white transition hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400 sm:min-h-14 sm:rounded-2xl sm:px-7 md:col-span-1"
               >
-                Qidirish
+                {{ t('dashboard.searchButton') }}
               </button>
             </div>
 
@@ -158,10 +158,10 @@
           <h2
               class="text-2xl font-black text-slate-950 dark:text-white"
           >
-            Tavsiya etilganlar
+            {{ t('dashboard.recommended') }}
           </h2>
           <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {{ filteredCards.length }} ta natija
+            {{ t('dashboard.results', { n: filteredCards.length }, filteredCards.length) }}
           </p>
         </div>
         <button
@@ -170,7 +170,7 @@
           @click="clearFilters"
           class="self-start rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-teal-300 hover:text-teal-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
         >
-          Filterlarni tozalash
+          {{ t('dashboard.clearFilters') }}
         </button>
       </div>
 
@@ -206,12 +206,12 @@
         <p
             class="mt-3 text-sm font-bold text-slate-900 dark:text-white"
         >
-          Hech qanday xizmat ko'rsatuvchi topilmadi
+          {{ t('dashboard.empty') }}
         </p>
         <p
             class="mt-1 text-xs text-slate-400"
         >
-          Qidiruv parametrlarini o'zgartirib ko'ring
+          {{ t('dashboard.emptyHint') }}
         </p>
       </div>
 
@@ -261,7 +261,7 @@
             <div class="absolute right-3 top-3">
               <span class="inline-flex items-center gap-1 rounded-2xl transition-all duration-200 bg-white px-3 py-1.5 text-xs font-black text-slate-900 shadow-sm backdrop-blur-md">
                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                Faol
+                {{ t('dashboard.active') }}
               </span>
             </div>
           </div>
@@ -276,33 +276,33 @@
               <svg class="h-4 w-4 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" />
               </svg>
               <span class="truncate">
-                {{ [card.city, card.addressLine].filter(Boolean).join(', ') || 'Manzil kiritilmagan' }}
+                {{ [card.city, card.addressLine].filter(Boolean).join(', ') || t('dashboard.noAddress') }}
               </span>
             </div>
             <p
                 class="mb-4 line-clamp-2 min-h-10 text-sm leading-5 text-slate-500 dark:text-slate-400"
             >
-              {{ card.description || 'Xizmatlar, ustalar va bo\'sh vaqtlarni ko\'rib, o\'zingizga qulay navbatni tanlang.' }}
+              {{ card.description || t('dashboard.defaultDescription') }}
             </p>
 
             <div class="mt-auto grid grid-cols-2 gap-2 border-t border-slate-200 pt-4 text-xs dark:border-slate-700">
               <span
                   class="rounded-2xl bg-slate-50 px-3 py-2 font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200"
               >
-                {{ card.serviceCount }} xizmat
+                {{ t('dashboard.servicesCount', { n: card.serviceCount }, card.serviceCount) }}
               </span>
               <span
                   class="rounded-2xl bg-slate-50 px-3 py-2 font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200"
               >
-                {{ card.reviewCount > 0 ? `${card.reviewCount} sharh` : 'Yangi' }}
+                {{ card.reviewCount > 0 ? t('dashboard.reviewsCount', { n: card.reviewCount }, card.reviewCount) : t('common.new') }}
               </span>
             </div>
             <div class="mt-3 flex items-center justify-between gap-3">
-              <span class="text-xs font-semibold text-slate-400">Sahifaga kirib vaqt tanlang</span>
+              <span class="text-xs font-semibold text-slate-400">{{ t('dashboard.pickTime') }}</span>
               <span
                   class="rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-black text-white transition-colors duration-200 group-hover:bg-teal-600 dark:bg-white dark:text-slate-950 dark:group-hover:bg-teal-400"
               >
-                Navbat olish
+                {{ t('dashboard.book') }}
               </span>
             </div>
           </div>
@@ -337,8 +337,10 @@ import { businessesApi } from '@/api/businesses';
 // import { mediaUrl } from '@/utils/media';
 import { apiErrorMessage } from '@/utils/apiError';
 import AppHeader from '@/components/AppHeader.vue';
+import { useI18n } from 'vue-i18n';
 import type { BusinessCategory, PublicBusinessSummary } from '@/types/api';
 
+const { t } = useI18n();
 const cards = ref<PublicBusinessSummary[]>([]);
 const cities = ref<string[]>([]);
 const searchQuery = ref('');
@@ -352,26 +354,16 @@ const error = ref('');
 const page = ref(0);
 const totalPages = ref(1);
 
-const categoryOptions: { value: BusinessCategory; label: string }[] = [
-  { value: 'BARBER', label: 'Sartaroshlik' },
-  { value: 'BEAUTY', label: "Go'zallik" },
-  { value: 'MEDICAL', label: 'Tibbiyot' },
-  { value: 'REPAIR', label: "Ta'mirlash" },
-  { value: 'CONSULTING', label: 'Konsultatsiya' },
-  { value: 'EDUCATION', label: "Ta'lim" },
-  { value: 'FITNESS', label: 'Sport' },
-  { value: 'AUTO', label: 'Avto xizmat' },
-  { value: 'LEGAL', label: 'Yuridik xizmat' },
-  { value: 'OTHER', label: 'Boshqa' },
-];
-const sortOptions: { value: typeof sortBy.value; label: string }[] = [
-  { value: 'rating', label: 'Eng yuqori reyting' },
-  { value: 'reviews', label: "Ko'p sharhlar" },
-  { value: 'name', label: "Nomi bo'yicha" },
-];
+const CATEGORIES: BusinessCategory[] = ['BARBER', 'BEAUTY', 'MEDICAL', 'REPAIR', 'CONSULTING', 'EDUCATION', 'FITNESS', 'AUTO', 'LEGAL', 'OTHER'];
+const categoryOptions = computed(() => CATEGORIES.map((value) => ({ value, label: t(`categories.${value}`) })));
+const sortOptions = computed<{ value: typeof sortBy.value; label: string }[]>(() => [
+  { value: 'rating', label: t('dashboard.sortOptions.rating') },
+  { value: 'reviews', label: t('dashboard.sortOptions.reviews') },
+  { value: 'name', label: t('dashboard.sortOptions.name') },
+]);
 
 function categoryLabel(category?: BusinessCategory) {
-  return categoryOptions.find((c) => c.value === category)?.label ?? 'Boshqa';
+  return t(`categories.${category && CATEGORIES.includes(category) ? category : 'OTHER'}`);
 }
 
 const hasActiveFilters = computed(() =>
@@ -429,7 +421,7 @@ async function loadBusinesses() {
     totalPages.value = data.totalPages;
     cards.value = data.content;
   } catch (e) {
-    error.value = apiErrorMessage(e, "Xizmat ko'rsatuvchilar ro'yxatini yuklab bo'lmadi");
+    error.value = apiErrorMessage(e, t('dashboard.loadError'));
   } finally {
     loading.value = false;
   }
@@ -440,7 +432,7 @@ async function loadCities() {
     const { data } = await businessesApi.getPublicCities();
     cities.value = data;
   } catch (e) {
-    console.warn(apiErrorMessage(e, "Shaharlar ro'yxatini yuklab bo'lmadi"));
+    console.warn(apiErrorMessage(e, t('dashboard.citiesError')));
     cities.value = [];
   }
 }
@@ -469,7 +461,7 @@ const sortParam = computed(() => {
 });
 
 const sortLabel = computed(() =>
-  sortOptions.find((option) => option.value === sortBy.value)?.label ?? 'Tartiblash'
+  sortOptions.value.find((option) => option.value === sortBy.value)?.label ?? t('dashboard.sortFallback')
 );
 
 const BASE_URL = import.meta.env.VITE_BASE_API as string;

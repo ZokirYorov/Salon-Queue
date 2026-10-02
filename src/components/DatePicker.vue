@@ -52,12 +52,15 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { dateLocale } from '@/i18n';
 
 const props = defineProps<{ modelValue: string; min?: string }>();
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 
 const open = ref(false);
-const weekdayLabels = ['Ya', 'Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh'];
+const { t } = useI18n();
+const weekdayLabels = computed(() => t('datepicker.weekdays').split(','));
 
 function parseIso(iso: string): Date {
   const [y, m, d] = iso.split('-').map(Number);
@@ -84,7 +87,7 @@ const daysInMonth = computed(() => new Date(viewYear.value, viewMonth.value + 1,
 const leadingBlanks = computed(() => new Date(viewYear.value, viewMonth.value, 1).getDay());
 
 const displayLabel = computed(() =>
-  selectedDate.value.toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  selectedDate.value.toLocaleDateString(dateLocale(), { day: '2-digit', month: '2-digit', year: 'numeric' })
 );
 
 function shiftMonth(delta: number) {

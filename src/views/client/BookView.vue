@@ -12,7 +12,7 @@
           class="text-gray-800 rounded-lg cursor-pointer dark:hover:bg-gray-800 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 border border-gray-200 px-2 py-1 mb-2"
       >
         <i class="fa-solid fa-arrow-left"></i>
-        Orqaga
+        {{ t('common.back') }}
       </button>
       <p
           v-if="loadError"
@@ -51,7 +51,7 @@
                 class="rounded-full px-3 py-1.5 text-xs font-black shadow-sm"
                 :class="todayOpen ? 'bg-teal-500 text-white' : 'bg-amber-400 text-slate-950'"
             >
-              {{ todayOpen ? `Bugun ${todayHoursLabel}` : 'Bugun yopiq' }}
+              {{ todayOpen ? t('book.todayHours', { hours: todayHoursLabel }) : t('book.todayClosed') }}
             </span>
           </div>
         </div>
@@ -63,12 +63,12 @@
                   <h2
                       class="text-sm font-bold text-slate-900 dark:text-white"
                   >
-                    Tashkilot haqida
+                    {{ t('book.about') }}
                   </h2>
                   <p
                       class="text-xs text-slate-900 dark:text-slate-300 truncate"
                   >
-                    Manzil: {{ business.addressLine || business.city }}
+                    {{ t('book.address', { address: business.addressLine || business.city }) }}
                   </p>
                 </div>
                 <div
@@ -96,35 +96,35 @@
               </p>
               <div class="mt-4 grid grid-cols-2 gap-3 text-gray-600 dark:text-slate-400 text-xs sm:grid-cols-4">
                 <div class="border-l-2 border-teal-500 pl-3">
-                  <p class="font-semibold">Reyting</p>
+                  <p class="font-semibold">{{ t('book.rating') }}</p>
                   <p
                       class="mt-1 font-black text-slate-900 dark:text-white"
                   >
-                    {{ businessReviewCount > 0 ? businessAvgRating.toFixed(1) : 'Yangi' }}
+                    {{ businessReviewCount > 0 ? businessAvgRating.toFixed(1) : t('common.new') }}
                   </p>
                 </div>
                 <div class="border-l-2 border-amber-400 pl-3">
-                  <p class="font-semibold">Sharhlar</p>
+                  <p class="font-semibold">{{ t('book.reviews') }}</p>
                   <p
                       class="mt-1 font-black text-slate-900 dark:text-white"
                   >
-                    {{ businessReviewCount }} ta
+                    {{ t('book.reviewsCount', { n: businessReviewCount }) }}
                   </p>
                 </div>
                 <div class="border-l-2 border-indigo-400 pl-3">
-                  <p class="font-semibold">Bugun</p>
+                  <p class="font-semibold">{{ t('book.today') }}</p>
                   <p
                       class="mt-1 font-black text-slate-900 dark:text-white"
                   >
-                    {{ todayOpen ? todayHoursLabel : 'Yopiq' }}
+                    {{ todayOpen ? todayHoursLabel : t('book.closed') }}
                   </p>
                 </div>
                 <div class="border-l-2 border-slate-300 pl-3 dark:border-slate-600">
-                  <p class="font-semibold">Hudud</p>
+                  <p class="font-semibold">{{ t('book.region') }}</p>
                   <p
                       class="mt-1 truncate font-black text-slate-900 dark:text-white"
                   >
-                    {{ business.city || 'Kiritilmagan' }}
+                    {{ business.city || t('book.notSet') }}
                   </p>
                 </div>
               </div>
@@ -139,7 +139,7 @@
                   >
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
-                  Qo'ng'iroq qilish
+                  {{ t('book.call') }}
                 </a>
                 <a
                   v-if="directionsUrl"
@@ -153,7 +153,7 @@
                   >
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                   </svg>
-                  Yo'nalish
+                  {{ t('book.directions') }}
                 </a>
                 <span
                     v-if="business.contactPhone"
@@ -170,12 +170,12 @@
                   <template
                       v-if="todayHours && !todayHours.closed && todayHours.opensAt && todayHours.closesAt"
                   >
-                    Bugun {{ todayHours.opensAt.slice(0, 5) }}–{{ todayHours.closesAt.slice(0, 5) }}
+                    {{ t('book.todayHours', { hours: `${todayHours.opensAt.slice(0, 5)}–${todayHours.closesAt.slice(0, 5)}` }) }}
                   </template>
                   <template
                       v-else
                   >
-                    Bugun yopiq
+                    {{ t('book.todayClosed') }}
                   </template>
                 </span>
               </div>
@@ -206,7 +206,7 @@
         <div class="border-b border-slate-200 bg-slate-50 px-5 py-4 dark:border-slate-700 dark:bg-slate-800/70">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 class="text-base font-black text-slate-900 dark:text-white">Navbat olish</h2>
+              <h2 class="text-base font-black text-slate-900 dark:text-white">{{ t('book.title') }}</h2>
               <p class="mt-0.5 text-xs font-semibold text-slate-400">{{ bookingProgressLabel }}</p>
             </div>
             <div class="flex flex-wrap gap-1.5">
@@ -242,7 +242,7 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="text-sm font-bold text-slate-800 dark:text-white">Xizmatni tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">{{ t('book.chooseService') }}</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
               <button
                 v-for="svc in services"
@@ -277,7 +277,7 @@
                   <div
                       class="text-xs text-slate-500 dark:text-slate-400 mt-0.5"
                   >
-                    {{ svc.durationMinutes }} daqiqa · {{ formatPrice(svc.basePrice) }}
+                    {{ svc.durationMinutes }} {{ t('common.minutes') }} · {{ formatPrice(svc.basePrice) }}
                   </div>
                 </div>
               </button>
@@ -286,7 +286,7 @@
                 v-if="!loadingServices && services.length === 0"
                 class="text-sm text-slate-400 mt-2"
             >
-              Bu xizmat ko'rsatuvchida hali xizmatlar mavjud emas.
+              {{ t('book.noServices') }}
             </p>
             <p
                 v-if="selectedService?.description"
@@ -314,7 +314,7 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="text-sm font-bold text-slate-800 dark:text-white">Sana tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">{{ t('book.chooseDate') }}</p>
             <div class="flex flex-wrap items-center gap-2 mt-3">
               <button
                 type="button"
@@ -325,7 +325,7 @@
                 : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                 ]"
               >
-                Bugun
+                {{ t('book.today') }}
               </button>
               <button
                 type="button"
@@ -336,7 +336,7 @@
                  : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                  ]"
               >
-                Ertaga
+                {{ t('book.tomorrow') }}
               </button>
               <DatePicker v-model="form.date" :min="todayIso()" />
             </div>
@@ -363,12 +363,12 @@
             <span class="step-line" />
           </div>
           <div class="step-body">
-            <p class="text-sm font-bold text-slate-800 dark:text-white">Xodimni tanlang</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white">{{ t('book.chooseStaff') }}</p>
             <div
                 v-if="filteredStaff.length === 0"
                 class="text-sm text-slate-400 mt-2"
             >
-              Bu xizmat uchun faol xodim topilmadi.
+              {{ t('book.noStaff') }}
             </div>
             <div class="flex gap-3 mt-3 flex-wrap pb-1 -mx-1 px-1">
               <button
@@ -427,12 +427,12 @@
           <div class="step-body">
             <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p class="text-sm font-bold text-slate-800 dark:text-white">Vaqtni tanlang</p>
+                <p class="text-sm font-bold text-slate-800 dark:text-white">{{ t('book.chooseTime') }}</p>
                 <p
                     v-if="dayHoursLabel"
                     class="mt-1 text-xs font-semibold text-slate-400"
                 >
-                  {{ dayHoursLabel }} · {{ availableStarts.length }} ta bo'sh vaqt
+                  {{ t('book.freeSlots', { hours: dayHoursLabel, n: availableStarts.length }, availableStarts.length) }}
                 </p>
               </div>
               <button
@@ -441,20 +441,20 @@
                 class="w-fit cursor-pointer rounded-full border border-slate-200 px-3 py-1.5 text-xs font-black text-slate-500 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
                 @click="showUnavailableSlots = !showUnavailableSlots"
               >
-                {{ showUnavailableSlots ? 'Band vaqtlarni yashirish' : 'Band vaqtlarni ko\'rsatish' }}
+                {{ showUnavailableSlots ? t('book.hideBusy') : t('book.showBusy') }}
               </button>
             </div>
             <p
                 v-if="dayClosed"
                 class="text-sm text-amber-600 dark:text-amber-400 mt-2"
             >
-              Bu kunda xizmat ko'rsatuvchi yopiq.
+              {{ t('book.dayClosed') }}
             </p>
             <p
                 v-else-if="availableStarts.length === 0"
                 class="text-sm text-slate-400 mt-2"
             >
-              Bu xodim uchun bo'sh vaqt topilmadi. Boshqa sana yoki xodimni tanlab ko'ring.
+              {{ t('book.noSlots') }}
             </p>
             <div
                 v-else
@@ -479,7 +479,7 @@
                 class="mt-4"
             >
               <p class="text-xs font-black uppercase tracking-wide text-slate-400">
-                Band yoki o'tib ketgan vaqtlar
+                {{ t('book.busyOrPast') }}
               </p>
               <div class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-2">
                 <button
@@ -508,14 +508,14 @@
             <p
                 class="text-sm font-bold text-slate-800 dark:text-white"
             >
-              Izoh
-              <span class="font-normal text-slate-400">(ixtiyoriy)</span>
+              {{ t('book.note') }}
+              <span class="font-normal text-slate-400">{{ t('book.optional') }}</span>
             </p>
             <textarea
                 v-model="form.customerNote"
                 rows="2"
                 class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 font-bold text-slate-800 dark:text-white dark:placeholder-slate-400 rounded-lg px-3 py-2 text-sm mt-3"
-                placeholder="Qo'shimcha izoh">
+                :placeholder="t('book.notePlaceholder')">
 
             </textarea>
             <p
@@ -539,8 +539,8 @@
           <div class="flex min-w-0 items-center gap-3">
             <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-500 dark:bg-amber-500/10">★</span>
             <span class="min-w-0">
-              <span class="block text-sm font-black text-slate-800 dark:text-white">Mijozlar sharhlari</span>
-              <span class="block text-xs font-semibold text-slate-400">Oxirgi fikrlar va xizmat sifati</span>
+              <span class="block text-sm font-black text-slate-800 dark:text-white">{{ t('book.customerReviews') }}</span>
+              <span class="block text-xs font-semibold text-slate-400">{{ t('book.reviewsSubtitle') }}</span>
             </span>
           </div>
           <div class="flex items-center gap-2">
@@ -557,7 +557,7 @@
               <span
                   class="text-slate-400"
               >
-                ({{ businessReviewCount }} ta sharh)
+                {{ t('book.reviewsTotal', { n: businessReviewCount }, businessReviewCount) }}
               </span>
             </div>
             <svg
@@ -574,13 +574,13 @@
               v-if="loadingReviews"
               class="text-sm text-slate-400 mt-3"
           >
-            Yuklanmoqda...
+            {{ t('common.loading') }}
           </p>
           <p
               v-else-if="businessReviews.length === 0"
               class="text-sm text-slate-400 mt-3"
           >
-            Hozircha sharhlar yo'q. Birinchi bo'lib fikr bildiring!
+            {{ t('book.noReviews') }}
           </p>
           <div v-else class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
             <div
@@ -605,7 +605,7 @@
                         v-if="reviewStaffName(r, '')"
                         class="truncate text-xs font-semibold text-slate-400"
                     >
-                      Xodim: {{ reviewStaffName(r, '') }}
+                      {{ t('book.staffName', { name: reviewStaffName(r, '') }) }}
                     </p>
                   </div>
                 </div>
@@ -628,7 +628,7 @@
                     @click="toggleReviewExpanded(r.id)"
                     class="mt-2 text-xs font-black text-teal-600 hover:underline dark:text-teal-300"
                 >
-                  {{ expandedReviewIds.has(r.id) ? 'Kamroq ko\'rsatish' : 'Ko\'proq ko\'rsatish' }}
+                  {{ expandedReviewIds.has(r.id) ? t('book.showLess') : t('book.showMore') }}
                 </button>
               </template>
               <p
@@ -644,7 +644,7 @@
               class="mt-4 cursor-pointer rounded-full border border-slate-200 px-4 py-2 text-xs font-black text-slate-600 transition hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-teal-400 dark:hover:text-teal-300"
               @click="showAllReviews = true"
           >
-            Yana {{ businessReviews.length - visibleBusinessReviews.length }} ta sharhni ko'rsatish
+            {{ t('book.moreReviews', { n: businessReviews.length - visibleBusinessReviews.length }, businessReviews.length - visibleBusinessReviews.length) }}
           </button>
         </template>
       </div>
@@ -669,7 +669,7 @@
               {{ formatDate(form.date) }}, {{ minutesToLabel(form.startMinutes) }} — {{ formatPrice(selectedService.basePrice) }}
             </template>
             <template v-else>
-              Davom eting — xodim, sana va vaqtni tanlang
+              {{ t('book.continueHint') }}
             </template>
           </p>
         </div>
@@ -678,7 +678,7 @@
             @click="openModal = true"
             class="flex-shrink-0 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 p-2.5 rounded-xl transition cursor-pointer"
         >
-          Bekor qilish
+          {{ t('common.cancel') }}
         </button>
         <button
           type="button"
@@ -687,7 +687,7 @@
           class="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-sm font-semibold cursor-pointer px-5 py-2.5 rounded-xl transition"
           :class="{ 'disabled:opacity-40 cursor-not-allowed': submitting || form.startMinutes === null }"
         >
-          {{ submitting ? 'Yuborilmoqda...' : authStore.user ? 'Navbat olish' : 'Tizimga kirish' }}
+          {{ submitting ? t('common.sending') : authStore.user ? t('book.book') : t('book.signIn') }}
         </button>
       </div>
     </div>
@@ -707,21 +707,21 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
       <div class="flex flex-col items-center border-b border-slate-200 dark:border-slate-700 py-6">
-        <p class="text-lg font-bold text-slate-600 dark:text-white">Tanlanganlarni bekor qilishni xohlaysizmi ?</p>
-        <p class="text-blue-800 dark:text-blue-400 text-sm font-semibold">Unda qaytadan tanlashga harakat qilish mumkin !</p>
+        <p class="text-lg font-bold text-slate-600 dark:text-white">{{ t('book.cancelTitle') }}</p>
+        <p class="text-blue-800 dark:text-blue-400 text-sm font-semibold">{{ t('book.cancelHint') }}</p>
       </div>
       <div class="flex items-center gap-2 justify-center">
         <button
             class="text-red-600 bg-red-100 hover:bg-red-200 hover:text-red-700 cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
             @click="openModal = false"
         >
-          Yo'q
+          {{ t('common.no') }}
         </button>
         <button
             class="bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
             @click="formCleaned"
         >
-          Ha, bekor
+          {{ t('book.yesCancel') }}
         </button>
       </div>
     </div>
@@ -731,6 +731,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { businessesApi } from '@/api/businesses';
 import { servicesApi } from '@/api/services';
 import { staffApi } from '@/api/staff';
@@ -749,6 +750,7 @@ import DatePicker from '@/components/DatePicker.vue';
 import AppHeader from '@/components/AppHeader.vue';
 import BusinessMap from '@/components/BusinessMap.vue';
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
@@ -814,21 +816,10 @@ const directionsUrl = computed(() => {
   return destination ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}` : '';
 });
 
-const categoryOptions: { value: Business['category']; label: string }[] = [
-  { value: 'BARBER', label: 'Sartarosh' },
-  { value: 'BEAUTY', label: "Go'zallik" },
-  { value: 'MEDICAL', label: 'Tibbiyot' },
-  { value: 'REPAIR', label: "Ta'mirlash" },
-  { value: 'CONSULTING', label: 'Konsultatsiya' },
-  { value: 'EDUCATION', label: "Ta'lim" },
-  { value: 'FITNESS', label: 'Sport' },
-  { value: 'AUTO', label: 'Avto xizmat' },
-  { value: 'LEGAL', label: 'Yuridik xizmat' },
-  { value: 'OTHER', label: 'Boshqa' },
-];
+const CATEGORIES: Business['category'][] = ['BARBER', 'BEAUTY', 'MEDICAL', 'REPAIR', 'CONSULTING', 'EDUCATION', 'FITNESS', 'AUTO', 'LEGAL', 'OTHER'];
 
 function categoryLabel(category?: Business['category']) {
-  return categoryOptions.find((item) => item.value === category)?.label ?? 'Boshqa';
+  return t(`categories.${category && CATEGORIES.includes(category) ? category : 'OTHER'}`);
 }
 
 function toggleReviewExpanded(id: string) {
@@ -876,17 +867,17 @@ const todayHoursLabel = computed(() =>
 );
 const businessImage = computed(() => services.value.find((service) => service.imageUrl)?.imageUrl ?? null);
 const bookingSteps = computed(() => [
-  { key: 'service', label: 'Xizmat', done: step1Done.value, active: !step1Done.value },
-  { key: 'date', label: 'Sana', done: step2Done.value, active: step2Reachable.value && !step2Done.value },
-  { key: 'staff', label: 'Xodim', done: step3Done.value, active: step3Reachable.value && !step3Done.value },
-  { key: 'time', label: 'Vaqt', done: step4Done.value, active: step4Reachable.value && !step4Done.value },
+  { key: 'service', label: t('book.steps.service'), done: step1Done.value, active: !step1Done.value },
+  { key: 'date', label: t('book.steps.date'), done: step2Done.value, active: step2Reachable.value && !step2Done.value },
+  { key: 'staff', label: t('book.steps.staff'), done: step3Done.value, active: step3Reachable.value && !step3Done.value },
+  { key: 'time', label: t('book.steps.time'), done: step4Done.value, active: step4Reachable.value && !step4Done.value },
 ]);
 const bookingProgressLabel = computed(() => {
-  if (!step1Done.value) return 'Avval xizmatni tanlang';
-  if (!step2Done.value) return 'Keyin sana tanlang';
-  if (!step3Done.value) return 'Keyin ustani tanlang';
-  if (!step4Done.value) return 'Endi bo\'sh vaqtni tanlang';
-  return 'Navbatni tasdiqlashga tayyor';
+  if (!step1Done.value) return t('book.progress.service');
+  if (!step2Done.value) return t('book.progress.date');
+  if (!step3Done.value) return t('book.progress.staff');
+  if (!step4Done.value) return t('book.progress.time');
+  return t('book.progress.ready');
 });
 
 const possibleStarts = computed(() => {
@@ -917,9 +908,9 @@ function isSlotDisabled(min: number): boolean {
 }
 
 function slotUnavailableReason(min: number): string {
-  if (isSlotPast(min)) return "Bu vaqt o'tib ketgan";
-  if (isSlotBusy(min)) return 'Bu vaqt band';
-  return "Tanlab bo'lmaydi";
+  if (isSlotPast(min)) return t('book.slotPast');
+  if (isSlotBusy(min)) return t('book.slotBusy');
+  return t('book.slotUnavailable');
 }
 
 async function loadStatic() {
@@ -938,7 +929,7 @@ async function loadStatic() {
     await loadStaffRatings();
     await loadBusinessRating();
   } catch (e) {
-    loadError.value = apiErrorMessage(e, "Xizmat ko'rsatuvchi ma'lumotlarini yuklab bo'lmadi");
+    loadError.value = apiErrorMessage(e, t('book.loadError'));
   } finally {
     loadingServices.value = false;
   }
@@ -1067,7 +1058,7 @@ async function submit() {
     // Yuborishdan oldin eng so'nggi bandlikni qayta tekshiramiz.
     await loadDayBookings();
     if (isSlotDisabled(form.startMinutes)) {
-      submitError.value = "Bu vaqt endi band. Iltimos, boshqa vaqt tanlang.";
+      submitError.value = t('book.slotTaken');
       form.startMinutes = null;
       submitting.value = false;
       return;
@@ -1084,7 +1075,7 @@ async function submit() {
     });
     await router.push('/client/my');
   } catch (e: any) {
-    submitError.value = apiErrorMessage(e, 'Navbat olishda xatolik yuz berdi');
+    submitError.value = apiErrorMessage(e, t('book.submitError'));
   } finally {
     submitting.value = false;
   }

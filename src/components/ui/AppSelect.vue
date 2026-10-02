@@ -13,7 +13,7 @@
     >
       <option v-if="disabledValue" value="" disabled class="text-pb-muted">{{ disabledValue }}</option>
       <option v-if="hasReset" :value="null" class="text-pb-text">{{ resetText }}</option>
-      <option disabled v-if="normalizedOptions.length === 0">Ma'lumot yo'q</option>
+      <option disabled v-if="normalizedOptions.length === 0">{{ t('common.noData') }}</option>
       <option
           v-for="(option, index) in normalizedOptions"
           :key="index"
@@ -70,7 +70,7 @@
             :style="dropdownPanelStyle"
         >
           <span class="px-4 py-2 cursor-pointer hover:bg-pb-app flex justify-between items-center text-pb-muted"
-                v-if="normalizedOptions.length === 0">Ma'lumot yo'q</span>
+                v-if="normalizedOptions.length === 0">{{ t('common.noData') }}</span>
           <div
               v-for="(option, index) in normalizedOptions"
               :key="index"
@@ -91,7 +91,7 @@
 
 <script setup lang="ts">
 import {ref, computed, watch, nextTick, onBeforeUnmount} from 'vue'
-// import {useI18n} from "vue-i18n";
+import {useI18n} from "vue-i18n";
 import Icon from "@/components/Icon.vue";
 
 interface IProps {
@@ -123,7 +123,7 @@ const emit = defineEmits(['update:modelValue', 'close'])
 
 const showError = ref(false)
 const errorMessage = ref('');
-// const {t} = useI18n();
+const {t} = useI18n();
 
 const model = computed({
   get: () => props.modelValue,

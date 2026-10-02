@@ -6,17 +6,17 @@
             class="mb-2 inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1 text-xs font-bold text-teal-700 dark:bg-teal-500/10 dark:text-teal-300"
         >
           <span class="h-1.5 w-1.5 rounded-full bg-teal-500" />
-          Yordam markazi
+          {{ t('support.badge') }}
         </div>
         <h1
             class="text-3xl font-black tracking-tight text-slate-900 dark:text-white"
         >
-          Qanday yordam bera olamiz?
+          {{ t('support.title') }}
         </h1>
         <p
             class="mt-1.5 text-sm font-medium text-slate-500 dark:text-slate-400"
         >
-          Telegram orqali yozing, javob va jarayon holati shu yerda saqlanadi.
+          {{ t('support.subtitle') }}
         </p>
       </div>
       <button
@@ -28,7 +28,7 @@
             :class="['h-4 w-4',
              loading && 'animate-spin']"
         />
-        Yangilash
+        {{ t('common.refresh') }}
       </button>
     </header>
 
@@ -48,12 +48,12 @@
           </div>
           <div>
             <h2 class="text-lg font-black">
-              Telegram orqali murojaat qiling
+              {{ t('support.telegramTitle') }}
             </h2>
             <p
                 class="mt-1 text-sm leading-6 text-teal-50"
             >
-              Savol, rasm, ovozli xabar yoki fayl yuboring. Operator javobi bevosita botga keladi.
+              {{ t('support.telegramText') }}
             </p>
           </div>
         </div>
@@ -63,7 +63,7 @@
             class="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-black text-teal-700 shadow-sm transition hover:bg-teal-50 disabled:opacity-60"
         >
           <Send class="h-4 w-4" />
-          {{ openingBot ? 'Ochilyapti...' : 'Botni ochish' }}
+          {{ openingBot ? t('support.opening') : t('support.openBot') }}
           <ExternalLink class="h-3.5 w-3.5" />
         </button>
       </div>
@@ -84,10 +84,10 @@
           <h2
               class="font-black text-slate-900 dark:text-white"
           >
-            Murojaatlarim
+            {{ t('support.myTickets') }}
           </h2>
           <p class="text-sm text-slate-500">
-            Kartani bosib yozishmalarni oching
+            {{ t('support.ticketsHint') }}
           </p>
         </div>
       </div>
@@ -95,7 +95,7 @@
           v-if="loading"
           class="py-10 text-center text-sm text-slate-400"
       >
-        Murojaatlar yuklanmoqda...
+        {{ t('support.loading') }}
       </p>
       <div
           v-else-if="!tickets.length"
@@ -105,13 +105,13 @@
         <p
             class="mt-2 text-sm font-medium text-slate-500"
         >
-          Hali murojaatingiz yo‘q
+          {{ t('support.empty') }}
         </p>
         <button
             @click="openTelegram"
             class="mt-3 text-sm font-bold text-teal-600"
         >
-          Bot orqali yozish
+          {{ t('support.writeBot') }}
           <ArrowUpRight class="inline h-4 w-4" />
         </button>
       </div>
@@ -135,7 +135,7 @@
               :class="['shrink-0 rounded-full px-2.5 py-1 text-xs font-bold',
                statusClass[ticket.status]]"
           >
-            {{ statusLabel[ticket.status] }}
+            {{ t(`support.status.${ticket.status}`) }}
           </span>
           <ArrowUpRight class="h-4 w-4 shrink-0 text-slate-300 transition group-hover:text-teal-600" />
         </button>
@@ -147,7 +147,7 @@
         <div class="flex items-center justify-between gap-3">
           <div class="min-w-0">
             <p class="text-xs font-bold uppercase tracking-wide text-teal-600">
-              Yozishma
+              {{ t('support.conversation') }}
             </p>
             <h3 class="truncate font-black text-slate-900 dark:text-white">
               {{ selected.subject }}
@@ -157,7 +157,7 @@
               @click="selected=null"
               class="rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:bg-white dark:hover:bg-slate-700"
           >
-            Yopish
+            {{ t('common.close') }}
           </button>
         </div>
         <div class="mt-4 max-h-80 space-y-2 overflow-y-auto pr-1">
@@ -171,7 +171,7 @@
           >
             <p>{{ message.content }}</p>
             <p class="mt-1 text-[11px] opacity-60">
-              {{ message.sender === 'OPERATOR' ? 'Support' : 'Siz' }} · {{ date(message.createdAt) }}
+              {{ message.sender === 'OPERATOR' ? t('support.operator') : t('support.you') }} · {{ date(message.createdAt) }}
             </p>
           </div>
         </div>
@@ -184,21 +184,17 @@
 import { onMounted, ref } from 'vue'
 import { ArrowUpRight, CircleHelp, ExternalLink, History, MessageCircle, RefreshCw, Send } from 'lucide-vue-next'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+import { dateLocale } from '@/i18n'
 import { supportApi, type SupportStatus, type SupportTicket } from '@/api/support'
 
 const toast = useToast()
+const { t } = useI18n()
 const openingBot = ref(false)
 const loading = ref(false)
 const tickets = ref<SupportTicket[]>([])
 const selected = ref<SupportTicket | null>(null)
 
-const statusLabel: Record<SupportStatus, string> = {
-  NEW: 'Yangi',
-  IN_PROGRESS: 'Jarayonda',
-  WAITING_USER: 'Javobingiz kutilmoqda',
-  RESOLVED: 'Hal qilindi',
-  CLOSED: 'Yopildi',
-}
 const statusClass: Record<SupportStatus, string> = {
   NEW: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
   IN_PROGRESS: 'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300',
@@ -213,7 +209,7 @@ async function loadTickets() {
     tickets.value = (await supportApi.mine()).data.content
   }
   catch {
-    toast.error('Murojaatlar tarixini yuklab bo‘lmadi')
+    toast.error(t('support.loadError'))
   }
   finally {
     loading.value = false
@@ -226,7 +222,7 @@ async function openTelegram() {
     window.location.assign((await supportApi.createTelegramLink()).data.url)
   }
   catch {
-    toast.error('Telegram botni ochib bo‘lmadi')
+    toast.error(t('support.botError'))
   }
   finally {
     openingBot.value = false
@@ -238,12 +234,12 @@ async function openTicket(id: string) {
     selected.value = (await supportApi.mineGet(id)).data
   }
   catch {
-    toast.error('Murojaat tafsilotini yuklab bo‘lmadi')
+    toast.error(t('support.ticketError'))
   }
 }
 
 function date(value: string) {
-  return new Date(value).toLocaleString('uz-UZ', {
+  return new Date(value).toLocaleString(dateLocale(), {
     dateStyle: 'short', timeStyle: 'short'
   })
 }
