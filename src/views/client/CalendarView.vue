@@ -16,9 +16,7 @@
         >
           <ChevronLeft class="h-4 w-4" />
         </button>
-        <p class="min-w-24 text-center text-sm font-black text-slate-800 dark:text-white">
-          {{ monthLabel }}
-        </p>
+        <DatePicker :model-value="selectedKey" @update:model-value="pickDate" />
         <button
             type="button"
             class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:border-teal-400 hover:text-teal-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
@@ -161,6 +159,7 @@ import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 import { Building2, CalendarDays, ChevronLeft, ChevronRight, User } from 'lucide-vue-next';
+import DatePicker from '@/components/DatePicker.vue';
 import { bookingsApi } from '@/api/bookings';
 import { useAuthStore } from '@/stores/auth';
 import type { Booking, BookingStatus } from '@/types/api';
@@ -235,14 +234,6 @@ const cells = computed<DayCell[]>(() => {
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-// Brauzerlar o'zbekcha oy nomlarini bilmaydi ("2026 M10"), shuning uchun raqamli format: 2026.10.02
-const monthLabel = computed(() => {
-  const selected = parseKey(selectedKey.value);
-  const inView = selected.getFullYear() === viewYear.value && selected.getMonth() === viewMonth.value;
-  const day = inView ? selected.getDate() : 1;
-  return `${viewYear.value}.${pad(viewMonth.value + 1)}.${pad(day)}`;
-});
-
 const selectedBookings = computed(() => bookingsByDay.value.get(selectedKey.value) ?? []);
 
 // 02.10.2026, Fri
@@ -263,6 +254,13 @@ function goToday() {
   viewYear.value = now.getFullYear();
   viewMonth.value = now.getMonth();
   selectedKey.value = todayKey;
+}
+
+function pickDate(key: string) {
+  selectedKey.value = key;
+  const d = parseKey(key);
+  viewYear.value = d.getFullYear();
+  viewMonth.value = d.getMonth();
 }
 
 function selectDay(cell: DayCell) {

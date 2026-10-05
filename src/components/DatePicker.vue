@@ -3,7 +3,7 @@
     <button
       type="button"
       @click="open = !open"
-      class="flex items-center gap-2 border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-1.5 text-sm hover:border-indigo-400 transition"
+      class="flex cursor-pointer items-center gap-2 border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-1.5 text-sm hover:border-indigo-400 transition"
     >
       <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
       {{ displayLabel }}
@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { dateLocale } from '@/i18n';
 
@@ -73,6 +73,10 @@ function toIso(date: Date): string {
 const selectedDate = computed(() => parseIso(props.modelValue));
 const viewMonth = ref(selectedDate.value.getMonth());
 const viewYear = ref(selectedDate.value.getFullYear());
+watch(selectedDate, (d) => {
+  viewMonth.value = d.getMonth();
+  viewYear.value = d.getFullYear();
+});
 const minDate = computed(() => (props.min ? parseIso(props.min) : null));
 
 const monthLabel = computed(() => {
