@@ -48,7 +48,8 @@
     "logout": "Log out",
     "logoutConfirm": "Are you sure you want to log out?",
     "logoutButton": "Log out",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "homeTab": "Home"
   },
   "auth": {
     "loginTitle": "Sign in",
@@ -68,7 +69,9 @@
     "serverError": "Could not connect to the server",
     "registerError": "An error occurred during sign up",
     "phoneIncomplete": "Please enter the full phone number",
-    "sessionExpired": "Your session has expired, please sign in again!"
+    "sessionExpired": "Your session has expired, please sign in again!",
+    "requiredTitle": "Please sign in first",
+    "requiredText": "Sign in to see your bookings, calendar and help."
   },
   "forgot": {
     "title": "Reset password",
@@ -228,6 +231,8 @@
     "cancelTitle": "Do you want to clear your selection?",
     "cancelHint": "You can then choose again!",
     "yesCancel": "Yes, clear",
+    "selectionCleared": "Selection cleared",
+    "bookedSuccess": "Booking confirmed",
     "steps": {
       "service": "Service",
       "date": "Date",
@@ -287,7 +292,8 @@
     "cancelled": "Booking cancelled",
     "cancelError": "An error occurred while cancelling",
     "reviewSent": "Review sent, thank you!",
-    "reviewError": "Error sending the review"
+    "reviewError": "Error sending the review",
+    "loadError": "Could not load bookings"
   },
   "support": {
     "badge": "Help center",
@@ -325,6 +331,7 @@
     "more": "+{n} more",
     "bookingsCount": "{n} booking | {n} bookings",
     "empty": "No bookings on this day",
-    "loadError": "Could not load bookings"
+    "loadError": "Could not load bookings",
+    "goToBusiness": "Go to {name} page"
   }
 }

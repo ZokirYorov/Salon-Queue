@@ -652,7 +652,7 @@
 
     <div
       v-if="selectedService"
-      class="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]"
+      class="fixed bottom-[calc(4rem+env(safe-area-inset-bottom))] sm:bottom-0 left-0 right-0 z-40 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]"
     >
       <div class="max-w-3xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-4">
         <div class="min-w-0 flex-1">
@@ -712,13 +712,13 @@
       </div>
       <div class="flex items-center gap-2 justify-center">
         <button
-            class="text-red-600 bg-red-100 hover:bg-red-200 hover:text-red-700 cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
+            class="text-slate-600 bg-slate-100 hover:bg-slate-200 dark:text-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
             @click="openModal = false"
         >
           {{ t('common.no') }}
         </button>
         <button
-            class="bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
+            class="bg-red-600 hover:bg-red-700 text-white cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold"
             @click="formCleaned"
         >
           {{ t('book.yesCancel') }}
@@ -732,6 +732,7 @@
 import { reactive, ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 import { businessesApi } from '@/api/businesses';
 import { servicesApi } from '@/api/services';
 import { staffApi } from '@/api/staff';
@@ -751,6 +752,7 @@ import AppHeader from '@/components/AppHeader.vue';
 import BusinessMap from '@/components/BusinessMap.vue';
 
 const { t } = useI18n();
+const toast = useToast();
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
@@ -783,6 +785,7 @@ const formCleaned = () => {
   form.startMinutes = null;
   form.customerNote = '';
   openModal.value = false;
+  toast.info(t('book.selectionCleared'));
 }
 
 
@@ -1059,6 +1062,7 @@ async function submit() {
     await loadDayBookings();
     if (isSlotDisabled(form.startMinutes)) {
       submitError.value = t('book.slotTaken');
+      toast.error(submitError.value);
       form.startMinutes = null;
       submitting.value = false;
       return;
@@ -1073,9 +1077,12 @@ async function submit() {
       endAt,
       customerNote: form.customerNote.trim() || undefined,
     });
+    toast.success(t('book.bookedSuccess'));
     await router.push('/client/my');
   } catch (e: any) {
+    // Xato pastki panel tugmasidan uzoqda chiqadi, shuning uchun toast bilan ham ko'rsatamiz
     submitError.value = apiErrorMessage(e, t('book.submitError'));
+    toast.error(submitError.value);
   } finally {
     submitting.value = false;
   }

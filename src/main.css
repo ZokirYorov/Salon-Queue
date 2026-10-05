@@ -31,3 +31,10 @@ html {
 html.dark {
   background-color: #0f172a;
 }
+
+/* Pastki mobil menyu sahifa oxirini yopib qo'ymasligi uchun */
+@media (max-width: 639.98px) {
+  body:has(.mobile-tabbar) {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  }
+}

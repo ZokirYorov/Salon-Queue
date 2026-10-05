@@ -8,7 +8,7 @@
       @click="open = !open"
     >
       <Globe class="h-5 w-5" />
-      <span class="hidden sm:inline">{{ currentShort }}</span>
+      <span>{{ currentShort }}</span>
     </button>
 
     <div

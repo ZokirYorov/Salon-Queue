@@ -137,7 +137,7 @@
           :key="tab.key"
           type="button"
           @click="activeFilter = tab.key"
-          class="whitespace-nowrap cursor-pointer rounded-full px-4 py-2 border text-xs font-black transition"
+          class="cursor-pointer rounded-full px-3 py-2 border text-xs font-black transition"
           :class="activeFilter === tab.key
           ? 'bg-teal-600 border-teal-600 text-white'
           : 'hover:border-teal-600 bg-white dark:border-gray-600 border-gray-200 text-slate-500 hover:text-teal-600 dark:bg-slate-800 dark:text-slate-300  dark:hover:text-teal-400'"
@@ -488,6 +488,8 @@ async function loadBookings() {
   try {
     const { data } = await bookingsApi.getAll({ customerAccountId: authStore.user.userId, size: 100 });
     bookings.value = data.content.sort((a, b) => b.startAt.localeCompare(a.startAt));
+  } catch (e) {
+    toast.error(apiErrorMessage(e, t('bookings.loadError')));
   } finally {
     loading.value = false;
   }

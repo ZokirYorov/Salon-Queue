@@ -48,7 +48,8 @@
     "logout": "Tizimdan chiqish",
     "logoutConfirm": "Haqiqatan ham tizimdan chiqmoqchimisiz?",
     "logoutButton": "Chiqish",
-    "calendar": "Taqvim"
+    "calendar": "Taqvim",
+    "homeTab": "Asosiy"
   },
   "auth": {
     "loginTitle": "Tizimga kirish",
@@ -68,7 +69,9 @@
     "serverError": "Serverga ulanishda xatolik",
     "registerError": "Ro'yxatdan o'tishda xatolik yuz berdi",
     "phoneIncomplete": "Telefon raqamni to'liq kiriting",
-    "sessionExpired": "Sessiya tugadi, tizimga qayta kiring!"
+    "sessionExpired": "Sessiya tugadi, tizimga qayta kiring!",
+    "requiredTitle": "Avval tizimga kiring",
+    "requiredText": "Navbatlaringiz, taqvim va yordam bo'limini ko'rish uchun hisobingizga kiring."
   },
   "forgot": {
     "title": "Parolni tiklash",
@@ -228,6 +231,8 @@
     "cancelTitle": "Tanlanganlarni bekor qilishni xohlaysizmi?",
     "cancelHint": "Unda qaytadan tanlashga harakat qilish mumkin!",
     "yesCancel": "Ha, bekor",
+    "selectionCleared": "Tanlovlar bekor qilindi",
+    "bookedSuccess": "Navbat muvaffaqiyatli olindi",
     "steps": {
       "service": "Xizmat",
       "date": "Sana",
@@ -287,7 +292,8 @@
     "cancelled": "Navbat bekor qilindi",
     "cancelError": "Bekor qilishda xatolik yuz berdi",
     "reviewSent": "Sharh yuborildi, rahmat!",
-    "reviewError": "Sharh yuborishda xatolik"
+    "reviewError": "Sharh yuborishda xatolik",
+    "loadError": "Navbatlarni yuklab bo'lmadi"
   },
   "support": {
     "badge": "Yordam markazi",
@@ -325,6 +331,7 @@
     "more": "+{n} ta yana",
     "bookingsCount": "{n} ta navbat",
     "empty": "Bu kunda navbat yo'q",
-    "loadError": "Navbatlarni yuklab bo'lmadi"
+    "loadError": "Navbatlarni yuklab bo'lmadi",
+    "goToBusiness": "{name} sahifasiga o'tish"
   }
 }

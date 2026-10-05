@@ -121,6 +121,7 @@
           <RouterLink
               v-for="b in selectedBookings"
               :key="b.id"
+              :title="t('calendar.goToBusiness', { name: b.businessName })"
               :to="`/business/${b.businessId}`"
               :class="[
                 'block rounded-2xl border border-l-4 border-slate-200 p-3 transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/40',

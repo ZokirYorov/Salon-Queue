@@ -20,8 +20,8 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/client',
+        // Login talab qilinadi, lekin redirect o'rniga ClientLayout o'zi "tizimga kiring" ekranini ko'rsatadi
         component: () => import('@/views/client/ClientLayout.vue'),
-        meta: { requiresAuth: true },
         children: [
             { path: '', redirect: { name: 'my-bookings' } },
             { path: 'my', name: 'my-bookings', component: () => import('@/views/client/MyBookingsView.vue') },

@@ -56,11 +56,17 @@ export default defineConfig(({ mode }) => {
             }
         },
         server: {
+            host: true,
             port: 5175,
             proxy: {
                 '/api': {
                     target: env.VITE_BASE_API,
                     changeOrigin: true,
+                    // Telefondan (10.1.1.x) ochilganda backend CORS'i Origin'ni rad etadi;
+                    // proxy server-server so'rov bo'lgani uchun Origin kerak emas.
+                    configure: (proxy) => {
+                        proxy.on('proxyReq', (proxyReq) => proxyReq.removeHeader('origin'));
+                    },
                 },
                 '/uploads': {
                     target: env.VITE_BASE_API,
