@@ -1,11 +1,12 @@
 <template>
   <header
-      class="relative bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 transition-colors"
+      class="header-dotted border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 transition-colors"
   >
     <div class="max-w-6xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
       <RouterLink
           to="/businesses"
           :aria-label="t('header.home')"
+          class="header-chip rounded-xl py-1 pl-1 pr-3"
       >
         <AppLogo size="sm" />
       </RouterLink>
@@ -15,7 +16,7 @@
             v-for="link in navLinks"
             :key="link.to"
             :to="link.to"
-            class="hidden text-sm font-medium transition sm:block"
+            class="header-chip hidden px-3 py-1.5 text-sm font-medium transition sm:block"
             :class="isActive(link.to)
             ? 'text-teal-600 dark:text-teal-400 font-semibold'
             : 'text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400'"
@@ -24,11 +25,11 @@
           </RouterLink>
         </template>
 
-        <LanguageSwitcher />
+        <LanguageSwitcher class="header-chip" />
 
         <button
           @click="toggleTheme"
-          class="w-9 h-9 rounded-lg cursor-pointer flex items-center justify-center text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex-shrink-0"
+          class="header-chip w-9 h-9 rounded-lg cursor-pointer flex items-center justify-center text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex-shrink-0"
           :title="theme === 'dark' ? t('header.toLight') : t('header.toDark')"
         >
           <svg
@@ -48,7 +49,7 @@
         <template v-if="!authStore.user">
           <button
             @click="openAuth($event, 'login')"
-            class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition"
+            class="header-chip px-3 py-1 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition"
           >
             {{ t('header.signIn') }}
           </button>
@@ -68,7 +69,7 @@
         >
           <button
             @click="dropdownOpen = !dropdownOpen"
-            class="flex items-center cursor-pointer gap-1 text-sm font-semibold rounded-lg px-1 py-1.5 transition sm:gap-2 sm:px-2"
+            class="header-chip flex items-center cursor-pointer gap-1 text-sm font-semibold rounded-lg px-1 py-1.5 transition sm:gap-2 sm:px-2"
             :class="isActive('/profile')
             ? 'bg-teal-100 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 hover:bg-teal-200 dark:hover:bg-teal-500/30'
             : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'"

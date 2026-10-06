@@ -32,6 +32,31 @@ html.dark {
   background-color: #0f172a;
 }
 
+/* Element Plus saytidagi kabi nuqtali "shisha" fon: to'r orasidagi shaffof
+   nuqtalardan tagidagi kontent xira ko'rinadi */
+.header-dotted {
+  --header-dot-bg: #fff;
+  background-color: transparent;
+  background-image: radial-gradient(transparent 1px, var(--header-dot-bg) 1px);
+  background-size: 3px 3px;
+  backdrop-filter: saturate(50%) blur(4px);
+  -webkit-backdrop-filter: saturate(50%) blur(4px);
+}
+html.dark .header-dotted {
+  --header-dot-bg: #0f172a;
+}
+/* Nuqtali fon ustidagi matnlar o'qilishi uchun yaxlit fon.
+   components qatlamida — hover:bg-* kabi utility'lar ustun turishi uchun */
+@layer components {
+  .header-chip {
+    border-radius: 0.5rem;
+    background-color: rgb(255 255 255 / 0.9);
+  }
+  html.dark .header-chip {
+    background-color: rgb(15 23 42 / 0.9);
+  }
+}
+
 /* Pastki mobil menyu sahifa oxirini yopib qo'ymasligi uchun */
 @media (max-width: 639.98px) {
   body:has(.mobile-tabbar) {
