@@ -326,6 +326,7 @@
     "title": "Taqvim",
     "subtitle": "Navbatlaringiz kunlar bo'yicha",
     "today": "Bugun",
+    "weekdaysFull": "Yakshanba,Dushanba,Seshanba,Chorshanba,Payshanba,Juma,Shanba",
     "prevMonth": "Oldingi oy",
     "nextMonth": "Keyingi oy",
     "more": "+{n} ta yana",

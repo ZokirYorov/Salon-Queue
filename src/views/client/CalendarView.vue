@@ -176,7 +176,7 @@ interface DayCell {
   bookings: Booking[]
 }
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const toast = useToast();
 const authStore = useAuthStore();
 
@@ -237,18 +237,23 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 const selectedBookings = computed(() => bookingsByDay.value.get(selectedKey.value) ?? []);
 
-// 02.10.2026, Fri
+// 02.10.2026, Juma — brauzerlarda o'zbek locale ma'lumoti bo'lmagani uchun
+// hafta kuni nomi Intl'dan emas, tarjimadan olinadi
 const selectedLabel = computed(() => {
-  void locale.value;
   const d = parseKey(selectedKey.value);
-  const weekday = d.toLocaleDateString(dateLocale(), { weekday: 'short' });
+  const weekday = t('calendar.weekdaysFull').split(',')[d.getDay()];
   return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}, ${weekday}`;
 });
 
 function shiftMonth(delta: number) {
+  const day = parseKey(selectedKey.value).getDate();
   const d = new Date(viewYear.value, viewMonth.value + delta, 1);
+  const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+
+  d.setDate(Math.min(day,lastDay))
   viewYear.value = d.getFullYear();
   viewMonth.value = d.getMonth();
+  selectedKey.value = dayKey(d);
 }
 
 function goToday() {

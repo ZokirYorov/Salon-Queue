@@ -326,6 +326,7 @@
     "title": "Calendar",
     "subtitle": "Your bookings by day",
     "today": "Today",
+    "weekdaysFull": "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",
     "prevMonth": "Previous month",
     "nextMonth": "Next month",
     "more": "+{n} more",
