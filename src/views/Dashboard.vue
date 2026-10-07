@@ -134,18 +134,27 @@
               </button>
             </div>
 
-            <div class="-mx-4 mt-4 flex flex-nowrap gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-5 sm:flex-wrap sm:px-0">
+            <div class="mt-4 flex flex-wrap gap-2 sm:mt-5">
               <button
                 v-for="cat in categoryOptions"
                 :key="cat.value"
                 type="button"
                 @click="setCategory(cat.value)"
-                class="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-bold transition sm:rounded-2xl sm:px-3.5 sm:py-2 sm:text-sm"
+                class="inline-flex min-h-9 max-w-full cursor-pointer items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-bold transition sm:rounded-2xl sm:px-3.5 sm:py-2 sm:text-sm"
                 :class="categoryFilter === cat.value ?
                  'border-teal-600 bg-teal-600 text-white shadow-sm' :
                   'border-gray-200 bg-white/80 text-slate-500 hover:border-teal-600 hover:text-teal-600 dark:border-gray-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-teal-500'"
               >
                 {{ cat.label }}
+              </button>
+              <button
+                v-if="hasActiveFilters"
+                type="button"
+                @click="clearFilters"
+                class="inline-flex min-h-9 max-w-full cursor-pointer items-center gap-1.5 rounded-xl border border-dashed border-red-300 px-3 py-1.5 text-xs font-bold text-red-600 transition hover:border-red-400 hover:bg-red-50 dark:border-red-500/50 dark:text-red-400 dark:hover:bg-red-500/10 sm:rounded-2xl sm:px-3.5 sm:py-2 sm:text-sm"
+              >
+                <X class="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
+                {{ t('dashboard.clearFilters') }}
               </button>
             </div>
           </div>
@@ -164,14 +173,6 @@
             {{ t('dashboard.results', { n: filteredCards.length }, filteredCards.length) }}
           </p>
         </div>
-        <button
-          v-if="hasActiveFilters"
-          type="button"
-          @click="clearFilters"
-          class="self-start rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-teal-300 hover:text-teal-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
-        >
-          {{ t('dashboard.clearFilters') }}
-        </button>
       </div>
 
       <div
@@ -337,6 +338,7 @@ import { businessesApi } from '@/api/businesses';
 // import { mediaUrl } from '@/utils/media';
 import { apiErrorMessage } from '@/utils/apiError';
 import AppHeader from '@/components/AppHeader.vue';
+import { X } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
 import type { BusinessCategory, PublicBusinessSummary } from '@/types/api';
 
