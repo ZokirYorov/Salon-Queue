@@ -24,7 +24,14 @@
       </div>
 
       <div class="grid grid-cols-7 gap-1 mb-1">
-        <span v-for="d in weekdayLabels" :key="d" class="text-[10px] font-bold text-slate-400 text-center py-1">{{ d }}</span>
+        <span
+            v-for="(d, i) in weekdayLabels"
+            :key="d"
+            :class="i === 0 ?'text-red-500' : 'text-slate-400'"
+            class="text-[10px] font-bold text-center py-1"
+        >
+          {{ d }}
+        </span>
       </div>
 
       <div class="grid grid-cols-7 gap-1">
@@ -40,6 +47,7 @@
             isSelected(day) ? 'bg-indigo-600 text-white hover:bg-indigo-700' :
             isDisabled(day) ? 'text-slate-300 dark:text-slate-600 cursor-not-allowed' :
             isToday(day) ? 'border border-indigo-400 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10' :
+            isSunday(day) ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10' :
             'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
           ]"
         >
@@ -111,6 +119,10 @@ function isSelected(day: number): boolean {
 function isToday(day: number): boolean {
   const t = new Date();
   return t.getDate() === day && t.getMonth() === viewMonth.value && t.getFullYear() === viewYear.value;
+}
+
+function isSunday(day: number): boolean {
+  return new Date(viewYear.value, viewMonth.value, day).getDay() === 0;
 }
 
 function isDisabled(day: number): boolean {
